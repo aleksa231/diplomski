@@ -41,4 +41,27 @@ until mongosh --host mongo1:27017 --eval "rs.isMaster().ismaster" --quiet | grep
     sleep 2
 done
 
+echo "Setting up MongoDB schema validation on products collection..."
+mongosh --host mongo1:27017/benchmark <<EOF
+try {
+  db.createCollection("products", {
+    validator: {
+      $jsonSchema: {
+        bsonType: "object",
+        required: ["name", "category", "price", "stock"],
+        properties: {
+          name: { bsonType: "string", description: "must be a string and is required" },
+          category: { bsonType: "string", description: "must be a string and is required" },
+          price: { bsonType: ["double", "int", "long", "decimal"], minimum: 0, description: "must be >= 0" },
+          stock: { bsonType: ["int", "long"], minimum: 0, description: "must be >= 0" }
+        }
+      }
+    }
+  });
+  print("Products collection with jsonSchema created.");
+} catch (e) {
+  print("Products collection might already exist: " + e);
+}
+EOF
+
 echo "Replica set rs0 initialized and primary is available."

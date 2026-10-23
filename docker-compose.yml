@@ -260,6 +260,23 @@ services:
       experiment-runner:
         condition: service_healthy
 
+  # ================= Data Generator / Seeder =================
+  data-generator:
+    build:
+      context: .
+      dockerfile: data-generator/Dockerfile
+    container_name: data-generator
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/benchmark"
+      SPRING_DATASOURCE_USERNAME: benchmark
+      SPRING_DATASOURCE_PASSWORD: benchmark
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+
   # ================= Observability =================
   prometheus:
     image: prom/prometheus:v2.53.3
