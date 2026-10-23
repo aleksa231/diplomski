@@ -1,0 +1,27 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: experiment-runner
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+
+app:
+  prometheus:
+    url: ${PROMETHEUS_URL:http://prometheus:9090}
+  results:
+    dir: ${RESULTS_DIR:/results}
+  loadtests:
+    dir: ${LOADTESTS_DIR:/loadtests}
+  scripts:
+    dir: ${SCRIPTS_DIR:/scripts}

@@ -1,0 +1,45 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: nosql-reactive
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/benchmark}
+    redis:
+      host: ${SPRING_DATA_REDIS_HOST:localhost}
+      port: ${SPRING_DATA_REDIS_PORT:6379}
+      timeout: 2000ms
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+
+app:
+  cache:
+    enabled: ${APP_CACHE_ENABLED:true}
+  cart:
+    store: ${APP_CART_STORE:redis}
+  orders:
+    transactions: ${APP_ORDERS_TRANSACTIONS:true}
+  mongo:
+    write-concern: ${APP_MONGO_WRITE_CONCERN:majority}
+    read-preference: ${APP_MONGO_READ_PREFERENCE:primary}
+  indexes:
+    enabled: ${APP_INDEXES_ENABLED:true}
+  stub-service:
+    url: ${STUB_SERVICE_URL:http://localhost:8099}

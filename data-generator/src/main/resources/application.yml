@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: data-generator
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/benchmark}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/benchmark}
+    username: ${SPRING_DATASOURCE_USERNAME:benchmark}
+    password: ${SPRING_DATASOURCE_PASSWORD:benchmark}
+    driver-class-name: org.postgresql.Driver

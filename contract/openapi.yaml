@@ -1,0 +1,828 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce Benchmark API
+  description: Unified REST contract implemented by nosql-blocking, nosql-reactive, and relational services.
+  version: 1.0.0
+servers:
+  - url: /
+paths:
+  /api/products:
+    get:
+      summary: Query catalog with dynamic attribute filters
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          schema:
+            type: number
+            format: double
+        - name: maxPrice
+          in: query
+          schema:
+            type: number
+            format: double
+        - name: sort
+          in: query
+          schema:
+            type: string
+            example: price,asc
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Paged product list
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProductResponse'
+    post:
+      summary: Create a product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
+        '201':
+          description: Product created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/products/bulk:
+    post:
+      summary: Bulk insert products (used in S3)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
+        '201':
+          description: Number of inserted products
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  insertedCount:
+                    type: integer
+
+  /api/products/search:
+    get:
+      summary: Full-text search
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          schema:
+            type: integer
+            default: 20
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageProductResponse'
+
+  /api/products/{id}:
+    get:
+      summary: Get single product by ID (increments views popularity)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Product details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+    put:
+      summary: Update a product (evicts cache)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreateRequest'
+      responses:
+        '200':
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      summary: Delete a product (evicts cache)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Deleted
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/products/{id}/reviews:
+    post:
+      summary: Add a review to a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReviewCreateRequest'
+      responses:
+        '201':
+          description: Review added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/products/{id}/with-recommendations:
+    get:
+      summary: Product with simulated slow recommendations call (S5)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: delayMs
+          in: query
+          schema:
+            type: integer
+            default: 200
+      responses:
+        '200':
+          description: Product with recommendations
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductWithRecommendationsResponse'
+
+  /api/carts/{cartId}/items:
+    get:
+      summary: Get cart items
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Cart items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      summary: Add item to cart
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemRequest'
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    patch:
+      summary: Update cart item quantity
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CartItemRequest'
+      responses:
+        '200':
+          description: Updated cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    delete:
+      summary: Remove product from cart (or entire cart if productId omitted)
+      parameters:
+        - name: cartId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated cart or empty cart
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+        '204':
+          description: Cleared
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/orders:
+    post:
+      summary: Create an order from cart, decrements stock atomically
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderCreateRequest'
+      responses:
+        '201':
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          description: Insufficient stock
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/orders/{id}:
+    get:
+      summary: Get order details
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/orders/{id}/status:
+    patch:
+      summary: Update order status (appends to history)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderStatusUpdateRequest'
+      responses:
+        '200':
+          description: Updated order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+
+  /api/reports/sales-by-category:
+    get:
+      summary: Sales aggregated by category
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: List of category sales
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategorySalesResponse'
+
+  /api/reports/top-products:
+    get:
+      summary: Top selling products
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: List of top products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TopProductResponse'
+
+  /api/reports/category-monthly-summary:
+    get:
+      summary: Join-heavy monthly category summary report (S7)
+      responses:
+        '200':
+          description: Monthly summary per category
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryMonthlySummaryResponse'
+
+  /api/popular:
+    get:
+      summary: Popularity ranking (views or purchases)
+      parameters:
+        - name: type
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [views, purchases]
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+      responses:
+        '200':
+          description: Popularity ranking
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PopularItemResponse'
+
+  /api/admin/cache:
+    post:
+      summary: Toggle Redis catalog cache
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enabled]
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Cache state updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+
+  /api/admin/cache/flush:
+    post:
+      summary: Flush Redis catalog cache
+      responses:
+        '200':
+          description: Cache flushed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  flushed:
+                    type: boolean
+
+  /api/admin/indexes:
+    post:
+      summary: Create or drop experiment indexes (S4)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [enabled]
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Indexes updated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  indexesEnabled:
+                    type: boolean
+                  message:
+                    type: string
+
+  /api/admin/explain:
+    get:
+      summary: Get query plan for scenario queries Q1..Q5
+      parameters:
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [Q1, Q2, Q3, Q4, Q5]
+      responses:
+        '200':
+          description: Query plan explanation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  plan:
+                    type: string
+
+components:
+  responses:
+    ErrorResponse:
+      description: Standard API Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    ErrorResponse:
+      type: object
+      required: [timestamp, status, code, message, path]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        code:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+
+    ProductCreateRequest:
+      type: object
+      required: [sku, name, category, price, stock]
+      properties:
+        sku:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+          format: double
+        stock:
+          type: integer
+        attributes:
+          type: object
+          additionalProperties: true
+
+    ReviewCreateRequest:
+      type: object
+      required: [rating]
+      properties:
+        rating:
+          type: integer
+          minimum: 1
+          maximum: 5
+        text:
+          type: string
+
+    ReviewDto:
+      type: object
+      properties:
+        rating:
+          type: integer
+        text:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ProductResponse:
+      type: object
+      required: [id, sku, name, category, price, stock]
+      properties:
+        id:
+          type: string
+        sku:
+          type: string
+        name:
+          type: string
+        category:
+          type: string
+        price:
+          type: number
+          format: double
+        stock:
+          type: integer
+        attributes:
+          type: object
+          additionalProperties: true
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReviewDto'
+        reviewCount:
+          type: integer
+        ratingAvg:
+          type: number
+          format: double
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PageProductResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+        totalPages:
+          type: integer
+
+    ProductWithRecommendationsResponse:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/ProductResponse'
+        recommendations:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductResponse'
+        latencyMs:
+          type: integer
+
+    CartItemRequest:
+      type: object
+      required: [productId, quantity]
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
+
+    CartItemDto:
+      type: object
+      properties:
+        productId:
+          type: string
+        quantity:
+          type: integer
+
+    CartResponse:
+      type: object
+      properties:
+        cartId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItemDto'
+
+    OrderCreateRequest:
+      type: object
+      required: [cartId, customerRef]
+      properties:
+        cartId:
+          type: string
+        customerRef:
+          type: string
+
+    OrderItemDto:
+      type: object
+      properties:
+        productId:
+          type: string
+        productName:
+          type: string
+        price:
+          type: number
+          format: double
+        quantity:
+          type: integer
+
+    OrderStatusHistoryDto:
+      type: object
+      properties:
+        status:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        customerRef:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemDto'
+        total:
+          type: number
+          format: double
+        status:
+          type: string
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderStatusHistoryDto'
+        createdAt:
+          type: string
+          format: date-time
+
+    OrderStatusUpdateRequest:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+
+    CategorySalesResponse:
+      type: object
+      properties:
+        category:
+          type: string
+        orderCount:
+          type: integer
+        totalRevenue:
+          type: number
+          format: double
+
+    TopProductResponse:
+      type: object
+      properties:
+        productId:
+          type: string
+        productName:
+          type: string
+        category:
+          type: string
+        unitsSold:
+          type: integer
+        revenue:
+          type: number
+          format: double
+
+    CategoryMonthlySummaryResponse:
+      type: object
+      properties:
+        category:
+          type: string
+        year:
+          type: integer
+        month:
+          type: integer
+        revenue:
+          type: number
+          format: double
+        orderCount:
+          type: integer
+        averageBasketSize:
+          type: number
+          format: double
+        topProducts:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopProductResponse'
+
+    PopularItemResponse:
+      type: object
+      properties:
+        productId:
+          type: string
+        score:
+          type: number
+          format: double

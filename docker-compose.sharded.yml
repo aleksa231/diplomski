@@ -1,0 +1,89 @@
+services:
+  # ================= Config Server Replica Set =================
+  mongo-cfg1:
+    image: mongo:7.0
+    command: ["mongod", "--configsvr", "--replSet", "cfgrs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo-cfg2:
+    image: mongo:7.0
+    command: ["mongod", "--configsvr", "--replSet", "cfgrs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  # ================= Shard 1 Replica Set =================
+  mongo-shard1a:
+    image: mongo:7.0
+    command: ["mongod", "--shardsvr", "--replSet", "shard1rs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo-shard1b:
+    image: mongo:7.0
+    command: ["mongod", "--shardsvr", "--replSet", "shard1rs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  # ================= Shard 2 Replica Set =================
+  mongo-shard2a:
+    image: mongo:7.0
+    command: ["mongod", "--shardsvr", "--replSet", "shard2rs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo-shard2b:
+    image: mongo:7.0
+    command: ["mongod", "--shardsvr", "--replSet", "shard2rs", "--port", "27017", "--bind_ip_all"]
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  # ================= Mongos Router =================
+  mongos:
+    image: mongo:7.0
+    command: ["mongos", "--configdb", "cfgrs/mongo-cfg1:27017,mongo-cfg2:27017", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27020:27017"
+    depends_on:
+      mongo-cfg1:
+        condition: service_healthy
+      mongo-cfg2:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  # ================= Shard Cluster Init =================
+  mongo-sharded-init:
+    image: mongo:7.0
+    depends_on:
+      mongos:
+        condition: service_healthy
+      mongo-shard1a:
+        condition: service_healthy
+      mongo-shard2a:
+        condition: service_healthy
+    volumes:
+      - ./infra/mongo-sharded/init-sharding.sh:/init-sharding.sh:ro
+    entrypoint: ["bash", "/init-sharding.sh"]
+    restart: "no"

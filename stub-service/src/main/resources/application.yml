@@ -1,0 +1,17 @@
+server:
+  port: 8099
+
+spring:
+  application:
+    name: stub-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true

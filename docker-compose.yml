@@ -1,0 +1,330 @@
+services:
+  # ================= MongoDB Replica Set (3 Nodes) =================
+  mongo1:
+    image: mongo:7.0
+    container_name: mongo1
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo2:
+    image: mongo:7.0
+    container_name: mongo2
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27018:27017"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo3:
+    image: mongo:7.0
+    container_name: mongo3
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27019:27017"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  mongo-init:
+    image: mongo:7.0
+    container_name: mongo-init
+    depends_on:
+      mongo1:
+        condition: service_healthy
+      mongo2:
+        condition: service_healthy
+      mongo3:
+        condition: service_healthy
+    volumes:
+      - ./infra/mongo-init/init-rs.sh:/init-rs.sh:ro
+    entrypoint: ["bash", "/init-rs.sh"]
+    restart: "no"
+
+  # ================= Redis =================
+  redis:
+    image: redis:7.2-alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  # ================= PostgreSQL 16 =================
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    environment:
+      POSTGRES_DB: benchmark
+      POSTGRES_USER: benchmark
+      POSTGRES_PASSWORD: benchmark
+    ports:
+      - "5432:5432"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2048M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U benchmark -d benchmark"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+
+  # ================= Application Services =================
+  stub-service:
+    build:
+      context: .
+      dockerfile: stub-service/Dockerfile
+    container_name: stub-service
+    ports:
+      - "8099:8099"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8099/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  nosql-blocking:
+    build:
+      context: .
+      dockerfile: nosql-blocking/Dockerfile
+    container_name: nosql-blocking
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      STUB_SERVICE_URL: "http://stub-service:8099"
+    ports:
+      - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      stub-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  nosql-reactive:
+    build:
+      context: .
+      dockerfile: nosql-reactive/Dockerfile
+    container_name: nosql-reactive
+    environment:
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      STUB_SERVICE_URL: "http://stub-service:8099"
+    ports:
+      - "8082:8082"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      stub-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8082/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  relational:
+    build:
+      context: .
+      dockerfile: relational/Dockerfile
+    container_name: relational
+    environment:
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/benchmark"
+      SPRING_DATASOURCE_USERNAME: benchmark
+      SPRING_DATASOURCE_PASSWORD: benchmark
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      STUB_SERVICE_URL: "http://stub-service:8099"
+    ports:
+      - "8083:8083"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      stub-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  experiment-runner:
+    build:
+      context: .
+      dockerfile: experiment-runner/Dockerfile
+    container_name: experiment-runner
+    environment:
+      PROMETHEUS_URL: "http://prometheus:9090"
+      RESULTS_DIR: "/results"
+      LOADTESTS_DIR: "/loadtests"
+      SCRIPTS_DIR: "/scripts"
+    ports:
+      - "8090:8090"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1024M
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./results:/results
+      - ./loadtests:/loadtests
+      - ./scripts:/scripts
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8090/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      nosql-blocking:
+        condition: service_healthy
+      nosql-reactive:
+        condition: service_healthy
+      relational:
+        condition: service_healthy
+      experiment-runner:
+        condition: service_healthy
+
+  # ================= Observability =================
+  prometheus:
+    image: prom/prometheus:v2.53.3
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=2h"
+
+  grafana:
+    image: grafana/grafana:11.1.0
+    container_name: grafana
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_USERS_ALLOW_SIGN_UP: "false"
+    volumes:
+      - ./infra/grafana/provisioning:/etc/grafana/provisioning
+    depends_on:
+      - prometheus
+
+  mongodb-exporter:
+    image: percona/mongodb_exporter:0.40
+    container_name: mongodb-exporter
+    command: ["--mongodb.uri=mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0"]
+    ports:
+      - "9216:9216"
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+
+  redis-exporter:
+    image: oliver006/redis_exporter:v1.62.0
+    container_name: redis-exporter
+    command: ["-redis.addr=redis:6379"]
+    ports:
+      - "9121:9121"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:v0.15.0
+    container_name: postgres-exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://benchmark:benchmark@postgres:5432/benchmark?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: cadvisor
+    ports:
+      - "8085:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
