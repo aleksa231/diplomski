@@ -4,17 +4,26 @@ server:
 spring:
   application:
     name: experiment-runner
+  threads:
+    virtual:
+      enabled: true
 
 management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: health,info,prometheus,metrics
   endpoint:
     health:
       show-details: always
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
 
 app:
   prometheus:
@@ -25,3 +34,66 @@ app:
     dir: ${LOADTESTS_DIR:/loadtests}
   scripts:
     dir: ${SCRIPTS_DIR:/scripts}
+  defaults:
+    # Warm-up traffic is generated for this long and excluded from the recorded samples.
+    warmup-sec: ${BENCH_WARMUP_SEC:30}
+    # Spec section 10.1: at least 3 repetitions per measurement.
+    repetitions: ${BENCH_REPETITIONS:3}
+    # Upper bound on how long a single k6 invocation may run before it is killed.
+    k6-timeout-sec: ${BENCH_K6_TIMEOUT_SEC:900}
+    # Upper bound on how long a failure-injection script may run.
+    script-timeout-sec: ${BENCH_SCRIPT_TIMEOUT_SEC:120}
+  services:
+    # Used by GET /api/live for health and per-service Prometheus metrics.
+    - name: nosql-blocking
+      url: http://nosql-blocking:8081
+    - name: nosql-reactive
+      url: http://nosql-reactive:8082
+    - name: relational
+      url: http://relational:8083
+    - name: nosql-blocking-w1
+      url: http://nosql-blocking-w1:8081
+    - name: relational-jsonb
+      url: http://relational-jsonb:8083
+    - name: stub-service
+      url: http://stub-service:8099
+  targets:
+    # Comparable API backends. Extra targets used by the Makefile (mongo-w1,
+    # postgres-unindexed, ...) are derived from these by name, see TargetCatalog.
+    nosql-blocking:
+      base-url: http://nosql-blocking:8081
+      container: nosql-blocking
+    nosql-reactive:
+      base-url: http://nosql-reactive:8082
+      container: nosql-reactive
+    relational:
+      base-url: http://relational:8083
+      container: relational
+    # Variant backends (one process per fixed-at-startup variant). Same image and same CPU/memory
+    # limits as the base service; only the variant differs, see docker-compose.yml.
+    nosql-blocking-w1:
+      base-url: http://nosql-blocking-w1:8081
+      container: nosql-blocking-w1
+    relational-jsonb:
+      base-url: http://relational-jsonb:8083
+      container: relational-jsonb
+    # S6 targets: the k6 run is combined with a bash failure-injection step from scripts/.
+    # S6 mixes workloads that cannot share one script, so each target pins its own entry point.
+    failover:
+      base-url: http://nosql-blocking:8081
+      container: nosql-blocking
+      script: s6/01-resilience.js
+      inject-script: kill-mongo-primary.sh
+      inject-delay-sec: 10
+      recover-script: start-mongo-nodes.sh
+    redis-down:
+      base-url: http://nosql-blocking:8081
+      container: nosql-blocking
+      script: s6/01-resilience.js
+      inject-script: stop-redis.sh
+      inject-delay-sec: 10
+      recover-script: start-redis.sh
+    concurrency:
+      base-url: http://nosql-blocking:8081
+      container: nosql-blocking
+      script: s6/02-last-item-concurrency.js

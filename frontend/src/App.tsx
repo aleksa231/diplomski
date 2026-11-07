@@ -1,61 +1,123 @@
-import React, { useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { LayoutDashboard, ShoppingBag, Store, Sun } from 'lucide-react';
+import ShopPage from './pages/Shop';
+import { Link, usePath } from './router';
+import { totalQuantity, useCartQuery } from './shop/cart';
 
-type Tab = 'experiments' | 'results' | 'catalog' | 'live';
+// The shop catalog is the entry route and stays in the main chunk; the admin console (charts) and
+// the checkout/detail routes are loaded on demand so the first paint does not ship them.
+const AdminPage = lazy(() => import('./pages/Admin'));
+const CartPage = lazy(() => import('./pages/Cart'));
+const ProductDetailPage = lazy(() => import('./pages/ProductDetail'));
 
-export default function App() {
-  const [activeTab, setActiveTab] = useState<Tab>('experiments');
+function RouteFallback() {
+  return (
+    <p className="small muted" role="status">
+      Učitavanje…
+    </p>
+  );
+}
+
+/** The only dynamic segment in the app: {@code /product/<id>}. */
+function productIdFrom(path: string): string | null {
+  const match = /^\/product\/([^/]+)\/?$/.exec(path);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function CartLink({ active }: { active: boolean }) {
+  const cartQuery = useCartQuery();
+  const count = totalQuantity(cartQuery.data?.data.items);
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <header style={{ backgroundColor: '#1e293b', borderBottom: '1px solid #334155', padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <h1 style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#38bdf8' }}>
-            NoSQL vs Relational Benchmark
-          </h1>
-          <span style={{ fontSize: '0.75rem', backgroundColor: '#0369a1', color: '#e0f2fe', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-            Spring Boot 3.4
-          </span>
-        </div>
-        <nav style={{ display: 'flex', gap: '1rem' }}>
-          {(['experiments', 'results', 'catalog', 'live'] as Tab[]).map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              style={{
-                background: activeTab === tab ? '#38bdf8' : 'transparent',
-                color: activeTab === tab ? '#0f172a' : '#94a3b8',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '6px',
-                fontWeight: 600,
-                textTransform: 'capitalize',
-                transition: 'all 0.2s'
-              }}
+    <Link to="/cart" className={active ? 'shop-nav-link shop-nav-link-active' : 'shop-nav-link'}>
+      <ShoppingBag size={16} />
+      <span>Korpa</span>
+      {count > 0 ? <span className="cart-badge">{count}</span> : null}
+    </Link>
+  );
+}
+
+export default function App() {
+  const path = usePath();
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      return (localStorage.getItem('km-theme') as 'dark' | 'light') || 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+  useEffect(() => {
+    document.documentElement.classList.toggle('light', theme === 'light');
+    try { localStorage.setItem('km-theme', theme); } catch {}
+  }, [theme]);
+  const productId = productIdFrom(path);
+  const isAdmin = path === '/admin' || path.startsWith('/admin/');
+  const catalogActive = path === '/' || path.startsWith('/product/');
+
+  return (
+    <div className="layout">
+      <header className="shop-header">
+        <div className="shop-header-inner">
+          <Link to="/" className="shop-logo">
+            <span className="shop-logo-mark">
+              <Store size={18} />
+            </span>
+            <span className="shop-logo-text">
+              <strong>KlikMarket</strong>
+            </span>
+          </Link>
+
+          <nav className="shop-nav" aria-label="Glavna navigacija">
+            <Link
+              to="/"
+              className={catalogActive ? 'shop-nav-link shop-nav-link-active' : 'shop-nav-link'}
             >
-              {tab === 'experiments' ? 'Experiment Console' :
-               tab === 'results' ? 'Results' :
-               tab === 'catalog' ? 'Catalog Explorer' : 'Live Status'}
+              Katalog
+            </Link>
+            <CartLink active={path === '/cart'} />
+            <Link
+              to="/admin"
+              className={
+                isAdmin ? 'shop-nav-link shop-nav-admin shop-nav-link-active' : 'shop-nav-link shop-nav-admin'
+              }
+            >
+              <LayoutDashboard size={16} /> Admin
+            </Link>
+            <button
+              type="button"
+              className="shop-nav-link theme-toggle-btn"
+              onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+              aria-label={theme === 'dark' ? 'Prebaci na svijetli režim' : 'Prebaci na tamni režim'}
+              title={theme === 'dark' ? 'Svijetli režim' : 'Tamni režim'}
+            >
+              <Sun size={16} />
+              <span className="small">Tema</span>
             </button>
-          ))}
-        </nav>
+          </nav>
+        </div>
       </header>
 
-      <main style={{ flex: 1, padding: '2rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', backgroundColor: '#1e293b', borderRadius: '8px', padding: '1.5rem', border: '1px solid #334155' }}>
-          <h2 style={{ fontSize: '1.1rem', marginBottom: '1rem', color: '#f1f5f9' }}>
-            {activeTab === 'experiments' && 'Run & Configure Experiments'}
-            {activeTab === 'results' && 'Comparative Analysis & Metrics'}
-            {activeTab === 'catalog' && 'Interactive Catalog & Dynamic Filtering'}
-            {activeTab === 'live' && 'Real-time Service Health & System Telemetry'}
-          </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.9rem' }}>
-            Benchmark platform operational. Full scenario suite ready.
-          </p>
+      <main className="app-main shop-main">
+        <div className="container">
+          <Suspense fallback={<RouteFallback />}>
+            {isAdmin ? (
+              <AdminPage />
+            ) : productId ? (
+              <ProductDetailPage id={productId} />
+            ) : path === '/cart' ? (
+              <CartPage />
+            ) : (
+              <ShopPage />
+            )}
+          </Suspense>
         </div>
       </main>
 
-      <footer style={{ padding: '1rem 2rem', borderTop: '1px solid #334155', textAlign: 'center', color: '#64748b', fontSize: '0.8rem' }}>
-        MongoDB 7.0 (Replica Set) | Redis 7.2 | PostgreSQL 16.2 | Spring Boot 3.4
+      <footer className="shop-footer">
+        <div className="shop-footer-inner">
+          <span>© {new Date().getFullYear()} KlikMarket</span>
+          <span>Kvalitetni proizvodi · Brza dostava · Povoljne cijene</span>
+        </div>
       </footer>
     </div>
   );

@@ -22,4 +22,6 @@ RUN apk add --no-cache curl bash docker-cli && \
 
 COPY --from=builder /build/experiment-runner/target/*.jar app.jar
 EXPOSE 8090
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms256m", "-Xmx512m", "-jar", "app.jar"]
+# The runner also spawns k6 as a child process, so its own JVM heap stays small and leaves the rest of
+# the container budget to the load generator.
+ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms128m", "-Xmx384m", "-XX:MaxMetaspaceSize=160m", "-jar", "app.jar"]

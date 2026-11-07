@@ -16,4 +16,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /build/nosql-blocking/target/*.jar app.jar
 EXPOSE 8081
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms512m", "-Xmx768m", "-jar", "app.jar"]
+# Same JVM flags in every service so the comparison stays fair. -Xms is kept small because a large
+# initial heap is committed immediately, and five such JVMs plus the databases exceed the Docker VM
+# RAM budget; ZGC keeps pause times low so latency percentiles are not distorted by GC.
+ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms128m", "-Xmx512m", "-XX:MaxMetaspaceSize=160m", "-jar", "app.jar"]

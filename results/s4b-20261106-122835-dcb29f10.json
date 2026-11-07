@@ -1,0 +1,513 @@
+{
+  "runId" : "dcb29f10-47b0-4331-aab2-ce3c1a061dd4",
+  "scenario" : "S4B",
+  "scenarioTitle" : "Index isolation (no join fanout)",
+  "script" : "/loadtests/s4b/isolated-index.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-11-06T12:21:32.305980217Z",
+  "finishedAt" : "2026-11-06T12:28:35.820969820Z",
+  "generatedAt" : "2026-11-06T12:28:35.825587650Z",
+  "configuration" : {
+    "datasetSize" : 5000,
+    "clients" : 20,
+    "durationSec" : 30,
+    "repetitions" : 3,
+    "warmupSec" : 10,
+    "targets" : [ "mongo-indexed", "mongo-unindexed", "postgres-indexed", "postgres-unindexed" ],
+    "targetDetails" : {
+      "mongo-indexed" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ "indexes=enabled" ]
+      },
+      "mongo-unindexed" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ "indexes=disabled" ]
+      },
+      "postgres-indexed" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "indexes=enabled" ]
+      },
+      "postgres-unindexed" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "indexes=disabled" ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "mongo-indexed",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4b/isolated-index.js",
+    "setup" : [ "indexes=enabled" ],
+    "explainPlans" : [ {
+      "query" : "Q1",
+      "scanType" : "INDEX",
+      "usedIndex" : true,
+      "stages" : [ "LIMIT", "FETCH", "IXSCAN", "SORT" ],
+      "plan" : "{\"explainVersion\": \"1\", \"queryPlanner\": {\"namespace\": \"benchmark.products\", \"indexFilterSet\": false, \"parsedQuery\": {\"category\": {\"$eq\": \"laptops\"}}, \"queryHash\": \"B274B0CB\", \"planCacheKey\": \"2A748E90\", \"optimizationTimeMillis\": 1, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"LIMIT\", \"limitAmount\": 20, \"inputStage\": {\"stage\": \"FETCH\", \"inputStage\": {\"stage\": \"IXSCAN\", \"keyPattern\": {\"category\": 1, \"price\": 1}, \"indexName\": \"category_1_price_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"category\": [], \"price\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"category\": [\"[\\\"laptops\\\", \\\"laptops\\\"]\"], \"price\": [\"[MinKey, MaxKey]\"]}}}}, \"rejectedPlans\": [{\"stage\": \"SORT\", \"sortPattern\": {\"price\": 1}, \"memLimit\": 104857600, \"limitAmount\": 20, \"type\": \"simple\", \"inputStage\": {\"stage\": \"FETCH\", \"inputStage\": {\"stage\": \"IXSCAN\", \"keyPattern\": {\"category\": 1, \"attributes.ramGb\": 1}, \"indexName\": \"category_1_attributes.ramGb_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"category\": [], \"attributes.ramGb\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"category\": [\"[\\\"laptops\\\", \\\"laptops\\\"]\"], \"attributes.ramGb\": [\"[MinKey, MaxKey]\"]}}}}]}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 20, \"executionTimeMillis\": 1, \"totalKeysExamined\": 20, \"totalDocsExamined\": 20, \"executionStages\": {\"stage\": \"LIMIT\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 21, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 1, \"limitAmount\": 20, \"inputStage\": {\"stage\": \"FETCH\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 0, \"docsExamined\": 20, \"alreadyHasObj\": 0, \"inputStage\": {\"stage\": \"IXSCAN\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 0, \"keyPattern\": {\"category\": 1, \"price\": 1}, \"indexName\": \"category_1_price_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"category\": [], \"price\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"category\": [\"[\\\"laptops\\\", \\\"laptops\\\"]\"], \"price\": [\"[MinKey, MaxKey]\"]}, \"keysExamined\": 20, \"seeks\": 1, \"dupsTested\": 0, \"dupsDropped\": 0}}}, \"allPlansExecution\": [{\"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"totalKeysExamined\": 20, \"totalDocsExamined\": 20, \"score\": 3.0002, \"executionStages\": {\"stage\": \"LIMIT\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 1, \"limitAmount\": 20, \"inputStage\": {\"stage\": \"FETCH\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 0, \"docsExamined\": 20, \"alreadyHasObj\": 0, \"inputStage\": {\"stage\": \"IXSCAN\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 0, \"restoreState\": 0, \"isEOF\": 0, \"keyPattern\": {\"category\": 1, \"price\": 1}, \"indexName\": \"category_1_price_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"category\": [], \"price\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"category\": [\"[\\\"laptops\\\", \\\"laptops\\\"]\"], \"price\": [\"[MinKey, MaxKey]\"]}, \"keysExamined\": 20, \"seeks\": 1, \"dupsTested\": 0, \"dupsDropped\": 0}}}}, {\"nReturned\": 0, \"executionTimeMillisEstimate\": 0, \"totalKeysExamined\": 20, \"totalDocsExamined\": 20, \"score\": 1.0001, \"executionStages\": {\"stage\": \"SORT\", \"nReturned\": 0, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 0, \"needTime\": 20, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 0, \"isEOF\": 0, \"sortPattern\": {\"price\": 1}, \"memLimit\": 104857600, \"limitAmount\": 20, \"type\": \"simple\", \"totalDataSizeSorted\": 0, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"inputStage\": {\"stage\": \"FETCH\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 0, \"isEOF\": 0, \"docsExamined\": 20, \"alreadyHasObj\": 0, \"inputStage\": {\"stage\": \"IXSCAN\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 20, \"advanced\": 20, \"needTime\": 0, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 0, \"isEOF\": 0, \"keyPattern\": {\"category\": 1, \"attributes.ramGb\": 1}, \"indexName\": \"category_1_attributes.ramGb_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"category\": [], \"attributes.ramGb\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"category\": [\"[\\\"laptops\\\", \\\"laptops\\\"]\"], \"attributes.ramGb\": [\"[MinKey, MaxKey]\"]}, \"keysExamined\": 20, \"seeks\": 1, \"dupsTested\": 0, \"dupsDropped\": 0}}}}]}, \"command\": {\"find\": \"products\", \"filter\": {\"category\": \"laptops\"}, \"sort\": {\"price\": 1}, \"limit\": 20, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}}",
+      "error" : null
+    }, {
+      "query" : "Q6",
+      "scanType" : "INDEX",
+      "usedIndex" : true,
+      "stages" : [ "PROJECTION_SIMPLE", "FETCH", "IXSCAN", "SORT" ],
+      "plan" : "{\"explainVersion\": \"1\", \"stages\": [{\"$cursor\": {\"queryPlanner\": {\"namespace\": \"benchmark.orders\", \"indexFilterSet\": false, \"parsedQuery\": {\"$and\": [{\"createdAt\": {\"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}, {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}}}]}, \"queryHash\": \"0BFCCC9F\", \"planCacheKey\": \"831CB16C\", \"optimizationTimeMillis\": 0, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"PROJECTION_SIMPLE\", \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"FETCH\", \"inputStage\": {\"stage\": \"IXSCAN\", \"keyPattern\": {\"createdAt\": 1}, \"indexName\": \"createdAt_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"createdAt\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"createdAt\": [\"[new Date(1704412800000), new Date(1704434400000)]\"]}}}}, \"rejectedPlans\": []}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 181, \"executionTimeMillis\": 1, \"totalKeysExamined\": 181, \"totalDocsExamined\": 181, \"executionStages\": {\"stage\": \"PROJECTION_SIMPLE\", \"nReturned\": 181, \"executionTimeMillisEstimate\": 0, \"works\": 182, \"advanced\": 181, \"needTime\": 0, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 1, \"isEOF\": 1, \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"FETCH\", \"nReturned\": 181, \"executionTimeMillisEstimate\": 0, \"works\": 182, \"advanced\": 181, \"needTime\": 0, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 1, \"isEOF\": 1, \"docsExamined\": 181, \"alreadyHasObj\": 0, \"inputStage\": {\"stage\": \"IXSCAN\", \"nReturned\": 181, \"executionTimeMillisEstimate\": 0, \"works\": 182, \"advanced\": 181, \"needTime\": 0, \"needYield\": 0, \"saveState\": 1, \"restoreState\": 1, \"isEOF\": 1, \"keyPattern\": {\"createdAt\": 1}, \"indexName\": \"createdAt_1\", \"isMultiKey\": false, \"multiKeyPaths\": {\"createdAt\": []}, \"isUnique\": false, \"isSparse\": false, \"isPartial\": false, \"indexVersion\": 2, \"direction\": \"forward\", \"indexBounds\": {\"createdAt\": [\"[new Date(1704412800000), new Date(1704434400000)]\"]}, \"keysExamined\": 181, \"seeks\": 1, \"dupsTested\": 0, \"dupsDropped\": 0}}}, \"allPlansExecution\": []}}, \"nReturned\": 181, \"executionTimeMillisEstimate\": 0}, {\"$unwind\": {\"path\": \"$items\"}, \"nReturned\": 457, \"executionTimeMillisEstimate\": 0}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderRevenue\": 17376, \"orderUnits\": 17376}, \"totalOutputDataSizeBytes\": 59549, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 181, \"executionTimeMillisEstimate\": 0}, {\"$group\": {\"_id\": {\"$const\": null}, \"orderCount\": {\"$sum\": {\"$const\": 1}}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderCount\": 96, \"totalRevenue\": 96, \"totalUnits\": 96}, \"totalOutputDataSizeBytes\": 309, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 1, \"executionTimeMillisEstimate\": 0}], \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"command\": {\"aggregate\": \"orders\", \"pipeline\": [{\"$match\": {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}, \"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}}, {\"$unwind\": \"$items\"}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}}, {\"$group\": {\"_id\": null, \"orderCount\": {\"$sum\": 1}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}}], \"cursor\": {}, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}}",
+      "error" : null
+    }, {
+      "query" : "Q7",
+      "scanType" : "COLLECTION_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "PROJECTION_SIMPLE", "COLLSCAN", "SORT" ],
+      "plan" : "{\"explainVersion\": \"1\", \"stages\": [{\"$cursor\": {\"queryPlanner\": {\"namespace\": \"benchmark.orders\", \"indexFilterSet\": false, \"parsedQuery\": {}, \"queryHash\": \"27BDF320\", \"planCacheKey\": \"27BDF320\", \"optimizationTimeMillis\": 0, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"PROJECTION_SIMPLE\", \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"direction\": \"forward\"}}, \"rejectedPlans\": []}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 10000, \"executionTimeMillis\": 35, \"totalKeysExamined\": 0, \"totalDocsExamined\": 10000, \"executionStages\": {\"stage\": \"PROJECTION_SIMPLE\", \"nReturned\": 10000, \"executionTimeMillisEstimate\": 0, \"works\": 10001, \"advanced\": 10000, \"needTime\": 0, \"needYield\": 0, \"saveState\": 12, \"restoreState\": 12, \"isEOF\": 1, \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"nReturned\": 10000, \"executionTimeMillisEstimate\": 0, \"works\": 10001, \"advanced\": 10000, \"needTime\": 0, \"needYield\": 0, \"saveState\": 12, \"restoreState\": 12, \"isEOF\": 1, \"direction\": \"forward\", \"docsExamined\": 10000}}, \"allPlansExecution\": []}}, \"nReturned\": 10000, \"executionTimeMillisEstimate\": 10}, {\"$unwind\": {\"path\": \"$items\"}, \"nReturned\": 25106, \"executionTimeMillisEstimate\": 12}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderRevenue\": 960000, \"orderUnits\": 960000}, \"totalOutputDataSizeBytes\": 3290000, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 10000, \"executionTimeMillisEstimate\": 30}, {\"$group\": {\"_id\": {\"$const\": null}, \"orderCount\": {\"$sum\": {\"$const\": 1}}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderCount\": 96, \"totalRevenue\": 96, \"totalUnits\": 96}, \"totalOutputDataSizeBytes\": 309, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 1, \"executionTimeMillisEstimate\": 30}], \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"command\": {\"aggregate\": \"orders\", \"pipeline\": [{\"$unwind\": \"$items\"}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}}, {\"$group\": {\"_id\": null, \"orderCount\": {\"$sum\": 1}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}}], \"cursor\": {}, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967708, \"i\": 35}}}",
+      "error" : null
+    } ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 518.2760724832715,
+      "latencyMean" : 4.854857620532551,
+      "latencyP50" : 3.099775,
+      "latencyP95" : 7.103128599999997,
+      "latencyP99" : 68.94861427999997,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.7998437500000001,
+      "memAvg" : 373.1283931732178,
+      "httpRequests" : 15585,
+      "iterations" : 5195,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:21:58.988510032Z",
+      "finishedAt" : "2026-11-06T12:22:29.297684781Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 546.3263797630364,
+      "latencyMean" : 2.830312580566693,
+      "latencyP50" : 2.691769,
+      "latencyP95" : 4.5491132499999996,
+      "latencyP99" : 6.092696999999992,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.34936677631578944,
+      "memAvg" : 421.3151845932007,
+      "httpRequests" : 16446,
+      "iterations" : 5482,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:22:29.312345868Z",
+      "finishedAt" : "2026-11-06T12:22:59.664356124Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 548.7129235121113,
+      "latencyMean" : 2.7625343794965262,
+      "latencyP50" : 2.61169,
+      "latencyP95" : 4.557979,
+      "latencyP99" : 5.938634999999999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.294375,
+      "memAvg" : 443.2961621284485,
+      "httpRequests" : 16485,
+      "iterations" : 5495,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:22:59.675159514Z",
+      "finishedAt" : "2026-11-06T12:23:29.967326012Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 537.771791919473,
+        "stdDev" : 16.925903373760505
+      },
+      "latencyMean" : {
+        "mean" : 3.482568193531923,
+        "stdDev" : 1.1889205922719817
+      },
+      "latencyP50" : {
+        "mean" : 2.801078,
+        "stdDev" : 0.26175959374395447
+      },
+      "latencyP95" : {
+        "mean" : 5.403406949999998,
+        "stdDev" : 1.4720088029593448
+      },
+      "latencyP99" : {
+        "mean" : 26.993315426666655,
+        "stdDev" : 36.33443628542137
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.4811951754385965,
+        "stdDev" : 0.27732419551510873
+      },
+      "memAvg" : {
+        "mean" : 412.579913298289,
+        "stdDev" : 35.890216960690566
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "mongo-unindexed",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4b/isolated-index.js",
+    "setup" : [ "indexes=disabled" ],
+    "explainPlans" : [ {
+      "query" : "Q1",
+      "scanType" : "COLLECTION_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "SORT", "COLLSCAN" ],
+      "plan" : "{\"explainVersion\": \"1\", \"queryPlanner\": {\"namespace\": \"benchmark.products\", \"indexFilterSet\": false, \"parsedQuery\": {\"category\": {\"$eq\": \"laptops\"}}, \"queryHash\": \"B274B0CB\", \"planCacheKey\": \"B274B0CB\", \"optimizationTimeMillis\": 0, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"SORT\", \"sortPattern\": {\"price\": 1}, \"memLimit\": 104857600, \"limitAmount\": 20, \"type\": \"simple\", \"inputStage\": {\"stage\": \"COLLSCAN\", \"filter\": {\"category\": {\"$eq\": \"laptops\"}}, \"direction\": \"forward\"}}, \"rejectedPlans\": []}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 20, \"executionTimeMillis\": 3, \"totalKeysExamined\": 0, \"totalDocsExamined\": 5000, \"executionStages\": {\"stage\": \"SORT\", \"nReturned\": 20, \"executionTimeMillisEstimate\": 0, \"works\": 5022, \"advanced\": 20, \"needTime\": 5001, \"needYield\": 0, \"saveState\": 5, \"restoreState\": 5, \"isEOF\": 1, \"sortPattern\": {\"price\": 1}, \"memLimit\": 104857600, \"limitAmount\": 20, \"type\": \"simple\", \"totalDataSizeSorted\": 28032, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"inputStage\": {\"stage\": \"COLLSCAN\", \"filter\": {\"category\": {\"$eq\": \"laptops\"}}, \"nReturned\": 746, \"executionTimeMillisEstimate\": 0, \"works\": 5001, \"advanced\": 746, \"needTime\": 4254, \"needYield\": 0, \"saveState\": 5, \"restoreState\": 5, \"isEOF\": 1, \"direction\": \"forward\", \"docsExamined\": 5000}}, \"allPlansExecution\": []}, \"command\": {\"find\": \"products\", \"filter\": {\"category\": \"laptops\"}, \"sort\": {\"price\": 1}, \"limit\": 20, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}}",
+      "error" : null
+    }, {
+      "query" : "Q6",
+      "scanType" : "COLLECTION_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "PROJECTION_SIMPLE", "COLLSCAN", "SORT" ],
+      "plan" : "{\"explainVersion\": \"1\", \"stages\": [{\"$cursor\": {\"queryPlanner\": {\"namespace\": \"benchmark.orders\", \"indexFilterSet\": false, \"parsedQuery\": {\"$and\": [{\"createdAt\": {\"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}, {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}}}]}, \"queryHash\": \"0BFCCC9F\", \"planCacheKey\": \"0BFCCC9F\", \"optimizationTimeMillis\": 0, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"PROJECTION_SIMPLE\", \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"filter\": {\"$and\": [{\"createdAt\": {\"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}, {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}}}]}, \"direction\": \"forward\"}}, \"rejectedPlans\": []}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 181, \"executionTimeMillis\": 8, \"totalKeysExamined\": 0, \"totalDocsExamined\": 10000, \"executionStages\": {\"stage\": \"PROJECTION_SIMPLE\", \"nReturned\": 181, \"executionTimeMillisEstimate\": 2, \"works\": 10001, \"advanced\": 181, \"needTime\": 9819, \"needYield\": 0, \"saveState\": 11, \"restoreState\": 11, \"isEOF\": 1, \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"filter\": {\"$and\": [{\"createdAt\": {\"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}, {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}}}]}, \"nReturned\": 181, \"executionTimeMillisEstimate\": 2, \"works\": 10001, \"advanced\": 181, \"needTime\": 9819, \"needYield\": 0, \"saveState\": 11, \"restoreState\": 11, \"isEOF\": 1, \"direction\": \"forward\", \"docsExamined\": 10000}}, \"allPlansExecution\": []}}, \"nReturned\": 181, \"executionTimeMillisEstimate\": 9}, {\"$unwind\": {\"path\": \"$items\"}, \"nReturned\": 457, \"executionTimeMillisEstimate\": 9}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderRevenue\": 17376, \"orderUnits\": 17376}, \"totalOutputDataSizeBytes\": 59549, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 181, \"executionTimeMillisEstimate\": 9}, {\"$group\": {\"_id\": {\"$const\": null}, \"orderCount\": {\"$sum\": {\"$const\": 1}}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderCount\": 96, \"totalRevenue\": 96, \"totalUnits\": 96}, \"totalOutputDataSizeBytes\": 309, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 1, \"executionTimeMillisEstimate\": 9}], \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"command\": {\"aggregate\": \"orders\", \"pipeline\": [{\"$match\": {\"createdAt\": {\"$gte\": {\"$date\": \"2024-01-05T00:00:00Z\"}, \"$lte\": {\"$date\": \"2024-01-05T06:00:00Z\"}}}}, {\"$unwind\": \"$items\"}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}}, {\"$group\": {\"_id\": null, \"orderCount\": {\"$sum\": 1}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}}], \"cursor\": {}, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}}",
+      "error" : null
+    }, {
+      "query" : "Q7",
+      "scanType" : "COLLECTION_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "PROJECTION_SIMPLE", "COLLSCAN", "SORT" ],
+      "plan" : "{\"explainVersion\": \"1\", \"stages\": [{\"$cursor\": {\"queryPlanner\": {\"namespace\": \"benchmark.orders\", \"indexFilterSet\": false, \"parsedQuery\": {}, \"queryHash\": \"27BDF320\", \"planCacheKey\": \"27BDF320\", \"optimizationTimeMillis\": 0, \"maxIndexedOrSolutionsReached\": false, \"maxIndexedAndSolutionsReached\": false, \"maxScansToExplodeReached\": false, \"winningPlan\": {\"stage\": \"PROJECTION_SIMPLE\", \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"direction\": \"forward\"}}, \"rejectedPlans\": []}, \"executionStats\": {\"executionSuccess\": true, \"nReturned\": 10000, \"executionTimeMillis\": 34, \"totalKeysExamined\": 0, \"totalDocsExamined\": 10000, \"executionStages\": {\"stage\": \"PROJECTION_SIMPLE\", \"nReturned\": 10000, \"executionTimeMillisEstimate\": 1, \"works\": 10001, \"advanced\": 10000, \"needTime\": 0, \"needYield\": 0, \"saveState\": 12, \"restoreState\": 12, \"isEOF\": 1, \"transformBy\": {\"_id\": 1, \"items\": 1}, \"inputStage\": {\"stage\": \"COLLSCAN\", \"nReturned\": 10000, \"executionTimeMillisEstimate\": 1, \"works\": 10001, \"advanced\": 10000, \"needTime\": 0, \"needYield\": 0, \"saveState\": 12, \"restoreState\": 12, \"isEOF\": 1, \"direction\": \"forward\", \"docsExamined\": 10000}}, \"allPlansExecution\": []}}, \"nReturned\": 10000, \"executionTimeMillisEstimate\": 8}, {\"$unwind\": {\"path\": \"$items\"}, \"nReturned\": 25106, \"executionTimeMillisEstimate\": 8}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderRevenue\": 960000, \"orderUnits\": 960000}, \"totalOutputDataSizeBytes\": 3290000, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 10000, \"executionTimeMillisEstimate\": 23}, {\"$group\": {\"_id\": {\"$const\": null}, \"orderCount\": {\"$sum\": {\"$const\": 1}}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}, \"maxAccumulatorMemoryUsageBytes\": {\"orderCount\": 96, \"totalRevenue\": 96, \"totalUnits\": 96}, \"totalOutputDataSizeBytes\": 309, \"usedDisk\": false, \"spills\": 0, \"spilledDataStorageSize\": 0, \"numBytesSpilledEstimate\": 0, \"spilledRecords\": 0, \"nReturned\": 1, \"executionTimeMillisEstimate\": 31}], \"serverInfo\": {\"host\": \"6da86447444c\", \"port\": 27017, \"version\": \"7.0.45\", \"gitVersion\": \"a52313e13ab55c9bddf7c3ff91dab286fa381796\"}, \"serverParameters\": {\"internalQueryFacetBufferSizeBytes\": 104857600, \"internalQueryFacetMaxOutputDocSizeBytes\": 104857600, \"internalLookupStageIntermediateDocumentMaxSizeBytes\": 104857600, \"internalDocumentSourceGroupMaxMemoryBytes\": 104857600, \"internalQueryMaxBlockingSortMemoryUsageBytes\": 104857600, \"internalQueryProhibitBlockingMergeOnMongoS\": 0, \"internalQueryMaxAddToSetBytes\": 104857600, \"internalDocumentSourceSetWindowFieldsMaxMemoryBytes\": 104857600, \"internalQueryFrameworkControl\": \"forceClassicEngine\"}, \"command\": {\"aggregate\": \"orders\", \"pipeline\": [{\"$unwind\": \"$items\"}, {\"$group\": {\"_id\": \"$_id\", \"orderRevenue\": {\"$sum\": {\"$multiply\": [\"$items.price\", \"$items.quantity\"]}}, \"orderUnits\": {\"$sum\": \"$items.quantity\"}}}, {\"$group\": {\"_id\": null, \"orderCount\": {\"$sum\": 1}, \"totalRevenue\": {\"$sum\": \"$orderRevenue\"}, \"totalUnits\": {\"$sum\": \"$orderUnits\"}}}], \"cursor\": {}, \"maxTimeMS\": 0, \"$db\": \"benchmark\"}, \"ok\": 1.0, \"$clusterTime\": {\"clusterTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}, \"signature\": {\"hash\": {\"$binary\": {\"base64\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAA=\", \"subType\": \"00\"}}, \"keyId\": 0}}, \"operationTime\": {\"$timestamp\": {\"t\": 1793967810, \"i\": 4}}}",
+      "error" : null
+    } ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 382.87708445632205,
+      "latencyMean" : 18.464704141422143,
+      "latencyP50" : 6.429388,
+      "latencyP95" : 88.95684869999995,
+      "latencyP99" : 94.45090411999995,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.21968749999999998,
+      "memAvg" : 442.1499605178833,
+      "httpRequests" : 11547,
+      "iterations" : 3849,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:23:40.441202918Z",
+      "finishedAt" : "2026-11-06T12:24:10.835820023Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 378.60545327463933,
+      "latencyMean" : 19.048974587889866,
+      "latencyP50" : 6.334515,
+      "latencyP95" : 90.753005,
+      "latencyP99" : 95.92167644999999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.21146381578947368,
+      "memAvg" : 363.34644174575806,
+      "httpRequests" : 11412,
+      "iterations" : 3804,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:24:10.847031361Z",
+      "finishedAt" : "2026-11-06T12:24:41.244439091Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 372.8644961250945,
+      "latencyMean" : 19.87800164175131,
+      "latencyP50" : 6.373077,
+      "latencyP95" : 91.45758104999999,
+      "latencyP99" : 96.38210682999993,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.20421875,
+      "memAvg" : 377.59612798690796,
+      "httpRequests" : 11238,
+      "iterations" : 3746,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:24:41.256315473Z",
+      "finishedAt" : "2026-11-06T12:25:11.632885256Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 378.11567795201864,
+        "stdDev" : 5.024230406006948
+      },
+      "latencyMean" : {
+        "mean" : 19.130560123687772,
+        "stdDev" : 0.71017223674806
+      },
+      "latencyP50" : {
+        "mean" : 6.378993333333334,
+        "stdDev" : 0.047712407006284666
+      },
+      "latencyP95" : {
+        "mean" : 90.38914491666664,
+        "stdDev" : 1.2894615898764459
+      },
+      "latencyP99" : {
+        "mean" : 95.58489579999996,
+        "stdDev" : 1.008688198324265
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.21179002192982455,
+        "stdDev" : 0.0077395325747183705
+      },
+      "memAvg" : {
+        "mean" : 394.3641767501831,
+        "stdDev" : 41.992549782227485
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "postgres-indexed",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4b/isolated-index.js",
+    "setup" : [ "indexes=enabled" ],
+    "explainPlans" : [ {
+      "query" : "Q1",
+      "scanType" : "INDEX",
+      "usedIndex" : true,
+      "stages" : [ "BITMAP_INDEX_SCAN", "INDEX_SCAN", "BITMAP_HEAP_SCAN", "SEQ_SCAN", "NESTED_LOOP", "SORT" ],
+      "plan" : "Limit  (cost=164.20..164.25 rows=20 width=69) (actual time=0.457..0.460 rows=20 loops=1)\n  Buffers: shared hit=100\n  ->  Sort  (cost=164.20..166.70 rows=1000 width=69) (actual time=0.456..0.458 rows=20 loops=1)\n        Sort Key: p.price\n        Sort Method: top-N heapsort  Memory: 29kB\n        Buffers: shared hit=100\n        ->  Nested Loop  (cost=16.03..137.59 rows=1000 width=69) (actual time=0.056..0.332 rows=746 loops=1)\n              Buffers: shared hit=100\n              ->  Seq Scan on category c  (cost=0.00..1.06 rows=1 width=12) (actual time=0.005..0.006 rows=1 loops=1)\n                    Filter: ((name)::text = 'laptops'::text)\n                    Rows Removed by Filter: 4\n                    Buffers: shared hit=1\n              ->  Bitmap Heap Scan on product p  (cost=16.03..126.53 rows=1000 width=81) (actual time=0.049..0.233 rows=746 loops=1)\n                    Recheck Cond: ((category_id)::text = (c.id)::text)\n                    Heap Blocks: exact=97\n                    Buffers: shared hit=99\n                    ->  Bitmap Index Scan on idx_product_cat  (cost=0.00..15.78 rows=1000 width=0) (actual time=0.038..0.038 rows=746 loops=1)\n                          Index Cond: ((category_id)::text = (c.id)::text)\n                          Buffers: shared hit=2\nPlanning:\n  Buffers: shared hit=138\nPlanning Time: 1.244 ms\nExecution Time: 0.511 ms",
+      "error" : null
+    }, {
+      "query" : "Q6",
+      "scanType" : "INDEX",
+      "usedIndex" : true,
+      "stages" : [ "INDEX_SCAN", "SEQ_SCAN", "HASH_JOIN", "AGGREGATE", "SORT" ],
+      "plan" : "Aggregate  (cost=911.01..911.02 rows=1 width=48) (actual time=4.248..4.249 rows=1 loops=1)\n  Buffers: shared hit=557\n  ->  Sort  (cost=904.20..905.34 rows=454 width=47) (actual time=4.121..4.138 rows=457 loops=1)\n        Sort Key: o.id\n        Sort Method: quicksort  Memory: 57kB\n        Buffers: shared hit=557\n        ->  Hash Join  (cost=16.17..884.16 rows=454 width=47) (actual time=1.129..3.883 rows=457 loops=1)\n              Hash Cond: ((oi.order_id)::text = (o.id)::text)\n              Buffers: shared hit=557\n              ->  Seq Scan on order_item oi  (cost=0.00..802.06 rows=25106 width=47) (actual time=0.004..1.572 rows=25106 loops=1)\n                    Buffers: shared hit=551\n              ->  Hash  (cost=13.91..13.91 rows=181 width=37) (actual time=0.084..0.084 rows=181 loops=1)\n                    Buckets: 1024  Batches: 1  Memory Usage: 21kB\n                    Buffers: shared hit=6\n                    ->  Index Scan using idx_exp_order_created on orders o  (cost=0.29..13.91 rows=181 width=37) (actual time=0.023..0.047 rows=181 loops=1)\n                          Index Cond: ((created_at >= '2024-01-05 00:00:00+00'::timestamp with time zone) AND (created_at <= '2024-01-05 06:00:00+00'::timestamp with time zone))\n                          Buffers: shared hit=6\nPlanning:\n  Buffers: shared hit=83\nPlanning Time: 1.176 ms\nExecution Time: 4.325 ms",
+      "error" : null
+    }, {
+      "query" : "Q7",
+      "scanType" : "SEQUENTIAL_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "SEQ_SCAN", "HASH_JOIN", "AGGREGATE", "SORT" ],
+      "plan" : "Aggregate  (cost=3428.30..3428.31 rows=1 width=48) (actual time=39.198..39.202 rows=1 loops=1)\n  Buffers: shared hit=675\n  ->  Sort  (cost=3051.71..3114.48 rows=25106 width=47) (actual time=30.707..32.625 rows=25106 loops=1)\n        Sort Key: o.id\n        Sort Method: quicksort  Memory: 2534kB\n        Buffers: shared hit=675\n        ->  Hash Join  (cost=349.00..1217.00 rows=25106 width=47) (actual time=2.418..9.953 rows=25106 loops=1)\n              Hash Cond: ((oi.order_id)::text = (o.id)::text)\n              Buffers: shared hit=675\n              ->  Seq Scan on order_item oi  (cost=0.00..802.06 rows=25106 width=47) (actual time=0.005..1.446 rows=25106 loops=1)\n                    Buffers: shared hit=551\n              ->  Hash  (cost=224.00..224.00 rows=10000 width=37) (actual time=2.330..2.331 rows=10000 loops=1)\n                    Buckets: 16384  Batches: 1  Memory Usage: 802kB\n                    Buffers: shared hit=124\n                    ->  Seq Scan on orders o  (cost=0.00..224.00 rows=10000 width=37) (actual time=0.004..0.742 rows=10000 loops=1)\n                          Buffers: shared hit=124\nPlanning:\n  Buffers: shared hit=12\nPlanning Time: 0.318 ms\nExecution Time: 39.780 ms",
+      "error" : null
+    } ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 107.91582699345746,
+      "latencyMean" : 150.45493586006734,
+      "latencyP50" : 82.317425,
+      "latencyP95" : 492.1941541999999,
+      "latencyP99" : 596.6351993999999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.9874212875939851,
+      "memAvg" : 423.8664927482605,
+      "httpRequests" : 3273,
+      "iterations" : 1091,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:25:22.491578709Z",
+      "finishedAt" : "2026-11-06T12:25:53.059834445Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 134.33310804624648,
+      "latencyMean" : 114.47505480147606,
+      "latencyP50" : 77.379272,
+      "latencyP95" : 378.6852305999999,
+      "latencyP99" : 398.19519668,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.9839955357142857,
+      "memAvg" : 447.3268418312073,
+      "httpRequests" : 4065,
+      "iterations" : 1355,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:25:53.072364297Z",
+      "finishedAt" : "2026-11-06T12:26:23.566513960Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 180.61084114323273,
+      "latencyMean" : 76.48399668992658,
+      "latencyP50" : 12.855826,
+      "latencyP95" : 207.58997505,
+      "latencyP99" : 291.40766213,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.9890252976190476,
+      "memAvg" : 418.91673946380615,
+      "httpRequests" : 5460,
+      "iterations" : 1820,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:26:23.579538242Z",
+      "finishedAt" : "2026-11-06T12:26:54.052608559Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 140.95325872764556,
+        "stdDev" : 36.79688936367214
+      },
+      "latencyMean" : {
+        "mean" : 113.80466245049,
+        "stdDev" : 36.99002608618114
+      },
+      "latencyP50" : {
+        "mean" : 57.51750766666667,
+        "stdDev" : 38.7568793343047
+      },
+      "latencyP95" : {
+        "mean" : 359.4897866166666,
+        "stdDev" : 143.26979269790013
+      },
+      "latencyP99" : {
+        "mean" : 428.7460194033333,
+        "stdDev" : 154.89020935417997
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.9868140403091061,
+        "stdDev" : 0.0025692777493671578
+      },
+      "memAvg" : {
+        "mean" : 430.036691347758,
+        "stdDev" : 15.17685712522468
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "postgres-unindexed",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4b/isolated-index.js",
+    "setup" : [ "indexes=disabled" ],
+    "explainPlans" : [ {
+      "query" : "Q1",
+      "scanType" : "SEQUENTIAL_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "SEQ_SCAN", "HASH_JOIN", "SORT" ],
+      "plan" : "Limit  (cost=199.93..199.98 rows=20 width=69) (actual time=0.944..0.948 rows=20 loops=1)\n  Buffers: shared hit=99\n  ->  Sort  (cost=199.93..202.43 rows=1000 width=69) (actual time=0.943..0.945 rows=20 loops=1)\n        Sort Key: p.price\n        Sort Method: top-N heapsort  Memory: 29kB\n        Buffers: shared hit=99\n        ->  Hash Join  (cost=1.07..173.32 rows=1000 width=69) (actual time=0.036..0.819 rows=746 loops=1)\n              Hash Cond: ((p.category_id)::text = (c.id)::text)\n              Buffers: shared hit=99\n              ->  Seq Scan on product p  (cost=0.00..148.00 rows=5000 width=81) (actual time=0.005..0.283 rows=5000 loops=1)\n                    Buffers: shared hit=98\n              ->  Hash  (cost=1.06..1.06 rows=1 width=12) (actual time=0.014..0.015 rows=1 loops=1)\n                    Buckets: 1024  Batches: 1  Memory Usage: 9kB\n                    Buffers: shared hit=1\n                    ->  Seq Scan on category c  (cost=0.00..1.06 rows=1 width=12) (actual time=0.006..0.007 rows=1 loops=1)\n                          Filter: ((name)::text = 'laptops'::text)\n                          Rows Removed by Filter: 4\n                          Buffers: shared hit=1\nPlanning:\n  Buffers: shared hit=12 dirtied=1\nPlanning Time: 0.322 ms\nExecution Time: 1.002 ms",
+      "error" : null
+    }, {
+      "query" : "Q6",
+      "scanType" : "SEQUENTIAL_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "SEQ_SCAN", "HASH_JOIN", "AGGREGATE", "SORT" ],
+      "plan" : "Aggregate  (cost=1171.11..1171.12 rows=1 width=48) (actual time=4.638..4.640 rows=1 loops=1)\n  Buffers: shared hit=675\n  ->  Sort  (cost=1164.30..1165.43 rows=454 width=47) (actual time=4.495..4.521 rows=457 loops=1)\n        Sort Key: o.id\n        Sort Method: quicksort  Memory: 57kB\n        Buffers: shared hit=675\n        ->  Hash Join  (cost=276.26..1144.26 rows=454 width=47) (actual time=1.724..4.259 rows=457 loops=1)\n              Hash Cond: ((oi.order_id)::text = (o.id)::text)\n              Buffers: shared hit=675\n              ->  Seq Scan on order_item oi  (cost=0.00..802.06 rows=25106 width=47) (actual time=0.004..1.326 rows=25106 loops=1)\n                    Buffers: shared hit=551\n              ->  Hash  (cost=274.00..274.00 rows=181 width=37) (actual time=0.724..0.724 rows=181 loops=1)\n                    Buckets: 1024  Batches: 1  Memory Usage: 21kB\n                    Buffers: shared hit=124\n                    ->  Seq Scan on orders o  (cost=0.00..274.00 rows=181 width=37) (actual time=0.231..0.682 rows=181 loops=1)\n                          Filter: ((created_at >= '2024-01-05 00:00:00+00'::timestamp with time zone) AND (created_at <= '2024-01-05 06:00:00+00'::timestamp with time zone))\n                          Rows Removed by Filter: 9819\n                          Buffers: shared hit=124\nPlanning:\n  Buffers: shared hit=27\nPlanning Time: 0.558 ms\nExecution Time: 4.700 ms",
+      "error" : null
+    }, {
+      "query" : "Q7",
+      "scanType" : "SEQUENTIAL_SCAN",
+      "usedIndex" : false,
+      "stages" : [ "SEQ_SCAN", "HASH_JOIN", "AGGREGATE", "SORT" ],
+      "plan" : "Aggregate  (cost=3428.30..3428.31 rows=1 width=48) (actual time=40.311..40.315 rows=1 loops=1)\n  Buffers: shared hit=675\n  ->  Sort  (cost=3051.71..3114.48 rows=25106 width=47) (actual time=32.249..34.188 rows=25106 loops=1)\n        Sort Key: o.id\n        Sort Method: quicksort  Memory: 2534kB\n        Buffers: shared hit=675\n        ->  Hash Join  (cost=349.00..1217.00 rows=25106 width=47) (actual time=2.320..10.206 rows=25106 loops=1)\n              Hash Cond: ((oi.order_id)::text = (o.id)::text)\n              Buffers: shared hit=675\n              ->  Seq Scan on order_item oi  (cost=0.00..802.06 rows=25106 width=47) (actual time=0.004..1.565 rows=25106 loops=1)\n                    Buffers: shared hit=551\n              ->  Hash  (cost=224.00..224.00 rows=10000 width=37) (actual time=2.240..2.241 rows=10000 loops=1)\n                    Buckets: 16384  Batches: 1  Memory Usage: 802kB\n                    Buffers: shared hit=124\n                    ->  Seq Scan on orders o  (cost=0.00..224.00 rows=10000 width=37) (actual time=0.003..0.634 rows=10000 loops=1)\n                          Buffers: shared hit=124\nPlanning:\n  Buffers: shared hit=24\nPlanning Time: 0.623 ms\nExecution Time: 40.894 ms",
+      "error" : null
+    } ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 259.70404011213265,
+      "latencyMean" : 43.08535640043467,
+      "latencyP50" : 7.437313,
+      "latencyP95" : 108.92315325,
+      "latencyP99" : 175.5078565199999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.975,
+      "memAvg" : 397.63160610198975,
+      "httpRequests" : 7824,
+      "iterations" : 2608,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:27:04.666148170Z",
+      "finishedAt" : "2026-11-06T12:27:35.035438007Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 290.76076808883624,
+      "latencyMean" : 34.95415029463471,
+      "latencyP50" : 4.336569,
+      "latencyP95" : 100.1410797,
+      "latencyP99" : 166.7362416999999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.7006332236842105,
+      "memAvg" : 459.23236560821533,
+      "httpRequests" : 8760,
+      "iterations" : 2920,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:27:35.046668124Z",
+      "finishedAt" : "2026-11-06T12:28:05.404665361Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 294.08907500846595,
+      "latencyMean" : 34.19068935182048,
+      "latencyP50" : 4.156401,
+      "latencyP95" : 98.529027,
+      "latencyP99" : 114.13652839999975,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.6948930921052633,
+      "memAvg" : 469.61047744750977,
+      "httpRequests" : 8871,
+      "iterations" : 2957,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-06T12:28:05.416538787Z",
+      "finishedAt" : "2026-11-06T12:28:35.815624970Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 281.51796106981163,
+        "stdDev" : 18.964566100987206
+      },
+      "latencyMean" : {
+        "mean" : 37.410065348963286,
+        "stdDev" : 4.9297479187057895
+      },
+      "latencyP50" : {
+        "mean" : 5.310094333333333,
+        "stdDev" : 1.8444266233486581
+      },
+      "latencyP95" : {
+        "mean" : 102.53108665,
+        "stdDev" : 5.594065162386024
+      },
+      "latencyP99" : {
+        "mean" : 152.12687553999987,
+        "stdDev" : 33.191642976823196
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.7901754385964913,
+        "stdDev" : 0.1600884947494211
+      },
+      "memAvg" : {
+        "mean" : 442.1581497192383,
+        "stdDev" : 38.90868946920826
+      }
+    },
+    "error" : null
+  } ]
+}

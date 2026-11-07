@@ -48,6 +48,17 @@ public final class ReportDtos {
         private List<TopProductResponse> topProducts = new ArrayList<>();
     }
 
+    /** Lightweight date-range totals (no product/category join) used to isolate index impact in S4B. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class OrderTotalsResponse {
+        private Long orderCount;
+        private Double totalRevenue;
+        private Long totalUnits;
+    }
+
     @Data
     @Builder
     @NoArgsConstructor

@@ -49,6 +49,10 @@ management:
 app:
   cache:
     enabled: ${APP_CACHE_ENABLED:false}
+    ttl-seconds: ${APP_CACHE_TTL_SECONDS:300}
+  cart:
+    ttl-seconds: ${APP_CART_TTL_SECONDS:1800}
+    cleanup-interval-ms: ${APP_CART_CLEANUP_INTERVAL_MS:60000}
   relational:
     variant: ${APP_RELATIONAL_VARIANT:normalized}
   indexes:

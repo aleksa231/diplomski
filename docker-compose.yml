@@ -3,7 +3,7 @@ services:
   mongo1:
     image: mongo:7.0
     container_name: mongo1
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--wiredTigerCacheSizeGB", "0.25"]
     ports:
       - "27017:27017"
     deploy:
@@ -20,7 +20,7 @@ services:
   mongo2:
     image: mongo:7.0
     container_name: mongo2
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--wiredTigerCacheSizeGB", "0.25"]
     ports:
       - "27018:27017"
     deploy:
@@ -37,7 +37,7 @@ services:
   mongo3:
     image: mongo:7.0
     container_name: mongo3
-    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--wiredTigerCacheSizeGB", "0.25"]
     ports:
       - "27019:27017"
     deploy:
@@ -76,7 +76,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 2048M
+          memory: 512M
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 3s
@@ -97,7 +97,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 2048M
+          memory: 1024M
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U benchmark -d benchmark"]
       interval: 3s
@@ -139,7 +139,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 1024M
+          memory: 1280M
     depends_on:
       mongo-init:
         condition: service_completed_successfully
@@ -169,7 +169,7 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 1024M
+          memory: 1280M
     depends_on:
       mongo-init:
         condition: service_completed_successfully
@@ -201,7 +201,78 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 1024M
+          memory: 1280M
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      stub-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  # ================= Variant backends for the comparison scenarios =================
+  # A variant that is fixed at startup (Mongo write concern, relational storage model) cannot be
+  # toggled at runtime like the S4 indexes, so each variant gets its own process with the exact same
+  # image and the exact same CPU/memory limits. Any difference in the numbers then comes from the
+  # variant alone, which is what the benchmark must prove (spec section 10.1).
+  nosql-blocking-w1:
+    build:
+      context: .
+      dockerfile: nosql-blocking/Dockerfile
+    container_name: nosql-blocking-w1
+    environment:
+      SPRING_APPLICATION_NAME: nosql-blocking-w1
+      APP_MONGO_WRITE_CONCERN: w1
+      SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      STUB_SERVICE_URL: "http://stub-service:8099"
+    ports:
+      - "8086:8081"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1280M
+    depends_on:
+      mongo-init:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      stub-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health | grep UP || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 15
+
+  relational-jsonb:
+    build:
+      context: .
+      dockerfile: relational/Dockerfile
+    container_name: relational-jsonb
+    environment:
+      SPRING_APPLICATION_NAME: relational-jsonb
+      APP_RELATIONAL_VARIANT: jsonb
+      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/benchmark"
+      SPRING_DATASOURCE_USERNAME: benchmark
+      SPRING_DATASOURCE_PASSWORD: benchmark
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      STUB_SERVICE_URL: "http://stub-service:8099"
+    ports:
+      - "8087:8083"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1280M
     depends_on:
       postgres:
         condition: service_healthy
@@ -231,7 +302,10 @@ services:
       resources:
         limits:
           cpus: '2.0'
-          memory: 1024M
+          # k6 runs inside this container and needs memory per VU, but the Docker VM only has ~10G
+          # in total, so this cannot be raised much further. An OOM here means the VU count exceeds
+          # what this machine can generate - not that the backend under test failed.
+          memory: 4096M
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./results:/results
@@ -288,6 +362,10 @@ services:
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
       - "--storage.tsdb.retention.time=2h"
+    deploy:
+      resources:
+        limits:
+          memory: 512M
 
   grafana:
     image: grafana/grafana:11.1.0
@@ -299,6 +377,10 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
     volumes:
       - ./infra/grafana/provisioning:/etc/grafana/provisioning
+    deploy:
+      resources:
+        limits:
+          memory: 512M
     depends_on:
       - prometheus
 
@@ -345,3 +427,7 @@ services:
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk/:/dev/disk:ro
     privileged: true
+    deploy:
+      resources:
+        limits:
+          memory: 256M

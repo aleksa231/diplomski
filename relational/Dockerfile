@@ -16,4 +16,5 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /build/relational/target/*.jar app.jar
 EXPOSE 8083
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms512m", "-Xmx768m", "-jar", "app.jar"]
+# Identical JVM flags to the other services (fair comparison) - see nosql-blocking/Dockerfile.
+ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms128m", "-Xmx512m", "-XX:MaxMetaspaceSize=160m", "-jar", "app.jar"]

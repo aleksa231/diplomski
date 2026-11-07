@@ -32,13 +32,16 @@ management:
 app:
   cache:
     enabled: ${APP_CACHE_ENABLED:true}
+    ttl-seconds: ${APP_CACHE_TTL_SECONDS:300}
   cart:
     store: ${APP_CART_STORE:redis}
+    ttl-seconds: ${APP_CART_TTL_SECONDS:1800}
   orders:
     transactions: ${APP_ORDERS_TRANSACTIONS:true}
   mongo:
     write-concern: ${APP_MONGO_WRITE_CONCERN:majority}
     read-preference: ${APP_MONGO_READ_PREFERENCE:primary}
+    server-selection-timeout-ms: ${APP_MONGO_SERVER_SELECTION_TIMEOUT_MS:5000}
   indexes:
     enabled: ${APP_INDEXES_ENABLED:true}
   stub-service:

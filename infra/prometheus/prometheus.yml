@@ -15,6 +15,12 @@ scrape_configs:
       - targets: ['relational:8083']
         labels:
           application: 'relational'
+      - targets: ['nosql-blocking-w1:8081']
+        labels:
+          application: 'nosql-blocking-w1'
+      - targets: ['relational-jsonb:8083']
+        labels:
+          application: 'relational-jsonb'
       - targets: ['stub-service:8099']
         labels:
           application: 'stub-service'

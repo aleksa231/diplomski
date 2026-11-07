@@ -1,0 +1,223 @@
+{
+  "runId" : "6bd3a512-109d-4fdf-8d5e-2e2ef913124e",
+  "scenario" : "S7",
+  "scenarioTitle" : "Where the relational model wins",
+  "script" : "/loadtests/s7/monthly-summary.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-10-29T15:54:49.578116439Z",
+  "finishedAt" : "2026-10-29T16:01:52.584721566Z",
+  "generatedAt" : "2026-10-29T16:01:52.585641656Z",
+  "configuration" : {
+    "datasetSize" : 5000,
+    "clients" : 20,
+    "durationSec" : 30,
+    "repetitions" : 3,
+    "warmupSec" : 30,
+    "targets" : [ "nosql-blocking", "relational" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      },
+      "relational" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s7/monthly-summary.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 0.0,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.025565528701576835,
+      "memAvg" : 316.58360881190146,
+      "httpRequests" : 0,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T15:55:50.015979649Z",
+      "finishedAt" : "2026-10-29T15:56:50.357433150Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 0.0,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.027869068821642966,
+      "memAvg" : 311.7573953443958,
+      "httpRequests" : 0,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T15:56:50.371042944Z",
+      "finishedAt" : "2026-10-29T15:57:50.700112935Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 0.0,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.02827540863544058,
+      "memAvg" : 307.85550468198716,
+      "httpRequests" : 0,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T15:57:50.714299947Z",
+      "finishedAt" : "2026-10-29T15:58:51.032350161Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyMean" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.02723666871955346,
+        "stdDev" : 0.0014614409775394477
+      },
+      "memAvg" : {
+        "mean" : 312.0655029460948,
+        "stdDev" : 4.372201750414235
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "relational",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s7/monthly-summary.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 2.327242839147176,
+      "latencyMean" : 7552.005109644229,
+      "latencyP50" : 4278.4696,
+      "latencyP95" : 17147.22990825,
+      "latencyP99" : 23624.85623372,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03699925298113142,
+      "memAvg" : 433.87474026887315,
+      "httpRequests" : 104,
+      "iterations" : 36,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T15:59:33.460620698Z",
+      "finishedAt" : "2026-10-29T16:00:18.459753003Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 2.5123103069679886,
+      "latencyMean" : 7215.595127775863,
+      "latencyP50" : 3987.63263,
+      "latencyP95" : 17980.7680135,
+      "latencyP99" : 20882.797158049994,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03183156759104901,
+      "memAvg" : 389.7799793879191,
+      "httpRequests" : 116,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T16:00:18.470527800Z",
+      "finishedAt" : "2026-10-29T16:01:04.980624201Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 2.4539856857827727,
+      "latencyMean" : 7379.508923258615,
+      "latencyP50" : 4981.7541855,
+      "latencyP95" : 17244.4355215,
+      "latencyP99" : 20464.132139099987,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03497266081871345,
+      "memAvg" : 389.7965475463867,
+      "httpRequests" : 116,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-29T16:01:04.992432576Z",
+      "finishedAt" : "2026-10-29T16:01:52.574186886Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 2.4311796106326455,
+        "stdDev" : 0.09461807284666514
+      },
+      "latencyMean" : {
+        "mean" : 7382.3697202262365,
+        "stdDev" : 168.22323589396348
+      },
+      "latencyP50" : {
+        "mean" : 4415.9521385,
+        "stdDev" : 511.1218084485711
+      },
+      "latencyP95" : {
+        "mean" : 17457.477814416667,
+        "stdDev" : 455.7814247578919
+      },
+      "latencyP99" : {
+        "mean" : 21657.261843623328,
+        "stdDev" : 1716.7966864128152
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.03460116046363129,
+        "stdDev" : 0.002603795778875029
+      },
+      "memAvg" : {
+        "mean" : 404.483755734393,
+        "stdDev" : 25.453340597169316
+      }
+    },
+    "error" : null
+  } ]
+}

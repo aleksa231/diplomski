@@ -304,6 +304,25 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
 
   /api/orders:
+    get:
+      summary: List orders (newest first), paginated
+      parameters:
+        - name: page
+          in: query
+          schema: { type: integer, default: 0 }
+        - name: size
+          in: query
+          schema: { type: integer, default: 20 }
+        - name: q
+          in: query
+          schema: { type: string }
+      responses:
+        '200':
+          description: Order page
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PageOrderResponse'
     post:
       summary: Create an order from cart, decrements stock atomically
       requestBody:
@@ -716,6 +735,10 @@ components:
           type: string
         customerRef:
           type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
 
     OrderItemDto:
       type: object
@@ -746,6 +769,10 @@ components:
           type: string
         customerRef:
           type: string
+        customerName:
+          type: string
+        customerEmail:
+          type: string
         items:
           type: array
           items:
@@ -762,6 +789,23 @@ components:
         createdAt:
           type: string
           format: date-time
+
+    PageOrderResponse:
+      type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderResponse'
+        page:
+          type: integer
+        size:
+          type: integer
+        totalElements:
+          type: integer
+          format: int64
+        totalPages:
+          type: integer
 
     OrderStatusUpdateRequest:
       type: object

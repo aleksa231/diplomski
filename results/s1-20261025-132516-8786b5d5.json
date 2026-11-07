@@ -1,0 +1,80 @@
+{
+  "runId" : "8786b5d5-747a-4701-9f41-0a0094d398ae",
+  "scenario" : "S1",
+  "scenarioTitle" : "Schema flexibility and the document model",
+  "script" : "/loadtests/s1/catalog-read.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-10-25T13:25:09.759328415Z",
+  "finishedAt" : "2026-10-25T13:25:16.073153122Z",
+  "generatedAt" : "2026-10-25T13:25:16.076740585Z",
+  "configuration" : {
+    "datasetSize" : 200,
+    "clients" : 5,
+    "durationSec" : 5,
+    "repetitions" : 1,
+    "warmupSec" : 0,
+    "targets" : [ "nosql-blocking" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s1/catalog-read.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 0.0,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 0.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 0,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-25T13:25:09.788314258Z",
+      "finishedAt" : "2026-10-25T13:25:15.932154215Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyMean" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  } ]
+}

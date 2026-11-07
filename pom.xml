@@ -35,6 +35,15 @@
         <micrometer.version>1.14.3</micrometer.version>
         <flyway.version>10.22.0</flyway.version>
         <postgresql.version>42.7.5</postgresql.version>
+
+        <!--
+          docker-java (used by Testcontainers) defaults to a Docker API version that Docker
+          Engine 25+ rejects with HTTP 400 ("client version is too old"), which makes every
+          integration test fail with "Could not find a valid Docker environment". 1.40 is the
+          lowest version accepted by current engines and still accepted by older ones, so it
+          works across the whole range. Override with -Ddocker.api.version=... if needed.
+        -->
+        <docker.api.version>1.40</docker.api.version>
     </properties>
 
     <dependencyManagement>
@@ -117,6 +126,7 @@
                     <configuration>
                         <source>21</source>
                         <target>21</target>
+                        <parameters>true</parameters>
                         <annotationProcessorPaths>
                             <path>
                                 <groupId>org.projectlombok</groupId>
@@ -130,6 +140,22 @@
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <version>${spring-boot.version}</version>
+                    <!--
+                      This project imports spring-boot-dependencies rather than inheriting
+                      spring-boot-starter-parent, so the repackage execution is not bound for us.
+                      Without it every module produces a plain library jar and the containers fail
+                      with "no main manifest attribute". Declaring it here fixes all Spring Boot
+                      modules at once; `common` does not use the plugin, so its plain jar (and its
+                      test-jar) stay untouched.
+                    -->
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -137,6 +163,14 @@
                     <version>3.5.2</version>
                     <configuration>
                         <excludedGroups>slow</excludedGroups>
+                        <!--
+                          Handed to the forked test JVM: Testcontainers/docker-java negotiate the
+                          Docker API version from this property. Without it, integration tests
+                          cannot talk to Docker Engine 25+ on any platform.
+                        -->
+                        <systemPropertyVariables>
+                            <api.version>${docker.api.version}</api.version>
+                        </systemPropertyVariables>
                     </configuration>
                 </plugin>
             </plugins>

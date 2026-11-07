@@ -1,0 +1,401 @@
+{
+  "runId" : "dcc927fa-0510-4f2f-9b27-eba41dc80891",
+  "scenario" : "S4",
+  "scenarioTitle" : "Indexing and aggregations",
+  "script" : "/loadtests/s4/aggregation-plans.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-10-26T17:35:44.769507279Z",
+  "finishedAt" : "2026-10-26T17:47:29.282674415Z",
+  "generatedAt" : "2026-10-26T17:47:29.283246532Z",
+  "configuration" : {
+    "datasetSize" : 10000,
+    "clients" : 20,
+    "durationSec" : 30,
+    "repetitions" : 3,
+    "warmupSec" : 30,
+    "targets" : [ "mongo-indexed", "mongo-unindexed", "postgres-indexed", "postgres-unindexed" ],
+    "targetDetails" : {
+      "mongo-indexed" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ "indexes=enabled" ]
+      },
+      "mongo-unindexed" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://nosql-blocking:8081/api/admin/indexes\": nosql-blocking)" ]
+      },
+      "postgres-indexed" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "indexes=enabled", "indexes=true FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ]
+      },
+      "postgres-unindexed" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "mongo-indexed",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4/aggregation-plans.js",
+    "setup" : [ "indexes=enabled" ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 2.015124505048433,
+      "latencyMean" : 924.1523053719004,
+      "latencyP50" : 106.952205,
+      "latencyP95" : 2998.800398,
+      "latencyP99" : 3344.3452833999995,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03204679451733281,
+      "memAvg" : 527.1172413979807,
+      "httpRequests" : 121,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-26T17:36:45.710219424Z",
+      "finishedAt" : "2026-10-26T17:37:46.022642296Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 2.015220850665733,
+      "latencyMean" : 948.6180906363635,
+      "latencyP50" : 192.29395,
+      "latencyP95" : 3397.71441,
+      "latencyP99" : 3498.963664,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.021558273660103777,
+      "memAvg" : 406.3946200955299,
+      "httpRequests" : 121,
+      "iterations" : 0,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-26T17:37:46.104947595Z",
+      "finishedAt" : "2026-10-26T17:38:46.421835428Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 4.616075946504577,
+      "latencyMean" : 2023.7313975667873,
+      "latencyP50" : 5.025122,
+      "latencyP95" : 17921.8682126,
+      "latencyP99" : 19398.051982240006,
+      "errorRate" : 0.5631768953068592,
+      "cpuAvg" : 0.041332088840934485,
+      "memAvg" : 601.2050906590054,
+      "httpRequests" : 277,
+      "iterations" : 52,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:38:46.471933407Z",
+      "finishedAt" : "2026-10-26T17:39:46.772558593Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 2.8821404340729146,
+        "stdDev" : 1.5016322030625073
+      },
+      "latencyMean" : {
+        "mean" : 1298.8339311916836,
+        "stdDev" : 627.8987945759532
+      },
+      "latencyP50" : {
+        "mean" : 101.423759,
+        "stdDev" : 93.75673987241974
+      },
+      "latencyP95" : {
+        "mean" : 8106.127673533333,
+        "stdDev" : 8503.020336618632
+      },
+      "latencyP99" : {
+        "mean" : 8747.120309880002,
+        "stdDev" : 9224.301373430182
+      },
+      "errorRate" : {
+        "mean" : 0.18772563176895307,
+        "stdDev" : 0.32515033210679284
+      },
+      "cpuAvg" : {
+        "mean" : 0.031645719006123695,
+        "stdDev" : 0.009893007018883666
+      },
+      "memAvg" : {
+        "mean" : 511.57231738417204,
+        "stdDev" : 98.33114134005055
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "mongo-unindexed",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4/aggregation-plans.js",
+    "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://nosql-blocking:8081/api/admin/indexes\": nosql-blocking)" ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 6.9980562875002565,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 281,
+      "iterations" : 60,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:40:31.500739949Z",
+      "finishedAt" : "2026-10-26T17:41:11.891632252Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 7.351772338932054,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 281,
+      "iterations" : 60,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:41:11.899064695Z",
+      "finishedAt" : "2026-10-26T17:41:50.360425481Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 6.787457978513657,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:41:50.375400536Z",
+      "finishedAt" : "2026-10-26T17:42:23.168487509Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 7.045762201648656,
+        "stdDev" : 0.285165855296803
+      },
+      "latencyMean" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 1.0,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "postgres-indexed",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4/aggregation-plans.js",
+    "setup" : [ "indexes=enabled", "indexes=true FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 7.089790044907429,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 281,
+      "iterations" : 60,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:43:06.345949596Z",
+      "finishedAt" : "2026-10-26T17:43:46.215271926Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 6.5004228102510595,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:43:46.232004971Z",
+      "finishedAt" : "2026-10-26T17:44:20.457965679Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 6.000516005060837,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:44:20.465596959Z",
+      "finishedAt" : "2026-10-26T17:44:57.534619912Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 6.530242953406442,
+        "stdDev" : 0.5452489469721918
+      },
+      "latencyMean" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 1.0,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "postgres-unindexed",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s4/aggregation-plans.js",
+    "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 5.994648422089494,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:45:39.368875054Z",
+      "finishedAt" : "2026-10-26T17:46:16.482831279Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 6.234062094696675,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:46:16.497894848Z",
+      "finishedAt" : "2026-10-26T17:46:52.187862568Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 5.999020523903578,
+      "latencyMean" : 0.0,
+      "latencyP50" : 0.0,
+      "latencyP95" : 0.0,
+      "latencyP99" : 0.0,
+      "errorRate" : 1.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 221,
+      "iterations" : 40,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-26T17:46:52.194830012Z",
+      "finishedAt" : "2026-10-26T17:47:29.275928111Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 6.075910346896582,
+        "stdDev" : 0.13698087573722217
+      },
+      "latencyMean" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 1.0,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  } ]
+}

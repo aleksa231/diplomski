@@ -17,17 +17,27 @@
             <groupId>com.benchmark</groupId>
             <artifactId>common</artifactId>
         </dependency>
+        <!--
+          Spring MVC only. Per spec section 3, Spring MVC and Spring WebFlux must never be mixed
+          in one application; the runner is a plain blocking REST service, so the WebFlux starter
+          is deliberately absent (it would silently lose to MVC anyway).
+        -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <!--
+          Required by management.endpoints.web.exposure.include=prometheus and by the Prometheus
+          scrape target in infra/prometheus/prometheus.yml: without the registry the endpoint does
+          not exist and every scrape turns into an error.
+        -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
         </dependency>
     </dependencies>
 

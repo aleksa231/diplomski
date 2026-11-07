@@ -1,0 +1,205 @@
+﻿
+=== Starting S4 ===
+  Restoring canonical dataset (5k products / 10k orders)...
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - queued
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - queued
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - queued
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - queued
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - mongo-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-unindexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-unindexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished mongo-unindexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-indexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished postgres-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished postgres-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - finished postgres-indexed
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 1/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 2/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] RUNNING - postgres-unindexed repetition 3/3
+  [7f1fb2f4-e273-47cd-b133-5399b32b766e] COMPLETED - completed
+
+=== Starting S5 ===
+  Restoring canonical dataset (5k products / 10k orders)...
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - queued
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - queued
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - queued
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - queued
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-blocking repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - finished nosql-blocking
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - finished nosql-blocking
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - finished nosql-blocking
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - finished nosql-blocking
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 1/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 2/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] RUNNING - nosql-reactive repetition 3/3
+  [ae148b54-2aeb-4261-909d-e222a4000096] COMPLETED - completed
+
+=== Starting S7 ===
+  Restoring canonical dataset (5k products / 10k orders)...
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - queued
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - queued
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - queued
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - queued
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - queued
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - nosql-blocking repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - finished nosql-blocking
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - finished nosql-blocking
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - finished nosql-blocking
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 1/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 2/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] RUNNING - relational repetition 3/3
+  [279fe820-a562-43db-9c2d-4f49398f258c] COMPLETED - completed
+
+=== Starting S6 ===
+  Restoring canonical dataset (5k products / 10k orders)...
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - queued
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - queued
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - queued
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - queued
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - failover repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - finished failover
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - finished failover
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - finished failover
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 1/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 2/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] RUNNING - redis-down repetition 3/3
+  [a812125a-aabc-4d16-b98b-698b95023c7e] COMPLETED - completed
+
+=== Summary ===
+
+Scenario RunId                                Status    Result                                   
+-------- -----                                ------    ------                                   
+S4       7f1fb2f4-e273-47cd-b133-5399b32b766e COMPLETED /results/s4-20261027-082956-7f1fb2f4.json
+S5       ae148b54-2aeb-4261-909d-e222a4000096 COMPLETED /results/s5-20261027-083837-ae148b54.json
+S7       279fe820-a562-43db-9c2d-4f49398f258c COMPLETED /results/s7-20261027-084427-279fe820.json
+S6       a812125a-aabc-4d16-b98b-698b95023c7e COMPLETED /results/s6-20261027-084920-a812125a.json
+
+
+

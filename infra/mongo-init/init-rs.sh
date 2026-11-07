@@ -42,7 +42,7 @@ until mongosh --host mongo1:27017 --eval "rs.isMaster().ismaster" --quiet | grep
 done
 
 echo "Setting up MongoDB schema validation on products collection..."
-mongosh --host mongo1:27017/benchmark <<EOF
+mongosh "mongodb://mongo1:27017/benchmark" <<EOF
 try {
   db.createCollection("products", {
     validator: {

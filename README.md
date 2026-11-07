@@ -1,4 +1,4 @@
-# NoSQL vs Relational in Spring Boot: Empirical Benchmark Platform
+# KlikMarket — uporedno ispitivanje NoSQL i relacionih baza (Spring Boot)
 
 An empirical benchmarking system comparing NoSQL (**MongoDB 7.0 + Redis 7.2**) in blocking and reactive paradigms against a Relational reference (**PostgreSQL 16**) in normalized EAV and JSONB variants. All services adhere to a single REST contract ([contract/openapi.yaml](contract/openapi.yaml)).
 
@@ -16,7 +16,7 @@ Everything starts automatically:
 1. 3-node MongoDB replica set (`mongo1`, `mongo2`, `mongo3`) initialized via `mongo-init` into `rs0`.
 2. Redis 7.2 and PostgreSQL 16.
 3. API services (`nosql-blocking`, `nosql-reactive`, `relational`), `stub-service`, and `experiment-runner`.
-4. Automated database seeding (10,000 products deterministic dataset).
+4. Automated database seeding (deterministic dataset: 5,000 products, 10,000 orders; configurable via `DATASET_SIZE`).
 5. Observability stack (Prometheus, Grafana, exporters, cAdvisor).
 6. React Console served on Port 3000 via Nginx.
 
@@ -104,22 +104,34 @@ docker compose -f docker-compose.yml -f docker-compose.sharded.yml up -d --build
 This enables sharding on `benchmark.products` using a hashed shard key on `_id`.
 
 ### Failure Scripts
-- **Kill MongoDB Primary**:
+The `scripts/` directory holds the failure-injection helpers that the `experiment-runner` fires
+mid-run for S6. They drive the Docker socket that is mounted into the runner, and every one of them
+can also be run by hand from the host or from inside the runner container:
+
+- **MongoDB primary failover** (S6c):
   ```bash
-  bash scripts/kill-mongo-primary.sh
+  bash scripts/kill-mongo-primary.sh    # finds the current primary in rs0 and stops that node
+  bash scripts/start-mongo-nodes.sh     # starts stopped members again and waits for a writable primary
   ```
-  Finds the active primary in replica set `rs0` and pauses/stops it, measuring election time and recovery under load.
-- **Toggle Redis Under Load**:
+  The candidate nodes default to `mongo1 mongo2 mongo3` and can be overridden with `MONGO_NODES`.
+- **Redis outage** (S6d):
   ```bash
-  bash scripts/toggle-redis.sh
+  bash scripts/stop-redis.sh            # stops the Redis container
+  bash scripts/start-redis.sh           # starts it again and waits for PING to answer
   ```
-  Stops Redis and verifies that catalog reads fall back gracefully while cart returns 503 fast without thread starvation.
+  The target container defaults to `redis` and can be overridden with `REDIS_CONTAINER`.
+  While Redis is down, catalog reads must fall back to the database and cart operations must fail
+  fast with 503 (no thread starvation); `start-redis.sh` documents the recovery time.
+
+The `failover` and `redis-down` targets in
+[experiment-runner/src/main/resources/application.yml](experiment-runner/src/main/resources/application.yml)
+wire the injection and recovery scripts to the corresponding run.
 
 ---
 
 ## 6. Assumptions & Known Limitations
 
 1. **Local Docker Environment**: Single-host Docker Compose shares CPU and disk I/O. Container limits enforce isolation, but absolute latency numbers will reflect local machine capabilities rather than dedicated cloud clusters.
-2. **Docker Socket Mount**: The `experiment-runner` container mounts `/var/run/docker.sock` to orchestrate failure injection scenarios (`kill-mongo-primary.sh`, `toggle-redis.sh`) for the automated demo. This is strictly intended for local benchmarking demonstrations.
+2. **Docker Socket Mount**: The `experiment-runner` container mounts `/var/run/docker.sock` to orchestrate failure injection scenarios (`kill-mongo-primary.sh`, `start-mongo-nodes.sh`, `stop-redis.sh`, `start-redis.sh`) for the automated demo. This is strictly intended for local benchmarking demonstrations.
 3. **No Auth / Users**: By design, authentication, user sessions, and payment gateways are excluded to isolate database and architectural performance.
 4. **Relational Schema**: Both normalized (EAV with explicit foreign keys) and JSONB schemas exist within the same PostgreSQL database, switchable via runtime configuration `app.relational.variant`.

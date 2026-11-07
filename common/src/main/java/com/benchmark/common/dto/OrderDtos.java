@@ -20,8 +20,15 @@ public final class OrderDtos {
     public static class OrderCreateRequest {
         @NotBlank
         private String cartId;
+        /**
+         * Kept for compatibility with the seeded dataset and the load tests. The storefront sends
+         * the composed "Name &lt;email&gt;" form, while {@code customerName} and
+         * {@code customerEmail} carry the same information as separate fields.
+         */
         @NotBlank
         private String customerRef;
+        private String customerName;
+        private String customerEmail;
     }
 
     @Data
@@ -52,6 +59,8 @@ public final class OrderDtos {
     public static class OrderResponse {
         private String id;
         private String customerRef;
+        private String customerName;
+        private String customerEmail;
         @Builder.Default
         private List<OrderItemDto> items = new ArrayList<>();
         private Double total;
@@ -59,6 +68,18 @@ public final class OrderDtos {
         @Builder.Default
         private List<OrderStatusHistoryDto> statusHistory = new ArrayList<>();
         private Instant createdAt;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PageOrderResponse {
+        private List<OrderResponse> content;
+        private int page;
+        private int size;
+        private long totalElements;
+        private int totalPages;
     }
 
     @Data

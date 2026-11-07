@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
-import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -47,14 +47,14 @@ public class MongoSeeder {
                     .append("attributes", new Document(gp.rawAttributes()))
                     .append("reviewCount", p.getReviewCount())
                     .append("ratingAvg", p.getRatingAvg())
-                    .append("createdAt", p.getCreatedAt().atOffset(ZoneOffset.UTC).toString())
-                    .append("updatedAt", p.getUpdatedAt().atOffset(ZoneOffset.UTC).toString());
+                    .append("createdAt", Date.from(p.getCreatedAt()))
+                    .append("updatedAt", Date.from(p.getUpdatedAt()));
 
             List<Document> reviewDocs = new ArrayList<>();
             for (var r : p.getReviews()) {
                 reviewDocs.add(new Document("rating", r.getRating())
                         .append("text", r.getText())
-                        .append("createdAt", r.getCreatedAt().atOffset(ZoneOffset.UTC).toString()));
+                        .append("createdAt", Date.from(r.getCreatedAt())));
             }
             doc.append("reviews", reviewDocs);
             batch.add(doc);
@@ -84,7 +84,7 @@ public class MongoSeeder {
             List<Document> historyDocs = new ArrayList<>();
             for (var h : o.getStatusHistory()) {
                 historyDocs.add(new Document("status", h.getStatus())
-                        .append("timestamp", h.getTimestamp().atOffset(ZoneOffset.UTC).toString()));
+                        .append("timestamp", Date.from(h.getTimestamp())));
             }
 
             Document doc = new Document("_id", o.getId())
@@ -93,7 +93,7 @@ public class MongoSeeder {
                     .append("status", o.getStatus())
                     .append("items", itemDocs)
                     .append("statusHistory", historyDocs)
-                    .append("createdAt", o.getCreatedAt().atOffset(ZoneOffset.UTC).toString());
+                    .append("createdAt", Date.from(o.getCreatedAt()));
 
             batch.add(doc);
 

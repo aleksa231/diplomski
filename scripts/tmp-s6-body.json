@@ -1,0 +1,1 @@
+{"scenario":"S6","datasetSize":10000,"clients":50,"durationSec":30,"repetitions":3,"targets":["failover","redis-down","concurrency"]}

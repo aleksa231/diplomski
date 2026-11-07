@@ -1,0 +1,223 @@
+{
+  "runId" : "7b09a42c-55d3-4438-90cc-8b854b0f97f4",
+  "scenario" : "S5",
+  "scenarioTitle" : "Reactive vs blocking",
+  "script" : "/loadtests/s5/reactive-vs-blocking.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-11-01T18:50:35.583244152Z",
+  "finishedAt" : "2026-11-02T14:08:58.077212642Z",
+  "generatedAt" : "2026-11-02T14:08:58.078191Z",
+  "configuration" : {
+    "datasetSize" : 5000,
+    "clients" : 2000,
+    "durationSec" : 60,
+    "repetitions" : 3,
+    "warmupSec" : 30,
+    "targets" : [ "nosql-blocking", "nosql-reactive" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      },
+      "nosql-reactive" : {
+        "resolvedTarget" : "nosql-reactive",
+        "baseUrl" : "http://nosql-reactive:8082",
+        "setup" : [ ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s5/reactive-vs-blocking.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 2312.990671109545,
+      "latencyMean" : 489.94693438460774,
+      "latencyP50" : 514.73196,
+      "latencyP95" : 957.887952,
+      "latencyP99" : 1465.1921849999999,
+      "errorRate" : 0.9514194414856667,
+      "cpuAvg" : 0.903434052539386,
+      "memAvg" : 487.888784235174,
+      "httpRequests" : 151151,
+      "iterations" : 151150,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:01:43.664517930Z",
+      "finishedAt" : "2026-11-02T14:02:50.895190561Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 213.20256525879137,
+      "latencyMean" : 6783.242070518922,
+      "latencyP50" : 8164.7672695,
+      "latencyP95" : 9554.032637049999,
+      "latencyP99" : 9644.03821046,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.3207829759584146,
+      "memAvg" : 416.0700963338216,
+      "httpRequests" : 13534,
+      "iterations" : 13505,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:02:50.917013417Z",
+      "finishedAt" : "2026-11-02T14:03:55.780890279Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 213.18087169171605,
+      "latencyMean" : 6784.602569269861,
+      "latencyP50" : 8195.652817999999,
+      "latencyP95" : 9552.75919455,
+      "latencyP99" : 9646.317517919999,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.19914522897281514,
+      "memAvg" : 490.6156343732561,
+      "httpRequests" : 13538,
+      "iterations" : 13504,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:03:55.830777749Z",
+      "finishedAt" : "2026-11-02T14:05:01.801274231Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 913.1247026866841,
+        "stdDev" : 1212.3194905960263
+      },
+      "latencyMean" : {
+        "mean" : 4685.930524724464,
+        "stdDev" : 3633.828446767985
+      },
+      "latencyP50" : {
+        "mean" : 5625.0506825,
+        "stdDev" : 4425.692777795027
+      },
+      "latencyP95" : {
+        "mean" : 6688.226594533332,
+        "stdDev" : 4962.618877568277
+      },
+      "latencyP99" : {
+        "mean" : 6918.515971126665,
+        "stdDev" : 4722.717071354347
+      },
+      "errorRate" : {
+        "mean" : 0.31713981382855555,
+        "stdDev" : 0.5493022706539931
+      },
+      "cpuAvg" : {
+        "mean" : 0.4744540858235386,
+        "stdDev" : 0.3764529110733245
+      },
+      "memAvg" : {
+        "mean" : 464.85817164741724,
+        "stdDev" : 42.2737051548915
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "nosql-reactive",
+    "resolvedTarget" : "nosql-reactive",
+    "baseUrl" : "http://nosql-reactive:8082",
+    "container" : "nosql-reactive",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s5/reactive-vs-blocking.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 469.63519362307926,
+      "latencyMean" : 3019.029914180272,
+      "latencyP50" : 983.517082,
+      "latencyP95" : 8249.88489575,
+      "latencyP99" : 8571.00059665,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.8321693940734188,
+      "memAvg" : 487.8293241613051,
+      "httpRequests" : 29896,
+      "iterations" : 29858,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:05:39.456443271Z",
+      "finishedAt" : "2026-11-02T14:06:45.831937663Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 436.42797886382067,
+      "latencyMean" : 3263.34943638333,
+      "latencyP50" : 1248.256881,
+      "latencyP95" : 8242.702576799998,
+      "latencyP99" : 8755.35184068,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.8272183913437784,
+      "memAvg" : 518.0027737337,
+      "httpRequests" : 27717,
+      "iterations" : 27689,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:06:45.859834485Z",
+      "finishedAt" : "2026-11-02T14:07:52.000300763Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 457.387082528118,
+      "latencyMean" : 3093.9002095596306,
+      "latencyP50" : 1044.1684955,
+      "latencyP95" : 8114.57794005,
+      "latencyP99" : 8418.49834942,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.8221473316200483,
+      "memAvg" : 502.3909162633559,
+      "httpRequests" : 29158,
+      "iterations" : 29139,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-11-02T14:07:52.025122273Z",
+      "finishedAt" : "2026-11-02T14:08:58.064933814Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 454.48341833833933,
+        "stdDev" : 16.792951715292126
+      },
+      "latencyMean" : {
+        "mean" : 3125.4265200410773,
+        "stdDev" : 125.17363309344384
+      },
+      "latencyP50" : {
+        "mean" : 1091.9808195,
+        "stdDev" : 138.6950036531628
+      },
+      "latencyP95" : {
+        "mean" : 8202.388470866665,
+        "stdDev" : 76.13089660645937
+      },
+      "latencyP99" : {
+        "mean" : 8581.616928916666,
+        "stdDev" : 168.67749857823287
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.8271783723457485,
+        "stdDev" : 0.005011151074849718
+      },
+      "memAvg" : {
+        "mean" : 502.74100471945366,
+        "stdDev" : 15.089770913429527
+      }
+    },
+    "error" : null
+  } ]
+}

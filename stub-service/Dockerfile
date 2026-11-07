@@ -16,4 +16,5 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /build/stub-service/target/*.jar app.jar
 EXPOSE 8099
-ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms256m", "-Xmx512m", "-jar", "app.jar"]
+# Trivial stub used only to inject latency/faults - a small fixed heap is enough.
+ENTRYPOINT ["java", "-XX:+UseZGC", "-XX:+ZGenerational", "-Xms64m", "-Xmx192m", "-XX:MaxMetaspaceSize=128m", "-jar", "app.jar"]

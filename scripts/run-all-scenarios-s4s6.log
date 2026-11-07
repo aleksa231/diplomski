@@ -1,0 +1,154 @@
+﻿
+=== Starting S4 ===
+  Restoring canonical dataset (5k products / 10k orders)...
+WARNING: POST /api/experiments for S4 failed (attempt 1/3): The operation has timed out
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - queued
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-indexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+WARNING: GET /api/experiments/10a641b2-eaae-4df8-95e9-9911f8458632 failed (attempt 1/4): The operation has timed out.
+WARNING: GET /api/experiments/10a641b2-eaae-4df8-95e9-9911f8458632 failed (attempt 2/4): The operation has timed out.
+WARNING: GET /api/experiments/10a641b2-eaae-4df8-95e9-9911f8458632 failed (attempt 3/4): The operation has timed out.
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - mongo-unindexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - finished mongo-unindexed
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 1/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 2/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] RUNNING - postgres-indexed repetition 3/3
+  [10a641b2-eaae-4df8-95e9-9911f8458632] FAILED - failed
+WARNING: S4 finished with status FAILED
+
+=== Starting S5 ===
+powershell : Precondition failed - these containers are not healthy: mongo1 (not running), mongo2 (health=unhealthy). 
+Fix them and 
+At line:15 char:4370
++ ... t@trae.ai'; powershell -NoProfile -ExecutionPolicy Bypass -File ".\sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Precondition fa.... Fix them and :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+re-run.
+At C:\Users\Ivana\Desktop\projekat diplomski\scripts\run-all-scenarios.ps1:70 char:9
++         throw "Precondition failed - these containers are not healthy ...
++         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : OperationStopped: (Precondition fa...hem and re-run.:String) [], RuntimeException
+    + FullyQualifiedErrorId : Precondition failed - these containers are not healthy: mongo1 (not running), mongo2 (he 
+   alth=unhealthy). Fix them and re-run.
+ 

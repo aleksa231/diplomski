@@ -21,6 +21,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+        <!--
+          Required by management.endpoints.web.exposure.include=prometheus and by the Prometheus
+          scrape target in infra/prometheus/prometheus.yml: without the registry the endpoint does
+          not exist and the scrape target is permanently DOWN.
+        -->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

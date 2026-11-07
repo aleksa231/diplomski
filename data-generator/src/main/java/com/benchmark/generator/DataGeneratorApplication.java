@@ -32,11 +32,15 @@ public class DataGeneratorApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        int size = 10000;
+        // Canonical benchmarking dataset: 5000 products and, at the default ratio below, 10000
+        // orders. Kept small enough that every service stays inside its container memory limit.
+        int size = 5000;
         long seed = 42L;
         double ordersRatio = 2.0;
         Set<String> targets = new HashSet<>(Arrays.asList("mongo", "pg-normalized", "pg-jsonb"));
-        boolean reset = false;
+        // Reset by default so `docker compose up` is idempotent: re-running it always restores the
+        // canonical benchmarking dataset instead of crashing on duplicate deterministic ids.
+        boolean reset = true;
 
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {

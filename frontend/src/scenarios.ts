@@ -1,0 +1,135 @@
+/**
+ * Scenario catalogue and the target combinations the Makefile drives (spec section 10.3).
+ * The numeric fields only prefill the console form and stay editable. The target list is fixed: a
+ * scenario is defined by which processes it compares, so the console offers exactly these targets
+ * plus an explicit list of optional ones (below). Measuring anything else would answer a different
+ * question than the one the scenario asks (and could leave state behind that the result metadata
+ * cannot describe).
+ */
+export interface ScenarioPreset {
+  code: string;
+  title: string;
+  clients: number;
+  durationSec: number;
+  /**
+   * Targets the scenario is defined by. Selected as soon as the scenario is picked, so the default
+   * run always is the comparison the scenario describes.
+   */
+  targets: string[];
+  /**
+   * Targets that can be measured with this scenario's script and still answer a meaningful
+   * question, but are not part of its canonical definition. Offered unselected, and each one is
+   * chosen so it cannot corrupt the preset measurement: either it is a stateless backend or it
+   * pins its own runtime state (cache/index) because the name says so.
+   */
+  optionalTargets?: string[];
+  /** Brief explanation of what the test does (Serbian). */
+  description?: string;
+}
+
+export const DEFAULT_DATASET_SIZE = 5000;
+
+export const SCENARIOS: ScenarioPreset[] = [
+  {
+    code: 'S1',
+    title: 'Fleksibilnost šeme i dokument model',
+    description:
+      'Šta se testira: koliko brzo tri različita načina čuvanja istog kataloga proizvoda mogu odgovoriti na zahtjeve kupaca. MongoDB čuva cijeli proizvod u jednom zapisu (dokument), dok PostgreSQL čuva podatke u tabelama (normalizovano) ili u jednoj JSON koloni. Mjeri se brzina čitanja kataloga i to da li dokument model ima prednost kad je šema fleksibilna.',
+    clients: 50,
+    durationSec: 30,
+    targets: ['nosql-blocking', 'relational-normalized', 'relational-jsonb'],
+    // Same catalog reads, non-blocking stack: shows whether the document-model result holds there.
+    optionalTargets: ['nosql-reactive'],
+  },
+  {
+    code: 'S2',
+    title: 'Keširanje i niska latencija',
+    description:
+      'Šta se testira: koliko Redis keš (brza privremena memorija) ubrzava čitanje korpe i popularnih proizvoda. Upoređuje se isti backend sa uključenim i isključenim kešom, da bi se vidjelo koliko je baš keš odgovoran za nisku latenciju, a ne sama baza.',
+    // The cache is on by default, so a run without cache-off targets would measure "Mongo+Redis vs
+    // Postgres+Redis" and could not attribute the low latency to the cache. Both states are set
+    // explicitly because a target that leaves the state untouched (null) would inherit whatever the
+    // previous target applied.
+    clients: 50,
+    durationSec: 30,
+    targets: ['mongo-no-cache', 'mongo-cache', 'relational-no-cache', 'relational-cache'],
+    // The reactive stack's catalog cache, measured both ways so it stays comparable; both names pin
+    // the cache state, so neither can inherit it from the preset target before it.
+    optionalTargets: ['nosql-reactive-no-cache', 'nosql-reactive-cache'],
+  },
+  {
+    code: 'S3',
+    title: 'Propusnost pisanja pod opterećenjem',
+    description:
+      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB (različiti nivoi sigurnosti zapisa) i PostgreSQL, da se vidi koji bolje podnosi masovno pisanje.',
+    clients: 100,
+    durationSec: 30,
+    targets: ['mongo-w1', 'mongo-majority', 'postgres'],
+    // Write path on the non-blocking stack; write concern does not apply there, so one target is
+    // enough.
+    optionalTargets: ['nosql-reactive'],
+  },
+  {
+    code: 'S4',
+    title: 'Indeksi i agregacije',
+    description:
+      'Šta se testira: koliko pomoćni indeksi ubrzavaju složene izvještaje nad podacima o prodaji. Mjeri se ista baza sa i bez indeksa, na MongoDB i PostgreSQL, da se vidi koliko indeks stvarno pomaže. Izvještaji spajaju narudžbe i proizvode, pa trošak spajanja može sakriti razliku — detaljniji dokaz daje S4B.',
+    clients: 20,
+    durationSec: 30,
+    targets: ['mongo-indexed', 'mongo-unindexed', 'postgres-indexed', 'postgres-unindexed'],
+    // The same indexed/unindexed contrast on the jsonb storage model. Offered as a pair on purpose:
+    // both names pin the index state, so neither inherits it from the target before it.
+    optionalTargets: ['relational-jsonb-indexed', 'relational-jsonb-unindexed'],
+  },
+  {
+    code: 'S4B',
+    title: 'Indeks izolovano (bez spajanja)',
+    description:
+      'Šta se testira: koliko indeks pomaže kad je put pristupa podacima glavni trošak. Izvještaj računa ukupne prodaje u užem periodu bez spajanja narudžbi sa proizvodima, pa filter po datumu ostaje ključan korak — tu se razlika sa i bez indeksa jasno vidi. Metodološki dopunjuje S4.',
+    clients: 20,
+    durationSec: 30,
+    targets: ['mongo-indexed', 'mongo-unindexed', 'postgres-indexed', 'postgres-unindexed'],
+  },
+  {
+    code: 'S5',
+    title: 'Reaktivno naspram blokirajućeg',
+    description:
+      'Šta se testira: koliko dobro sistem podnosi hiljade istovremenih zahtjeva — klasični (blokirajući) pristup naspram reaktivnog (non-blocking). Mjeri se skalabilnost pod visokim opterećenjem, tj. da li reaktivni pristup stvarno podnosi više korisnika.',
+    clients: 2000,
+    durationSec: 60,
+    targets: ['nosql-blocking', 'nosql-reactive'],
+    // A second blocking baseline (servlet + JDBC), so the blocking cost is not read off one stack.
+    optionalTargets: ['relational'],
+  },
+  {
+    code: 'S6',
+    title: 'Otpornost i horizontalno skaliranje',
+    description:
+      'Šta se testira: kako sistem reaguje kada se baza podataka ili Redis keš iznenada ugasi — da li nastavlja raditi, koliko uspori i kako se oporavlja. Mjeri se ponašanje sistema pod otkazima, kao da se server sruši u produkciji.',
+    clients: 50,
+    durationSec: 30,
+    targets: ['failover', 'redis-down', 'concurrency'],
+    // Deliberately no optional targets: every S6 target combines the load with its own
+    // failure-injection script, so a target that does not define one would run the resilience
+    // script with nothing failing and produce a number that proves nothing.
+  },
+  {
+    code: 'S7',
+    title: 'Gdje relacioni model pobjeđuje',
+    description:
+      'Šta se testira: koliko brzo se mogu izračunati složeni mjesečni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka — situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom.',
+    // The monthly aggregation takes ~18s on MongoDB, so a 20-client/30s window interrupts every
+    // iteration before it finishes and the NoSQL target ends up with no measurement at all.
+    // Sparse load and a longer window let each reporting round complete on both targets.
+    clients: 2,
+    durationSec: 90,
+    targets: ['nosql-blocking', 'relational'],
+    // Same aggregation on the jsonb storage model: tells whether the relational win comes from the
+    // query planner or from the normalized tables.
+    optionalTargets: ['relational-jsonb'],
+  },
+];
+
+export function scenarioPreset(code: string): ScenarioPreset | undefined {
+  return SCENARIOS.find((scenario) => scenario.code === code);
+}

@@ -1,0 +1,80 @@
+{
+  "runId" : "eab25125-cbe9-403d-8aec-d4b2b8ce952b",
+  "scenario" : "S1",
+  "scenarioTitle" : "Schema flexibility and the document model",
+  "script" : "/loadtests/s1/catalog-read.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-10-25T13:27:58.915850891Z",
+  "finishedAt" : "2026-10-25T13:28:04.608716436Z",
+  "generatedAt" : "2026-10-25T13:28:04.611920048Z",
+  "configuration" : {
+    "datasetSize" : 200,
+    "clients" : 5,
+    "durationSec" : 5,
+    "repetitions" : 1,
+    "warmupSec" : 0,
+    "targets" : [ "nosql-blocking" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s1/catalog-read.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 34.25104053126572,
+      "latencyMean" : 13.948117303370788,
+      "latencyP50" : 7.4090015000000005,
+      "latencyP95" : 43.608464250000004,
+      "latencyP99" : 54.60849905999997,
+      "errorRate" : 0.0,
+      "cpuAvg" : null,
+      "memAvg" : null,
+      "httpRequests" : 178,
+      "iterations" : 177,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-25T13:27:58.945654121Z",
+      "finishedAt" : "2026-10-25T13:28:04.473308934Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 34.25104053126572,
+        "stdDev" : 0.0
+      },
+      "latencyMean" : {
+        "mean" : 13.948117303370788,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 7.4090015000000005,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 43.608464250000004,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 54.60849905999997,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  } ]
+}

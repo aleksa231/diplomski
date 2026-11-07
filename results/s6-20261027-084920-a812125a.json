@@ -1,0 +1,1344 @@
+{
+  "runId" : "a812125a-aabc-4d16-b98b-698b95023c7e",
+  "scenario" : "S6",
+  "scenarioTitle" : "Horizontal scaling and resilience",
+  "script" : "/loadtests/s6/01-resilience.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-10-27T08:44:52.693540059Z",
+  "finishedAt" : "2026-10-27T08:49:20.240199033Z",
+  "generatedAt" : "2026-10-27T08:49:20.240732659Z",
+  "configuration" : {
+    "datasetSize" : 5000,
+    "clients" : 50,
+    "durationSec" : 30,
+    "repetitions" : 3,
+    "warmupSec" : 30,
+    "targets" : [ "failover", "redis-down", "concurrency" ],
+    "targetDetails" : {
+      "failover" : {
+        "resolvedTarget" : "failover",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      },
+      "redis-down" : {
+        "resolvedTarget" : "redis-down",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      },
+      "concurrency" : {
+        "resolvedTarget" : "concurrency",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "failover",
+    "resolvedTarget" : "failover",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s6/01-resilience.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 371.48121328333644,
+      "latencyMean" : 26.13785587903899,
+      "latencyP50" : 1.517308,
+      "latencyP95" : 2.3820789999999996,
+      "latencyP99" : 10.252355959999988,
+      "errorRate" : 0.00258121940364931,
+      "cpuAvg" : 0.19606971153846156,
+      "memAvg" : 391.6296691894531,
+      "httpRequests" : 11235,
+      "iterations" : 9617,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:45:30.385777305Z",
+      "finishedAt" : "2026-10-27T08:46:00.883276898Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 224.77408293745754,
+        "serverErrors" : 3.357502589563167,
+        "p95Ms" : 1.9732827499999976
+      }, {
+        "secondOffset" : 1,
+        "rps" : 205.62917455441652,
+        "serverErrors" : 3.357502589563167,
+        "p95Ms" : 2.0653158851351345
+      }, {
+        "secondOffset" : 2,
+        "rps" : 205.62917455441652,
+        "serverErrors" : 3.357502589563167,
+        "p95Ms" : 2.0653158851351345
+      }, {
+        "secondOffset" : 3,
+        "rps" : 205.38648378339767,
+        "serverErrors" : 3.357622517502501,
+        "p95Ms" : 2.3432451326530632
+      }, {
+        "secondOffset" : 4,
+        "rps" : 205.38648378339767,
+        "serverErrors" : 3.357622517502501,
+        "p95Ms" : 2.3432451326530632
+      }, {
+        "secondOffset" : 5,
+        "rps" : 204.414758724149,
+        "serverErrors" : 2.321677322570275,
+        "p95Ms" : 2.167412658163268
+      }, {
+        "secondOffset" : 6,
+        "rps" : 204.414758724149,
+        "serverErrors" : 2.321677322570275,
+        "p95Ms" : 2.167412658163268
+      }, {
+        "secondOffset" : 7,
+        "rps" : 206.31518788398347,
+        "serverErrors" : 3.3219031290184318,
+        "p95Ms" : 2.3740823461538483
+      }, {
+        "secondOffset" : 8,
+        "rps" : 206.31518788398347,
+        "serverErrors" : 3.3219031290184318,
+        "p95Ms" : 2.3740823461538483
+      }, {
+        "secondOffset" : 9,
+        "rps" : 205.2362753152123,
+        "serverErrors" : 3.3217844769082396,
+        "p95Ms" : 2.185826787037034
+      }, {
+        "secondOffset" : 10,
+        "rps" : 205.2362753152123,
+        "serverErrors" : 3.3217844769082396,
+        "p95Ms" : 2.185826787037034
+      }, {
+        "secondOffset" : 11,
+        "rps" : 201.49307043863413,
+        "serverErrors" : 3.357622517502501,
+        "p95Ms" : 2.4261750144230794
+      }, {
+        "secondOffset" : 12,
+        "rps" : 201.49307043863413,
+        "serverErrors" : 3.357622517502501,
+        "p95Ms" : 2.4261750144230794
+      }, {
+        "secondOffset" : 13,
+        "rps" : 215.38021930921172,
+        "serverErrors" : 3.357502589563167,
+        "p95Ms" : 2.755423083333344
+      }, {
+        "secondOffset" : 14,
+        "rps" : 215.38021930921172,
+        "serverErrors" : 3.357502589563167,
+        "p95Ms" : 2.755423083333344
+      }, {
+        "secondOffset" : 15,
+        "rps" : 232.31060470764726,
+        "serverErrors" : 2.285959209915348,
+        "p95Ms" : 2.355195382716049
+      }, {
+        "secondOffset" : 16,
+        "rps" : 232.31060470764726,
+        "serverErrors" : 2.285959209915348,
+        "p95Ms" : 2.355195382716049
+      }, {
+        "secondOffset" : 17,
+        "rps" : 249.32133161880273,
+        "serverErrors" : 2.2146020860122877,
+        "p95Ms" : 2.2719134999999984
+      }, {
+        "secondOffset" : 18,
+        "rps" : 249.32133161880273,
+        "serverErrors" : 2.2146020860122877,
+        "p95Ms" : 2.2719134999999984
+      }, {
+        "secondOffset" : 19,
+        "rps" : 265.0378625517932,
+        "serverErrors" : 2.2146020860122877,
+        "p95Ms" : 2.1378723592233024
+      }, {
+        "secondOffset" : 20,
+        "rps" : 265.0378625517932,
+        "serverErrors" : 2.2146020860122877,
+        "p95Ms" : 2.1378723592233024
+      }, {
+        "secondOffset" : 21,
+        "rps" : 277.17857142857144,
+        "serverErrors" : 2.214285714285714,
+        "p95Ms" : 2.160036850409838
+      }, {
+        "secondOffset" : 22,
+        "rps" : 277.17857142857144,
+        "serverErrors" : 2.214285714285714,
+        "p95Ms" : 2.160036850409838
+      }, {
+        "secondOffset" : 23,
+        "rps" : 295.5925423244518,
+        "serverErrors" : 2.2144438888492037,
+        "p95Ms" : 2.0899137764705893
+      }, {
+        "secondOffset" : 24,
+        "rps" : 295.5925423244518,
+        "serverErrors" : 2.2144438888492037,
+        "p95Ms" : 2.0899137764705893
+      }, {
+        "secondOffset" : 25,
+        "rps" : 312.18972106146646,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.053721514367814
+      }, {
+        "secondOffset" : 26,
+        "rps" : 312.18972106146646,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.053721514367814
+      }, {
+        "secondOffset" : 27,
+        "rps" : 333.083324404443,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.0361716384120143
+      }, {
+        "secondOffset" : 28,
+        "rps" : 333.083324404443,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.0361716384120143
+      }, {
+        "secondOffset" : 29,
+        "rps" : 363.9415693417622,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.0167263155339796
+      }, {
+        "secondOffset" : 30,
+        "rps" : 363.9415693417622,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 2.0167263155339796
+      } ]
+    }, {
+      "repetition" : 2,
+      "rps" : 443.6011450627201,
+      "latencyMean" : 1.5866035941347616,
+      "latencyP50" : 1.523308,
+      "latencyP95" : 2.431673,
+      "latencyP99" : 3.324437,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.24765625000000002,
+      "memAvg" : 381.5423593521118,
+      "httpRequests" : 13401,
+      "iterations" : 11783,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:46:02.367058739Z",
+      "finishedAt" : "2026-10-27T08:46:32.864595247Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 380.2142857142857,
+        "serverErrors" : 1.0714285714285714,
+        "p95Ms" : 1.9852405848214292
+      }, {
+        "secondOffset" : 1,
+        "rps" : 370.834672666881,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 1.99506109119217
+      }, {
+        "secondOffset" : 2,
+        "rps" : 370.834672666881,
+        "serverErrors" : 1.0714668381013608,
+        "p95Ms" : 1.99506109119217
+      }, {
+        "secondOffset" : 3,
+        "rps" : 381.64285714285717,
+        "serverErrors" : 0.07142857142857144,
+        "p95Ms" : 1.9975363749999997
+      }, {
+        "secondOffset" : 4,
+        "rps" : 381.6428571428571,
+        "serverErrors" : 0.07142857142857142,
+        "p95Ms" : 1.9975363749999997
+      }, {
+        "secondOffset" : 5,
+        "rps" : 397.7999214257652,
+        "serverErrors" : 0.03571556127004536,
+        "p95Ms" : 1.991825124790619
+      }, {
+        "secondOffset" : 6,
+        "rps" : 397.7999214257652,
+        "serverErrors" : 0.03571556127004536,
+        "p95Ms" : 1.991825124790619
+      }, {
+        "secondOffset" : 7,
+        "rps" : 412.9642857142857,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9849365183881056
+      }, {
+        "secondOffset" : 8,
+        "rps" : 412.96428571428567,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.984936518388106
+      }, {
+        "secondOffset" : 9,
+        "rps" : 416.8720311439695,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9541839999999995
+      }, {
+        "secondOffset" : 10,
+        "rps" : 416.8720311439695,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9541839999999995
+      }, {
+        "secondOffset" : 11,
+        "rps" : 416.69345333761925,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9590171812106918
+      }, {
+        "secondOffset" : 12,
+        "rps" : 416.69345333761925,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9590171812106918
+      }, {
+        "secondOffset" : 13,
+        "rps" : 416.83631558269946,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9930175160714287
+      }, {
+        "secondOffset" : 14,
+        "rps" : 416.83631558269946,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9930175160714287
+      }, {
+        "secondOffset" : 15,
+        "rps" : 416.6220222150791,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9813773260385736
+      }, {
+        "secondOffset" : 16,
+        "rps" : 416.6220222150791,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9813773260385736
+      }, {
+        "secondOffset" : 17,
+        "rps" : 416.6577377763491,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9795932022900744
+      }, {
+        "secondOffset" : 18,
+        "rps" : 416.6577377763491,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9795932022900744
+      }, {
+        "secondOffset" : 19,
+        "rps" : 416.6279775722296,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9970573962962965
+      }, {
+        "secondOffset" : 20,
+        "rps" : 416.6279775722296,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9970573962962965
+      }, {
+        "secondOffset" : 21,
+        "rps" : 416.7232203450369,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9952828585526305
+      }, {
+        "secondOffset" : 22,
+        "rps" : 416.7232203450369,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9952828585526305
+      }, {
+        "secondOffset" : 23,
+        "rps" : 416.61606600707216,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.014020729729729
+      }, {
+        "secondOffset" : 24,
+        "rps" : 416.61606600707216,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.014020729729729
+      }, {
+        "secondOffset" : 25,
+        "rps" : 416.47319355645243,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0325702172073328
+      }, {
+        "secondOffset" : 26,
+        "rps" : 416.47319355645243,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0325702172073328
+      }, {
+        "secondOffset" : 27,
+        "rps" : 416.54462978176235,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.050469157008087
+      }, {
+        "secondOffset" : 28,
+        "rps" : 416.54462978176235,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.050469157008087
+      }, {
+        "secondOffset" : 29,
+        "rps" : 442.1744410315022,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.040848648195876
+      }, {
+        "secondOffset" : 30,
+        "rps" : 442.1744410315022,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.040848648195876
+      } ]
+    }, {
+      "repetition" : 3,
+      "rps" : 443.9901488909527,
+      "latencyMean" : 1.554800544973147,
+      "latencyP50" : 1.5086555000000001,
+      "latencyP95" : 2.3188436499999994,
+      "latencyP99" : 3.044544,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.2470955882352941,
+      "memAvg" : 409.41016387939453,
+      "httpRequests" : 13408,
+      "iterations" : 11790,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:46:33.465341355Z",
+      "finishedAt" : "2026-10-27T08:47:04.001245538Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 446.65499874986597,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.023032975446427
+      }, {
+        "secondOffset" : 1,
+        "rps" : 446.65499874986597,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.023032975446427
+      }, {
+        "secondOffset" : 2,
+        "rps" : 430.3878848489178,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.050683668612191
+      }, {
+        "secondOffset" : 3,
+        "rps" : 430.3878848489178,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.050683668612191
+      }, {
+        "secondOffset" : 4,
+        "rps" : 430.3164511750839,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0376297665782483
+      }, {
+        "secondOffset" : 5,
+        "rps" : 430.3164511750839,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0376297665782483
+      }, {
+        "secondOffset" : 6,
+        "rps" : 429.9746401400149,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0321799281002635
+      }, {
+        "secondOffset" : 7,
+        "rps" : 429.9746401400149,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0321799281002635
+      }, {
+        "secondOffset" : 8,
+        "rps" : 429.92356596899776,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0329558330026445
+      }, {
+        "secondOffset" : 9,
+        "rps" : 429.92356596899776,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0329558330026445
+      }, {
+        "secondOffset" : 10,
+        "rps" : 430.1735838274162,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.008819158995815
+      }, {
+        "secondOffset" : 11,
+        "rps" : 430.1735838274162,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.008819158995815
+      }, {
+        "secondOffset" : 12,
+        "rps" : 430.1378669904992,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.01594893690958
+      }, {
+        "secondOffset" : 13,
+        "rps" : 430.1378669904992,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.01594893690958
+      }, {
+        "secondOffset" : 14,
+        "rps" : 430.10215015358233,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.003386495896032
+      }, {
+        "secondOffset" : 15,
+        "rps" : 430.10215015358233,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.003386495896032
+      }, {
+        "secondOffset" : 16,
+        "rps" : 430.18894881594457,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0068570416666667
+      }, {
+        "secondOffset" : 17,
+        "rps" : 430.18894881594457,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0068570416666667
+      }, {
+        "secondOffset" : 18,
+        "rps" : 430.16320845684083,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0252364570413435
+      }, {
+        "secondOffset" : 19,
+        "rps" : 430.16320845684083,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0252364570413435
+      }, {
+        "secondOffset" : 20,
+        "rps" : 430.38788484891774,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.009769749999999
+      }, {
+        "secondOffset" : 21,
+        "rps" : 430.38788484891774,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.009769749999999
+      }, {
+        "secondOffset" : 22,
+        "rps" : 430.3164511750839,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9780535925925913
+      }, {
+        "secondOffset" : 23,
+        "rps" : 430.3164511750839,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9780535925925913
+      }, {
+        "secondOffset" : 24,
+        "rps" : 430.53075219658547,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9609347077464787
+      }, {
+        "secondOffset" : 25,
+        "rps" : 430.53075219658547,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9609347077464787
+      }, {
+        "secondOffset" : 26,
+        "rps" : 430.22466692859945,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9625566842291358
+      }, {
+        "secondOffset" : 27,
+        "rps" : 430.22466692859945,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9625566842291358
+      }, {
+        "secondOffset" : 28,
+        "rps" : 430.35216801200085,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9696587431034478
+      }, {
+        "secondOffset" : 29,
+        "rps" : 430.35216801200085,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9696587431034478
+      }, {
+        "secondOffset" : 30,
+        "rps" : 446.6192806372111,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9369160823045266
+      }, {
+        "secondOffset" : 31,
+        "rps" : 446.6192806372111,
+        "serverErrors" : 0.0,
+        "p95Ms" : 1.9369160823045266
+      } ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 419.69083574566974,
+        "stdDev" : 41.751210814359965
+      },
+      "latencyMean" : {
+        "mean" : 9.7597533393823,
+        "stdDev" : 14.183861778729929
+      },
+      "latencyP50" : {
+        "mean" : 1.5164238333333333,
+        "stdDev" : 0.007366155855216002
+      },
+      "latencyP95" : {
+        "mean" : 2.377531883333333,
+        "stdDev" : 0.05655194742748358
+      },
+      "latencyP99" : {
+        "mean" : 5.540445653333329,
+        "stdDev" : 4.083033073147445
+      },
+      "errorRate" : {
+        "mean" : 8.604064678831034E-4,
+        "stdDev" : 0.0014902677175344145
+      },
+      "cpuAvg" : {
+        "mean" : 0.23027384992458522,
+        "stdDev" : 0.02962297921304379
+      },
+      "memAvg" : {
+        "mean" : 394.1940641403198,
+        "stdDev" : 14.10977403755045
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "redis-down",
+    "resolvedTarget" : "redis-down",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s6/01-resilience.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 149.81041286888234,
+      "latencyMean" : 204.8004876782168,
+      "latencyP50" : 1.55451,
+      "latencyP95" : 2002.0683113,
+      "latencyP99" : 4006.9081939000002,
+      "errorRate" : 0.014184397163120567,
+      "cpuAvg" : 0.15529552708022779,
+      "memAvg" : 347.31730397542316,
+      "httpRequests" : 4935,
+      "iterations" : 4357,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:47:35.955857504Z",
+      "finishedAt" : "2026-10-27T08:48:09.178933695Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 446.28187727694836,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0497065265513124
+      }, {
+        "secondOffset" : 1,
+        "rps" : 446.28187727694836,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0497065265513124
+      }, {
+        "secondOffset" : 2,
+        "rps" : 440.3885991856561,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.02572029563492
+      }, {
+        "secondOffset" : 3,
+        "rps" : 440.3885991856561,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.02572029563492
+      }, {
+        "secondOffset" : 4,
+        "rps" : 440.1742981641546,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.006312909340659
+      }, {
+        "secondOffset" : 5,
+        "rps" : 440.1742981641546,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.006312909340659
+      }, {
+        "secondOffset" : 6,
+        "rps" : 440.01142979604947,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0149337308481527
+      }, {
+        "secondOffset" : 7,
+        "rps" : 440.01142979604947,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0149337308481527
+      }, {
+        "secondOffset" : 8,
+        "rps" : 439.9957139795699,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0334602763157883
+      }, {
+        "secondOffset" : 9,
+        "rps" : 439.9957139795699,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0334602763157883
+      }, {
+        "secondOffset" : 10,
+        "rps" : 440.3885991856562,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0163688548177094
+      }, {
+        "secondOffset" : 11,
+        "rps" : 440.3885991856562,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.0163688548177094
+      }, {
+        "secondOffset" : 12,
+        "rps" : 439.74569612115147,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.010641269028871
+      }, {
+        "secondOffset" : 13,
+        "rps" : 439.74569612115147,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.010641269028871
+      }, {
+        "secondOffset" : 14,
+        "rps" : 407.81484391742265,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.006968592198581
+      }, {
+        "secondOffset" : 15,
+        "rps" : 407.81484391742265,
+        "serverErrors" : 0.0,
+        "p95Ms" : 2.006968592198581
+      }, {
+        "secondOffset" : 16,
+        "rps" : 377.3214285714285,
+        "serverErrors" : 0.03571428571428571,
+        "p95Ms" : 2.033088884182907
+      }, {
+        "secondOffset" : 17,
+        "rps" : 377.3214285714285,
+        "serverErrors" : 0.03571428571428571,
+        "p95Ms" : 2.033088884182907
+      }, {
+        "secondOffset" : 18,
+        "rps" : 347.0481088610308,
+        "serverErrors" : 0.03571556127004536,
+        "p95Ms" : 2.0550850515075374
+      }, {
+        "secondOffset" : 19,
+        "rps" : 347.0481088610308,
+        "serverErrors" : 0.03571556127004536,
+        "p95Ms" : 2.0550850515075374
+      }, {
+        "secondOffset" : 20,
+        "rps" : 316.1766547142786,
+        "serverErrors" : 0.3796619645375289,
+        "p95Ms" : 2.0768972659712914
+      }, {
+        "secondOffset" : 21,
+        "rps" : 316.23500263459204,
+        "serverErrors" : 0.4380098848509406,
+        "p95Ms" : 2.07791121464006
+      }, {
+        "secondOffset" : 22,
+        "rps" : 286.4827587825714,
+        "serverErrors" : 0.686837499668394,
+        "p95Ms" : 2.1811616765693573
+      }, {
+        "secondOffset" : 23,
+        "rps" : 286.5800085590591,
+        "serverErrors" : 0.784087276156086,
+        "p95Ms" : 2.187713374949849
+      }, {
+        "secondOffset" : 24,
+        "rps" : 255.7597976940947,
+        "serverErrors" : 0.955883128768563,
+        "p95Ms" : 2.3555801003825603
+      }, {
+        "secondOffset" : 25,
+        "rps" : 255.8570409858589,
+        "serverErrors" : 1.053126420532772,
+        "p95Ms" : 2.363113782035116
+      }, {
+        "secondOffset" : 26,
+        "rps" : 225.64857010822647,
+        "serverErrors" : 1.203966922284594,
+        "p95Ms" : 3.026643307207638
+      }, {
+        "secondOffset" : 27,
+        "rps" : 225.75358673600508,
+        "serverErrors" : 1.3089835500632063,
+        "p95Ms" : 3.0673228146345917
+      }, {
+        "secondOffset" : 28,
+        "rps" : 195.02255433892688,
+        "serverErrors" : 1.4372982492062016,
+        "p95Ms" : 1803.4936281341193
+      }, {
+        "secondOffset" : 29,
+        "rps" : 195.12756872990315,
+        "serverErrors" : 1.5423126401824443,
+        "p95Ms" : 1807.4855240126783
+      }, {
+        "secondOffset" : 30,
+        "rps" : 171.11145698786385,
+        "serverErrors" : 1.712549884038724,
+        "p95Ms" : 1910.7350249968822
+      }, {
+        "secondOffset" : 31,
+        "rps" : 171.2197938928809,
+        "serverErrors" : 1.8208867890557487,
+        "p95Ms" : 1913.1404341243249
+      }, {
+        "secondOffset" : 32,
+        "rps" : 140.8130638556556,
+        "serverErrors" : 1.9460019226603862,
+        "p95Ms" : 1987.870008910973
+      }, {
+        "secondOffset" : 33,
+        "rps" : 140.92140805325087,
+        "serverErrors" : 2.0543461202556506,
+        "p95Ms" : 1989.2544398750817
+      }, {
+        "secondOffset" : 34,
+        "rps" : 110.83346481398479,
+        "serverErrors" : 2.1828469127061476,
+        "p95Ms" : 2062.5801759219826
+      } ]
+    }, {
+      "repetition" : 2,
+      "rps" : 149.10906874879007,
+      "latencyMean" : 214.4927984519967,
+      "latencyP50" : 1.6690070000000001,
+      "latencyP95" : 2002.0203503,
+      "latencyP99" : 4006.8031059299997,
+      "errorRate" : 0.014868309260832626,
+      "cpuAvg" : 0.12742009652158073,
+      "memAvg" : 338.9021023021025,
+      "httpRequests" : 4708,
+      "iterations" : 4160,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:48:09.604601018Z",
+      "finishedAt" : "2026-10-27T08:48:41.490403606Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 110.83346481398479,
+        "serverErrors" : 2.1828469127061476,
+        "p95Ms" : 2062.5801759219826
+      }, {
+        "secondOffset" : 1,
+        "rps" : 110.94365940718829,
+        "serverErrors" : 2.2930415059096347,
+        "p95Ms" : 2063.1790575280647
+      }, {
+        "secondOffset" : 2,
+        "rps" : 79.45194866578048,
+        "serverErrors" : 2.160713577559884,
+        "p95Ms" : 2109.5172644386575
+      }, {
+        "secondOffset" : 3,
+        "rps" : 79.55047473225085,
+        "serverErrors" : 2.2592396440302642,
+        "p95Ms" : 2109.678092239281
+      }, {
+        "secondOffset" : 4,
+        "rps" : 79.07405041769312,
+        "serverErrors" : 2.142731442015399,
+        "p95Ms" : 2110.0125662478827
+      }, {
+        "secondOffset" : 5,
+        "rps" : 79.16314325524634,
+        "serverErrors" : 2.231824279568621,
+        "p95Ms" : 2110.154728061005
+      }, {
+        "secondOffset" : 6,
+        "rps" : 79.4878902102771,
+        "serverErrors" : 2.127984499358848,
+        "p95Ms" : 2109.3582997237313
+      }, {
+        "secondOffset" : 7,
+        "rps" : 79.56920496202811,
+        "serverErrors" : 2.2092992511098677,
+        "p95Ms" : 2109.4926336574376
+      }, {
+        "secondOffset" : 8,
+        "rps" : 111.40921173196678,
+        "serverErrors" : 2.1156907661835027,
+        "p95Ms" : 2061.30186492378
+      }, {
+        "secondOffset" : 9,
+        "rps" : 111.52367491848175,
+        "serverErrors" : 2.2301539526984664,
+        "p95Ms" : 2061.946571690253
+      }, {
+        "secondOffset" : 10,
+        "rps" : 142.22580517725206,
+        "serverErrors" : 2.0729371152476217,
+        "p95Ms" : 1999.6003431988747
+      }, {
+        "secondOffset" : 11,
+        "rps" : 142.3013376681467,
+        "serverErrors" : 2.1484696061422417,
+        "p95Ms" : 2000.4809772148317
+      }, {
+        "secondOffset" : 12,
+        "rps" : 165.78571428571428,
+        "serverErrors" : 2.071428571428571,
+        "p95Ms" : 1930.3238054925532
+      }, {
+        "secondOffset" : 13,
+        "rps" : 165.78571428571428,
+        "serverErrors" : 2.071428571428571,
+        "p95Ms" : 1930.3238054925532
+      }, {
+        "secondOffset" : 14,
+        "rps" : 165.76776083151768,
+        "serverErrors" : 2.071650533985784,
+        "p95Ms" : 1929.1180670388296
+      }, {
+        "secondOffset" : 15,
+        "rps" : 165.76776083151768,
+        "serverErrors" : 2.071650533985784,
+        "p95Ms" : 1929.1180670388296
+      }, {
+        "secondOffset" : 16,
+        "rps" : 165.8273509768206,
+        "serverErrors" : 2.1072181149326763,
+        "p95Ms" : 1931.0279190772083
+      }, {
+        "secondOffset" : 17,
+        "rps" : 165.8273509768206,
+        "serverErrors" : 2.1072181149326763,
+        "p95Ms" : 1931.0279190772083
+      }, {
+        "secondOffset" : 18,
+        "rps" : 165.76184013143796,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1929.1180670388296
+      }, {
+        "secondOffset" : 19,
+        "rps" : 165.76184013143796,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1929.1180670388296
+      }, {
+        "secondOffset" : 20,
+        "rps" : 165.04750339309953,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1914.291058237357
+      }, {
+        "secondOffset" : 21,
+        "rps" : 165.04750339309953,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1914.291058237357
+      }, {
+        "secondOffset" : 22,
+        "rps" : 164.76176869776413,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1907.0190248281488
+      }, {
+        "secondOffset" : 23,
+        "rps" : 164.76176869776413,
+        "serverErrors" : 2.0715765411815132,
+        "p95Ms" : 1907.0190248281488
+      }, {
+        "secondOffset" : 24,
+        "rps" : 164.69621745186984,
+        "serverErrors" : 2.0359324213308567,
+        "p95Ms" : 1904.7953601282607
+      }, {
+        "secondOffset" : 25,
+        "rps" : 164.69621745186984,
+        "serverErrors" : 2.0359324213308567,
+        "p95Ms" : 1904.7953601282607
+      }, {
+        "secondOffset" : 26,
+        "rps" : 164.6130218936391,
+        "serverErrors" : 1.9286403085824495,
+        "p95Ms" : 1903.4579220261996
+      }, {
+        "secondOffset" : 27,
+        "rps" : 164.6130218936391,
+        "serverErrors" : 1.9286403085824495,
+        "p95Ms" : 1903.4579220261996
+      }, {
+        "secondOffset" : 28,
+        "rps" : 164.29744981784413,
+        "serverErrors" : 1.9287091935138223,
+        "p95Ms" : 1891.2172652439995
+      }, {
+        "secondOffset" : 29,
+        "rps" : 164.29744981784413,
+        "serverErrors" : 1.9287091935138223,
+        "p95Ms" : 1891.2172652439995
+      }, {
+        "secondOffset" : 30,
+        "rps" : 165.33323808843488,
+        "serverErrors" : 2.1072933780984355,
+        "p95Ms" : 1930.6485050054764
+      }, {
+        "secondOffset" : 31,
+        "rps" : 165.33323808843488,
+        "serverErrors" : 2.1072933780984355,
+        "p95Ms" : 1930.6485050054764
+      }, {
+        "secondOffset" : 32,
+        "rps" : 134.80015715969566,
+        "serverErrors" : 2.3573954352252025,
+        "p95Ms" : 2002.629797293396
+      } ]
+    }, {
+      "repetition" : 3,
+      "rps" : 120.34428751555602,
+      "latencyMean" : 273.11584472035094,
+      "latencyP50" : 1.6164135000000002,
+      "latencyP95" : 2002.180484,
+      "latencyP99" : 4007.8738468,
+      "errorRate" : 0.018500948766603416,
+      "cpuAvg" : 0.10015882715043542,
+      "memAvg" : 330.37369336579974,
+      "httpRequests" : 4216,
+      "iterations" : 3726,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:48:41.858110851Z",
+      "finishedAt" : "2026-10-27T08:49:17.467603076Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 134.80015715969566,
+        "serverErrors" : 2.3573954352252025,
+        "p95Ms" : 2002.629797293396
+      }, {
+        "secondOffset" : 1,
+        "rps" : 134.80015715969566,
+        "serverErrors" : 2.3573954352252025,
+        "p95Ms" : 2002.629797293396
+      }, {
+        "secondOffset" : 2,
+        "rps" : 104.68604900350027,
+        "serverErrors" : 2.607329094935353,
+        "p95Ms" : 2074.9376343128897
+      }, {
+        "secondOffset" : 3,
+        "rps" : 104.68604900350027,
+        "serverErrors" : 2.607329094935353,
+        "p95Ms" : 2074.9376343128897
+      }, {
+        "secondOffset" : 4,
+        "rps" : 82.07729123508823,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2107.142499412712
+      }, {
+        "secondOffset" : 5,
+        "rps" : 82.07729123508823,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2107.142499412712
+      }, {
+        "secondOffset" : 6,
+        "rps" : 81.89870705050362,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2107.395263495339
+      }, {
+        "secondOffset" : 7,
+        "rps" : 81.89870705050362,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2107.395263495339
+      }, {
+        "secondOffset" : 8,
+        "rps" : 88.649189227802,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2097.840781172034
+      }, {
+        "secondOffset" : 9,
+        "rps" : 88.649189227802,
+        "serverErrors" : 2.643045931852275,
+        "p95Ms" : 2097.840781172034
+      }, {
+        "secondOffset" : 10,
+        "rps" : 119.35288025427661,
+        "serverErrors" : 2.392771686725474,
+        "p95Ms" : 2044.1486188931033
+      }, {
+        "secondOffset" : 11,
+        "rps" : 119.35288025427661,
+        "serverErrors" : 2.392771686725474,
+        "p95Ms" : 2044.1486188931033
+      }, {
+        "secondOffset" : 12,
+        "rps" : 146.2604471747982,
+        "serverErrors" : 2.1072933780984355,
+        "p95Ms" : 1964.4163573895767
+      }, {
+        "secondOffset" : 13,
+        "rps" : 146.2604471747982,
+        "serverErrors" : 2.1072933780984355,
+        "p95Ms" : 1964.4163573895767
+      }, {
+        "secondOffset" : 14,
+        "rps" : 146.25522340083575,
+        "serverErrors" : 2.071502553662631,
+        "p95Ms" : 1964.4163573895755
+      }, {
+        "secondOffset" : 15,
+        "rps" : 146.25522340083575,
+        "serverErrors" : 2.071502553662631,
+        "p95Ms" : 1964.4163573895755
+      }, {
+        "secondOffset" : 16,
+        "rps" : 146.57666345226613,
+        "serverErrors" : 2.071502553662631,
+        "p95Ms" : 1968.8931412860059
+      }, {
+        "secondOffset" : 17,
+        "rps" : 146.57666345226613,
+        "serverErrors" : 2.071502553662631,
+        "p95Ms" : 1968.8931412860059
+      }, {
+        "secondOffset" : 18,
+        "rps" : 146.08186299021358,
+        "serverErrors" : 1.857275519679977,
+        "p95Ms" : 1962.0661360487366
+      }, {
+        "secondOffset" : 19,
+        "rps" : 146.08186299021358,
+        "serverErrors" : 1.857275519679977,
+        "p95Ms" : 1962.0661360487366
+      }, {
+        "secondOffset" : 20,
+        "rps" : 145.82663666559523,
+        "serverErrors" : 1.8214936247723135,
+        "p95Ms" : 1954.0674719994563
+      }, {
+        "secondOffset" : 21,
+        "rps" : 145.82663666559523,
+        "serverErrors" : 1.8214936247723135,
+        "p95Ms" : 1954.0674719994563
+      }, {
+        "secondOffset" : 22,
+        "rps" : 146.0870807586527,
+        "serverErrors" : 1.8573418580562202,
+        "p95Ms" : 1962.0661360487359
+      }, {
+        "secondOffset" : 23,
+        "rps" : 146.0870807586527,
+        "serverErrors" : 1.8573418580562202,
+        "p95Ms" : 1962.0661360487359
+      }, {
+        "secondOffset" : 24,
+        "rps" : 145.93378334940533,
+        "serverErrors" : 1.857209186042359,
+        "p95Ms" : 1957.156125305775
+      }, {
+        "secondOffset" : 25,
+        "rps" : 145.93378334940533,
+        "serverErrors" : 1.857209186042359,
+        "p95Ms" : 1957.156125305775
+      }, {
+        "secondOffset" : 26,
+        "rps" : 146.14807671702562,
+        "serverErrors" : 1.892924747312404,
+        "p95Ms" : 1963.891819710071
+      }, {
+        "secondOffset" : 27,
+        "rps" : 146.14807671702562,
+        "serverErrors" : 1.892924747312404,
+        "p95Ms" : 1963.891819710071
+      }, {
+        "secondOffset" : 28,
+        "rps" : 146.18379227829567,
+        "serverErrors" : 1.892924747312404,
+        "p95Ms" : 1965.1149069185249
+      }, {
+        "secondOffset" : 29,
+        "rps" : 146.18379227829567,
+        "serverErrors" : 1.892924747312404,
+        "p95Ms" : 1965.1149069185249
+      }, {
+        "secondOffset" : 30,
+        "rps" : 146.19423509661752,
+        "serverErrors" : 1.9287780833660748,
+        "p95Ms" : 1964.4857126500006
+      }, {
+        "secondOffset" : 31,
+        "rps" : 146.19423509661752,
+        "serverErrors" : 1.9287780833660748,
+        "p95Ms" : 1964.4857126500006
+      }, {
+        "secondOffset" : 32,
+        "rps" : 138.0049287474553,
+        "serverErrors" : 2.1429336762027216,
+        "p95Ms" : 1998.6005955041535
+      }, {
+        "secondOffset" : 33,
+        "rps" : 138.0049287474553,
+        "serverErrors" : 2.1429336762027216,
+        "p95Ms" : 1998.6005955041535
+      }, {
+        "secondOffset" : 34,
+        "rps" : 108.04343167369099,
+        "serverErrors" : 2.3930280734338165,
+        "p95Ms" : 2071.118388036638
+      }, {
+        "secondOffset" : 35,
+        "rps" : 108.04343167369099,
+        "serverErrors" : 2.3930280734338165,
+        "p95Ms" : 2071.118388036638
+      }, {
+        "secondOffset" : 36,
+        "rps" : 77.65117691181197,
+        "serverErrors" : 2.643140336464621,
+        "p95Ms" : 2118.794461650914
+      } ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 139.75458971107614,
+        "stdDev" : 16.81347210973263
+      },
+      "latencyMean" : {
+        "mean" : 230.8030436168548,
+        "stdDev" : 36.96302307647333
+      },
+      "latencyP50" : {
+        "mean" : 1.6133101666666667,
+        "stdDev" : 0.057311549975404934
+      },
+      "latencyP95" : {
+        "mean" : 2002.0897151999998,
+        "stdDev" : 0.08218452208491989
+      },
+      "latencyP99" : {
+        "mean" : 4007.195048876667,
+        "stdDev" : 0.590199827093389
+      },
+      "errorRate" : {
+        "mean" : 0.015851218396852204,
+        "stdDev" : 0.002320072674214248
+      },
+      "cpuAvg" : {
+        "mean" : 0.12762481691741465,
+        "stdDev" : 0.027568920048078493
+      },
+      "memAvg" : {
+        "mean" : 338.8643665477751,
+        "stdDev" : 8.47186833661866
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "concurrency",
+    "resolvedTarget" : "concurrency",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s6/02-last-item-concurrency.js",
+    "setup" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 880.1225123565932,
+      "latencyMean" : 15.767197252475246,
+      "latencyP50" : 7.5493295,
+      "latencyP95" : 43.80207345,
+      "latencyP99" : 45.20398258,
+      "errorRate" : 0.4900990099009901,
+      "cpuAvg" : 0.06578947368421052,
+      "memAvg" : 225.5065460205078,
+      "httpRequests" : 202,
+      "iterations" : 100,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:49:18.722368406Z",
+      "finishedAt" : "2026-10-27T08:49:19.239473385Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 77.65117691181197,
+        "serverErrors" : 2.643140336464621,
+        "p95Ms" : 2118.794461650914
+      }, {
+        "secondOffset" : 1,
+        "rps" : 49.219559238489836,
+        "serverErrors" : 2.9288852377040393,
+        "p95Ms" : 4026.9208748956526
+      } ]
+    }, {
+      "repetition" : 2,
+      "rps" : 1093.5318409052572,
+      "latencyMean" : 12.734830539603958,
+      "latencyP50" : 3.6192539999999997,
+      "latencyP95" : 46.90743065,
+      "latencyP99" : 47.88675198,
+      "errorRate" : 0.4900990099009901,
+      "cpuAvg" : 0.12333333333333334,
+      "memAvg" : 257.7289810180664,
+      "httpRequests" : 202,
+      "iterations" : 100,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-10-27T08:49:19.257172826Z",
+      "finishedAt" : "2026-10-27T08:49:19.714683524Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 49.219559238489836,
+        "serverErrors" : 2.9288852377040393,
+        "p95Ms" : 4026.9208748956526
+      } ]
+    }, {
+      "repetition" : 3,
+      "rps" : 848.2971801043722,
+      "latencyMean" : 34.43265281188119,
+      "latencyP50" : 4.84004,
+      "latencyP95" : 96.02298305,
+      "latencyP99" : 99.59781686,
+      "errorRate" : 0.49504950495049505,
+      "cpuAvg" : 0.12333333333333334,
+      "memAvg" : 257.7289810180664,
+      "httpRequests" : 202,
+      "iterations" : 100,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 99,
+      "startedAt" : "2026-10-27T08:49:19.732607581Z",
+      "finishedAt" : "2026-10-27T08:49:20.222149241Z",
+      "timeline" : [ {
+        "secondOffset" : 0,
+        "rps" : 49.219559238489836,
+        "serverErrors" : 2.9288852377040393,
+        "p95Ms" : 4026.9208748956526
+      }, {
+        "secondOffset" : 1,
+        "rps" : 49.219559238489836,
+        "serverErrors" : 2.9288852377040393,
+        "p95Ms" : 4026.9208748956526
+      } ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 940.6505111220741,
+        "stdDev" : 133.3519354581959
+      },
+      "latencyMean" : {
+        "mean" : 20.9782268679868,
+        "stdDev" : 11.75010617314313
+      },
+      "latencyP50" : {
+        "mean" : 5.336207833333333,
+        "stdDev" : 2.0114696736593083
+      },
+      "latencyP95" : {
+        "mean" : 62.24416238333333,
+        "stdDev" : 29.294493596203676
+      },
+      "latencyP99" : {
+        "mean" : 64.22951714,
+        "stdDev" : 30.65920386647716
+      },
+      "errorRate" : {
+        "mean" : 0.49174917491749176,
+        "stdDev" : 0.0028581696494535953
+      },
+      "cpuAvg" : {
+        "mean" : 0.10415204678362573,
+        "stdDev" : 0.033222962858631105
+      },
+      "memAvg" : {
+        "mean" : 246.98816935221353,
+        "stdDev" : 18.603631519785672
+      }
+    },
+    "error" : null
+  } ]
+}
