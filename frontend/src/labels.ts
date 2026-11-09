@@ -3,9 +3,9 @@ import type { RunStatus } from './api/types';
 /** Human-friendly, Serbian (ijekavian) names for experiment targets (IDs). */
 const TARGET_LABELS: Record<string, string> = {
   'nosql-blocking': 'MongoDB (standardni način rada)',
-  'nosql-reactive': 'MongoDB (brži odziv pod opterećenjem)',
+  'nosql-reactive': 'MongoDB (reaktivni pristup)',
   'nosql-reactive-cache': 'MongoDB, brži odziv (keš uključen)',
-  'nosql-reactive-no-cache': 'MongoDB, brži odziv (bez keša)',
+  'nosql-reactive-no-cache': 'MongoDB, reaktivni (bez keša)',
   relational: 'PostgreSQL (relaciona baza)',
   'relational-normalized': 'PostgreSQL (podaci u tabelama)',
   'relational-jsonb': 'PostgreSQL (podaci u JSON obliku)',
