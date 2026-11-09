@@ -70,7 +70,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     optionalTargets: ['nosql-reactive'],
   },
   {
-    code: 'S5',
+    code: 'S4',
     title: 'Reaktivno naspram blokirajućeg',
     description:
       'Šta se testira: koliko dobro sistem podnosi hiljade istovremenih zahtjeva — klasični (blokirajući) pristup naspram reaktivnog (non-blocking). Mjeri se skalabilnost pod visokim opterećenjem, tj. da li reaktivni pristup stvarno podnosi više korisnika.',
@@ -81,7 +81,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     optionalTargets: ['relational'],
   },
   {
-    code: 'S7',
+    code: 'S5',
     title: 'Gdje relacioni model pobjeđuje',
     description:
       'Šta se testira: koliko brzo se mogu izračunati složeni mjesečni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka — situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom.',

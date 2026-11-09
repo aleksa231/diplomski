@@ -33,11 +33,8 @@ public class ScenarioCatalog {
         TITLES.put("S1", "Schema flexibility and the document model");
         TITLES.put("S2", "Caching and low latency");
         TITLES.put("S3", "Write throughput under load");
-        TITLES.put("S4", "Indexing and aggregations");
-        TITLES.put("S4B", "Index isolation (no join fanout)");
-        TITLES.put("S5", "Reactive vs blocking");
-        TITLES.put("S6", "Horizontal scaling and resilience");
-        TITLES.put("S7", "Where the relational model wins");
+        TITLES.put("S4", "Reactive vs blocking");
+        TITLES.put("S5", "Where the relational model wins");
     }
 
     private final RunnerProperties properties;

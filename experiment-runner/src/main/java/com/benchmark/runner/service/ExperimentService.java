@@ -201,7 +201,7 @@ public class ExperimentService {
         }
 
         String normalized = ScenarioCatalog.normalize(scenario);
-        boolean capturesExplain = "S4".equals(normalized) || "S4B".equals(normalized);
+        boolean capturesExplain = false; // No indexing scenarios remain
         // Capture the planner output under the configuration that is about to be measured, so the
         // stored result proves whether the toggled indexes were actually usable (S4/S4B).
         List<ExplainSnapshot> explainPlans = capturesExplain
@@ -222,7 +222,7 @@ public class ExperimentService {
         }
 
         boolean resilienceRun = target.definition().getInjectScript() != null
-                || "S6".equals(ScenarioCatalog.normalize(scenario));
+                || false; // S6 removed
         List<SampleMetrics> samples = new ArrayList<>();
         String error = null;
 

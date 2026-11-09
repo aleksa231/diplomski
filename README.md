@@ -134,8 +134,8 @@ To guarantee benchmark honesty, all equivalent services and database tiers are a
 make scenario-S1   # S1: Schema flexibility & document read/filter
 make scenario-S2   # S2: Caching, cart latency & popularity ranking
 make scenario-S3   # S3: Write throughput (bulk insert & order creation)
-make scenario-S5   # S5: Reactive WebFlux vs Blocking MVC with slow downstream
-make scenario-S7   # S7: Relational joins vs Document aggregation (S7 relational win)
+make scenario-S4   # S4: Reactive WebFlux vs Blocking MVC with slow downstream
+make scenario-S5   # S5: Relational joins vs Document aggregation (relational win)
 ```
 
 ### Direct k6 Execution

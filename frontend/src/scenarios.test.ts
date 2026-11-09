@@ -4,7 +4,7 @@ import { DEFAULT_DATASET_SIZE, SCENARIOS, scenarioPreset } from './scenarios';
 describe('scenario catalogue', () => {
   it('defines the scenario catalogue exactly once each', () => {
     const codes = SCENARIOS.map((scenario) => scenario.code);
-    expect(codes).toEqual(['S1', 'S2', 'S3', 'S5', 'S7']);
+    expect(codes).toEqual(['S1', 'S2', 'S3', 'S4', 'S5']);
     expect(new Set(codes).size).toBe(codes.length);
   });
 
