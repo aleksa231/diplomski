@@ -36,6 +36,10 @@ public class ShellScriptRunner {
     }
 
     public Outcome run(String scriptName, Consumer<String> logSink) {
+        return run(scriptName, logSink, (String[]) null);
+    }
+
+    public Outcome run(String scriptName, Consumer<String> logSink, String... args) {
         Path script;
         try {
             script = resolve(scriptName);

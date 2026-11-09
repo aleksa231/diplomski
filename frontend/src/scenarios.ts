@@ -86,6 +86,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     // Sparse load and a longer window let each reporting round complete on both targets.
     clients: 20,
     durationSec: 60,
+    datasetSize: 50000,
     targets: ['nosql-blocking', 'relational'],
     // Same aggregation on the jsonb storage model: tells whether the relational win comes from the
     // query planner or from the normalized tables.
