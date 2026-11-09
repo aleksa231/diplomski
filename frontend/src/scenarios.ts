@@ -80,7 +80,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     code: 'S5',
     title: 'Gdje relacioni model pobjeđuje',
     description:
-      'Šta se testira: koliko brzo se mogu izračunati složeni mjesečni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka - situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom.',
+      'Šta se testira: koliko brzo se mogu izračunati složeni mjesećni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka - situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom. Test koristi 50.000 proizvoda i ~100.000 narudžbi za jasniju razliku.',
     // The monthly aggregation takes ~18s on MongoDB, so a 20-client/30s window interrupts every
     // iteration before it finishes and the NoSQL target ends up with no measurement at all.
     // Sparse load and a longer window let each reporting round complete on both targets.
