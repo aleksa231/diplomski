@@ -212,7 +212,7 @@ export default function ExperimentConsole() {
             ))}
           </div>
           <p className="small muted console-hint">
-            Porede se samo procesi i varijante koje scenario {scenario} ispituje.
+            Prikazani su samo sistemi koje scenario {scenario} upore?uje. Opcioni sistemi su dodatni i nisu obavezni.
           </p>
 
           {scenarioOptionalTargets.length > 0 ? (

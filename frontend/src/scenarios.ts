@@ -38,6 +38,8 @@ export const SCENARIOS: ScenarioPreset[] = [
     clients: 50,
     durationSec: 30,
     targets: ['nosql-blocking', 'relational-normalized', 'relational-jsonb'],
+    // Same catalog reads, non-blocking stack: shows whether the document-model result holds there.
+    optionalTargets: ['nosql-reactive'],
   },
   {
     code: 'S2',
