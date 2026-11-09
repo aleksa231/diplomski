@@ -116,7 +116,7 @@ public class ExperimentService {
                 .progress(RunProgress.builder()
                         .completedSteps(0)
                         .totalSteps(totalSteps(normalized))
-                        .currentStep("queued")
+                        .currentStep("na čekanju")
                         .build())
                 .targets(Collections.synchronizedList(new ArrayList<>()))
                 .log(Collections.synchronizedList(new ArrayList<>()))

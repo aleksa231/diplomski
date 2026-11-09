@@ -123,7 +123,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             {fastest ? (
               <>
                 {' '}
-                NajveÄ‡u propusnost ima <strong>{fastest.label}</strong> sa{' '}
+                Najveću propusnost ima <strong>{fastest.label}</strong> sa{' '}
                 <strong>{int(rps(fastest))} zahtjeva/s</strong>
                 {slowest && slowest !== fastest ? (
                   <>
@@ -156,7 +156,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               <>
                 {' '}
                 Sistemi koji nisu izmjereni (nijedan zahtjev nije zavr?en u mjernom prozoru) se ne
-                rangiraju: {unmeasured.map((row) => row.label).join(', ')}. Njihove nule znaÄe
+                rangiraju: {unmeasured.map((row) => row.label).join(', ')}. Njihove nule znače
                 odsustvo podataka, a ne izmjerene vrijednosti.
               </>
             ) : null}
@@ -296,7 +296,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 </ResponsiveContainer>
               </div>
               <p className="small muted">
-                Vrijednosti su usrednjene preko repeticija; pad propusnosti i skok p95 oznaÄavaju trenutak
+                Vrijednosti su usrednjene preko repeticija; pad propusnosti i skok p95 označavaju trenutak
                 ubacivanja otkaza.
               </p>
             </section>
@@ -343,12 +343,12 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             </div>
             <p className="small muted mt-1">
               Kolona „Konfiguracija" pokazuje šta je runner primijenio prije mjerenja (npr.
-              cache=disabled), što je odluÄujuÄ‡e za poreÄ‘enje sa i bez Redis-a.
+              cache=disabled), što je odlučujuće za poređenje sa i bez Redis-a.
             </p>
             <p className="small muted">
-              Kako Äitati brojeve: <strong>zahtjeva/s</strong> je broj zahtjeva koje sistem završi u
-              sekundi (više je bolje); <strong>srednja</strong> je prosjeÄno vrijeme odgovora, a{' '}
-              <strong>p95</strong> znaÄi da je 95% korisnika dobilo odgovor brže od tog vremena
+              Kako čitati brojeve: <strong>zahtjeva/s</strong> je broj zahtjeva koje sistem završi u
+              sekundi (više je bolje); <strong>srednja</strong> je prosječno vrijeme odgovora, a{' '}
+              <strong>p95</strong> znači da je 95% korisnika dobilo odgovor brže od tog vremena
               (manje je bolje); <strong>greške</strong> je udio zahtjeva koji nisu uspjeli.
             </p>
           </section>
@@ -419,7 +419,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
           {focus ? (
             <section className="card">
               <div className="spread">
-                <h2 className="card-title">PojedinaÄne repeticije</h2>
+                <h2 className="card-title">Pojedinačne repeticije</h2>
                 <select
                   className="input"
                   value={focus.key}
@@ -449,7 +449,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       <th className="text-center">Mem (MB)</th>
                       <th className="text-center">HTTP</th>
                       <th className="text-center">k6 exit</th>
-                      <th>PoÄetak</th>
+                      <th>Početak</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -473,7 +473,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 </table>
             </div>
               <p className="small muted mt-1">
-                Format „prosjek ± standardna devijacija" u tabeli iznad raÄuna se iz ovih mjerenja.
+                Format „prosjek ± standardna devijacija" u tabeli iznad računa se iz ovih mjerenja.
               </p>
             </section>
           ) : null}
