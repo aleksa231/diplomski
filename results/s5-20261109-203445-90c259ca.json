@@ -1,0 +1,225 @@
+{
+  "runId" : "90c259ca-fdf9-43ab-99b4-57e734b83f45",
+  "scenario" : "S5",
+  "scenarioTitle" : "Gdje relacioni model pobjeđuje",
+  "script" : "/loadtests/s5/reactive-vs-blocking.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-11-09T20:23:50.730328013Z",
+  "finishedAt" : "2026-11-09T20:34:45.897376144Z",
+  "generatedAt" : "2026-11-09T20:34:45.898838463Z",
+  "configuration" : {
+    "datasetSize" : 5000,
+    "clients" : 2,
+    "durationSec" : 90,
+    "repetitions" : 3,
+    "warmupSec" : 30,
+    "targets" : [ "nosql-blocking", "relational" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ "threads=50 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:24:24.288166303Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")", "threads=200 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:29:31.369106041Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")" ]
+      },
+      "relational" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "threads=50 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:29:31.440589638Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")", "threads=200 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:34:45.893044191Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")" ]
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s5/reactive-vs-blocking.js",
+    "setup" : [ "threads=50 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:24:24.288166303Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")", "threads=200 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:29:31.369106041Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")" ],
+    "explainPlans" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 1.4080660940541638,
+      "latencyMean" : 1033.40100731783,
+      "latencyP50" : 1512.993313,
+      "latencyP95" : 1518.939502,
+      "latencyP99" : 1523.67762544,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.05254671278739191,
+      "memAvg" : 251.12375884360455,
+      "httpRequests" : 129,
+      "iterations" : 124,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:24:56.440740665Z",
+      "finishedAt" : "2026-11-09T20:26:28.376183949Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 1.4137805455578856,
+      "latencyMean" : 1030.038647488372,
+      "latencyP50" : 1511.385502,
+      "latencyP95" : 1517.7040200000001,
+      "latencyP99" : 1528.78916748,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03405899125477803,
+      "memAvg" : 225.5007500026537,
+      "httpRequests" : 129,
+      "iterations" : 124,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:26:28.441257270Z",
+      "finishedAt" : "2026-11-09T20:27:59.987036248Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 1.4172418573076089,
+      "latencyMean" : 1028.1613591705432,
+      "latencyP50" : 1510.495549,
+      "latencyP95" : 1516.2327188,
+      "latencyP99" : 1523.0490331600001,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.03749827066600858,
+      "memAvg" : 193.68875420611838,
+      "httpRequests" : 129,
+      "iterations" : 124,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:28:00.013919587Z",
+      "finishedAt" : "2026-11-09T20:29:31.344399927Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 1.4130294989732193,
+        "stdDev" : 0.004633757767737985
+      },
+      "latencyMean" : {
+        "mean" : 1030.5336713255817,
+        "stdDev" : 2.654668458846745
+      },
+      "latencyP50" : {
+        "mean" : 1511.624788,
+        "stdDev" : 1.265957974132997
+      },
+      "latencyP95" : {
+        "mean" : 1517.6254136,
+        "stdDev" : 1.3551025966845902
+      },
+      "latencyP99" : {
+        "mean" : 1525.1719420266666,
+        "stdDev" : 3.1483363938437137
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.04136799156939284,
+        "stdDev" : 0.009832599695372306
+      },
+      "memAvg" : {
+        "mean" : 223.43775435079218,
+        "stdDev" : 28.773023871705142
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "relational",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s5/reactive-vs-blocking.js",
+    "setup" : [ "threads=50 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:29:31.440589638Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")", "threads=200 FAILED (404 : \"{\"timestamp\":\"2026-11-09T20:34:45.893044191Z\",\"status\":404,\"code\":\"NOT_FOUND\",\"message\":\"No static resource api/admin/threads.\",\"path\":\"/api/admin/threads\"}\")" ],
+    "explainPlans" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 1.3750893061619913,
+      "latencyMean" : 1057.9963493984374,
+      "latencyP50" : 1518.143113,
+      "latencyP95" : 1537.04205125,
+      "latencyP99" : 1552.8259858,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.08062517382839661,
+      "memAvg" : 275.1214831737762,
+      "httpRequests" : 128,
+      "iterations" : 123,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:30:07.457892936Z",
+      "finishedAt" : "2026-11-09T20:31:40.841468199Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 2,
+      "rps" : 1.3862497766326394,
+      "latencyMean" : 1050.9224482187499,
+      "latencyP50" : 1514.9113284999999,
+      "latencyP95" : 1531.52604085,
+      "latencyP99" : 1532.7709378,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.05777534418022525,
+      "memAvg" : 276.83710739460395,
+      "httpRequests" : 128,
+      "iterations" : 123,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:31:40.865402759Z",
+      "finishedAt" : "2026-11-09T20:33:13.509697908Z",
+      "timeline" : [ ]
+    }, {
+      "repetition" : 3,
+      "rps" : 1.3909844330937686,
+      "latencyMean" : 1048.819954195312,
+      "latencyP50" : 1515.0336575000001,
+      "latencyP95" : 1531.8022264,
+      "latencyP99" : 1534.20560706,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.05658172862276676,
+      "memAvg" : 270.1021994732796,
+      "httpRequests" : 128,
+      "iterations" : 123,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-09T20:33:13.537283476Z",
+      "finishedAt" : "2026-11-09T20:34:45.870517954Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 1.3841078386294665,
+        "stdDev" : 0.008161169576194664
+      },
+      "latencyMean" : {
+        "mean" : 1052.5795839374996,
+        "stdDev" : 4.807403802860025
+      },
+      "latencyP50" : {
+        "mean" : 1516.0293663333334,
+        "stdDev" : 1.831579871093207
+      },
+      "latencyP95" : {
+        "mean" : 1533.4567728333334,
+        "stdDev" : 3.108011519970399
+      },
+      "latencyP99" : {
+        "mean" : 1539.9341768866668,
+        "stdDev" : 11.1876548822719
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.06499408221046286,
+        "stdDev" : 0.01355007189652256
+      },
+      "memAvg" : {
+        "mean" : 274.0202633472199,
+        "stdDev" : 3.499894285114889
+      }
+    },
+    "error" : null
+  } ]
+}
