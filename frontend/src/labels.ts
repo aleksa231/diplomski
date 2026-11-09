@@ -17,7 +17,7 @@ const TARGET_LABELS: Record<string, string> = {
   'mongo-no-cache': 'MongoDB (bez keša)',
   'mongo-indexed': 'MongoDB (sa indeksom)',
   'mongo-unindexed': 'MongoDB (bez indeksa)',
-  'mongo-w1': 'MongoDB (brži upis, manja sigurnost)',
+  'mongo-w1': 'MongoDB (writeConcern: w1)',
   'mongo-majority': 'MongoDB (writeConcern: majority)',
   postgres: 'PostgreSQL',
   'postgres-indexed': 'PostgreSQL (sa indeksom)',
