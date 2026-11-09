@@ -432,49 +432,53 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   ))}
                 </select>
               </div>
-            <EmptyState>Nema pojedinačnih mjerenja za ovaj sistem.</EmptyState>
+              {repetitions(focus.target).length === 0 ? (
+                <EmptyState>Nema pojedinačnih mjerenja za ovaj sistem.</EmptyState>
               ) : (
-                <div className="table-wrap">
-                  <table className="table">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th className="text-center">zahtjeva/s</th>
-                      <th className="text-center">Srednja (ms)</th>
-                      <th className="text-center">p50</th>
-                      <th className="text-center">p95</th>
-                      <th className="text-center">p99</th>
-                      <th className="text-center">Greške</th>
-                      <th className="text-center">CPU</th>
-                      <th className="text-center">Mem (MB)</th>
-                      <th className="text-center">HTTP</th>
-                      <th className="text-center">k6 exit</th>
-                      <th>Početak</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {repetitions(focus.target).map((sample) => (
-                      <tr key={sample.repetition}>
-                        <td>{sample.repetition}</td>
-                        <td className="text-center">{int(sample.rps)}</td>
-                        <td className="text-center">{num(sample.latencyMean)}</td>
-                        <td className="text-center">{num(sample.latencyP50)}</td>
-                        <td className="text-center">{num(sample.latencyP95)}</td>
-                        <td className="text-center">{num(sample.latencyP99)}</td>
-                        <td className="text-center">{percent(sample.errorRate)}</td>
-                        <td className="text-center">{num(sample.cpuAvg)}</td>
-                        <td className="text-center">{num(sample.memAvg, 0)}</td>
-                        <td className="text-center">{int(sample.httpRequests)}</td>
-                        <td className="text-center">{sample.k6ExitCode}</td>
-                        <td className="small">{timestamp(sample.startedAt)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-            </div>
-              <p className="small muted mt-1">
-                Format „prosjek ± standardna devijacija" u tabeli iznad računa se iz ovih mjerenja.
-              </p>
+                <>
+                  <div className="table-wrap">
+                    <table className="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th className="text-center">zahtjeva/s</th>
+                          <th className="text-center">Srednja (ms)</th>
+                          <th className="text-center">p50</th>
+                          <th className="text-center">p95</th>
+                          <th className="text-center">p99</th>
+                          <th className="text-center">Greške</th>
+                          <th className="text-center">CPU</th>
+                          <th className="text-center">Mem (MB)</th>
+                          <th className="text-center">HTTP</th>
+                          <th className="text-center">k6 exit</th>
+                          <th>Početak</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {repetitions(focus.target).map((sample) => (
+                          <tr key={sample.repetition}>
+                            <td>{sample.repetition}</td>
+                            <td className="text-center">{int(sample.rps)}</td>
+                            <td className="text-center">{num(sample.latencyMean)}</td>
+                            <td className="text-center">{num(sample.latencyP50)}</td>
+                            <td className="text-center">{num(sample.latencyP95)}</td>
+                            <td className="text-center">{num(sample.latencyP99)}</td>
+                            <td className="text-center">{percent(sample.errorRate)}</td>
+                            <td className="text-center">{num(sample.cpuAvg)}</td>
+                            <td className="text-center">{num(sample.memAvg, 0)}</td>
+                            <td className="text-center">{int(sample.httpRequests)}</td>
+                            <td className="text-center">{sample.k6ExitCode}</td>
+                            <td className="small">{timestamp(sample.startedAt)}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <p className="small muted mt-1">
+                    Format „prosjek ± standardna devijacija" u tabeli iznad računa se iz ovih mjerenja.
+                  </p>
+                </>
+              )}
             </section>
           ) : null}
         </>

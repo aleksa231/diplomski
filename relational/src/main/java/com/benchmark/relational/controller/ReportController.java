@@ -46,4 +46,12 @@ public class ReportController {
     public ResponseEntity<List<CategoryMonthlySummaryResponse>> getCategoryMonthlySummary() {
         return ResponseEntity.ok(reportService.getCategoryMonthlySummary());
     }
+
+    /** S5: join-heavy analytical report where the relational engine's optimizer excels. */
+    @GetMapping("/category-revenue-detail")
+    public ResponseEntity<List<CategoryRevenueDetailResponse>> getCategoryRevenueDetail(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
+        return ResponseEntity.ok(reportService.getCategoryRevenueDetail(from, to));
+    }
 }

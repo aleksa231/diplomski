@@ -67,4 +67,21 @@ public final class ReportDtos {
         private String productId;
         private Double score;
     }
+
+    /** S5: multi-join analytical report where SQL aggregation/count-distinct excels. */
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CategoryRevenueDetailResponse {
+        private String category;
+        private Integer year;
+        private Integer month;
+        private Long orderCount;
+        private Long customerCount;
+        private Long unitsSold;
+        private Double revenue;
+        private Long distinctProducts;
+        private Double averagePrice;
+    }
 }

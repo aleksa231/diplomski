@@ -192,12 +192,6 @@ public class ExperimentService {
                 + (target.setup().isEmpty() ? "" : " " + target.setup()));
         targetSetupService.apply(target, line -> log(run, line));
 
-        // S5 (reactive-vs-blocking): temporarily cap the Tomcat thread pool to 50 so thread
-        // starvation under I/O-bound workloads is observable. The pool is restored in the
-        // finally block below regardless of success or failure.
-        boolean isS5 = "S5".equals(ScenarioCatalog.normalize(scenario));
-        // Thread pool adjustment removed - /api/admin/threads endpoint does not exist
-
         String normalized = ScenarioCatalog.normalize(scenario);
         boolean capturesExplain = false; // No indexing scenarios remain
         // Capture the planner output under the configuration that is about to be measured, so the
@@ -253,8 +247,7 @@ public class ExperimentService {
                         sample.getErrorRate() * 100));
             }
         } finally {
-            // Always restore the thread pool to 200 after S5, even if the run failed.
-            // Thread pool restoration removed - /api/admin/threads endpoint does not exist
+            // no per-scenario teardown needed
         }
 
         return builder

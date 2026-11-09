@@ -221,6 +221,71 @@ public class ReportService {
     }
 
     /**
+     * S5 - where the relational model wins. Same analytical report as the relational implementation:
+     * join orders→items→products (to resolve category), group by (category, month), compute
+     * revenue and distinct counts. In MongoDB this requires $unwind + $lookup + multiple $addToSet
+     * accumulators, which is the natural cost of this join-heavy analytical shape.
+     */
+    public List<CategoryRevenueDetailResponse> getCategoryRevenueDetail(Instant from, Instant to) {
+        List<AggregationOperation> ops = new ArrayList<>();
+
+        if (from != null || to != null) {
+            Criteria criteria = Criteria.where("createdAt");
+            if (from != null) criteria = criteria.gte(Date.from(from));
+            if (to != null) criteria = criteria.lte(Date.from(to));
+            ops.add(match(criteria));
+        }
+
+        ops.add(unwind("items"));
+        ops.add(lookup("products", "items.productId", "_id", "prod"));
+        ops.add(unwind("prod"));
+
+        ops.add(project()
+                .and("prod.category").as("category")
+                .and("_id").as("orderId")
+                .and("customerRef").as("customerRef")
+                .and("items.productId").as("productId")
+                .and("items.quantity").as("quantity")
+                .and("items.price").as("price")
+                .and(ArithmeticOperators.Multiply.valueOf("items.price").multiplyBy("items.quantity")).as("lineRevenue")
+                .and(DateOperators.DateToString.dateOf("createdAt").toString("%Y")).as("yearStr")
+                .and(DateOperators.DateToString.dateOf("createdAt").toString("%m")).as("monthStr"));
+
+        ops.add(group("category", "yearStr", "monthStr")
+                .addToSet("orderId").as("orderIds")
+                .addToSet("customerRef").as("customerRefs")
+                .addToSet("productId").as("productIds")
+                .sum("quantity").as("unitsSold")
+                .sum("lineRevenue").as("revenue")
+                .avg("price").as("avgPrice"));
+
+        ops.add(project("unitsSold", "revenue", "avgPrice")
+                .and("_id.category").as("category")
+                .and("_id.yearStr").as("yearStr")
+                .and("_id.monthStr").as("monthStr")
+                .and(ArrayOperators.Size.lengthOfArray("orderIds")).as("orderCount")
+                .and(ArrayOperators.Size.lengthOfArray("customerRefs")).as("customerCount")
+                .and(ArrayOperators.Size.lengthOfArray("productIds")).as("distinctProducts"));
+
+        ops.add(sort(Sort.by(Sort.Direction.DESC, "yearStr", "monthStr", "revenue")));
+
+        Aggregation agg = newAggregation(ops);
+        AggregationResults<Document> results = mongoTemplate.aggregate(agg, "orders", Document.class);
+
+        return results.getMappedResults().stream().map(d -> CategoryRevenueDetailResponse.builder()
+                .category(d.getString("category"))
+                .year(Integer.parseInt(d.getString("yearStr")))
+                .month(Integer.parseInt(d.getString("monthStr")))
+                .orderCount(asLong(d.get("orderCount")))
+                .customerCount(asLong(d.get("customerCount")))
+                .unitsSold(asLong(d.get("unitsSold")))
+                .revenue(round2(asDouble(d.get("revenue"))))
+                .distinctProducts(asLong(d.get("distinctProducts")))
+                .averagePrice(round2(asDouble(d.get("avgPrice"))))
+                .build()).toList();
+    }
+
+    /**
      * Date-range totals without a {@code } to products. The {@code } on
      * {@code createdAt} is the dominant indexed step, so this isolates index impact (S4B).
      */
