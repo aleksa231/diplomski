@@ -11,6 +11,7 @@ export interface ScenarioPreset {
   title: string;
   clients: number;
   durationSec: number;
+  datasetSize?: number;
   /**
    * Targets the scenario is defined by. Selected as soon as the scenario is picked, so the default
    * run always is the comparison the scenario describes.
@@ -85,6 +86,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     // Sparse load and a longer window let each reporting round complete on both targets.
     clients: 10,
     durationSec: 60,
+    datasetSize: 50000,
     targets: ['nosql-blocking', 'relational'],
     // Same aggregation on the jsonb storage model: tells whether the relational win comes from the
     // query planner or from the normalized tables.

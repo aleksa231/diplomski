@@ -75,6 +75,7 @@ export default function ExperimentConsole() {
     if (preset) {
       setClients(String(preset.clients));
       setDurationSec(String(preset.durationSec));
+      if (preset.datasetSize) setDatasetSize(String(preset.datasetSize));
       setTargets(preset.targets);
     }
   }
