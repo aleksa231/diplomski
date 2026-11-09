@@ -248,7 +248,7 @@ public class DataModelGenerator {
             }
 
             total = Math.round(total * 100.0) / 100.0;
-            Instant createdAt = Instant.ofEpochSecond(1704067200L + (i * 120L));
+            Instant createdAt = Instant.ofEpochSecond(1790812800L + (i * 120L)); // 2026-10-01 onwards
 
             List<OrderDtos.OrderStatusHistoryDto> history = List.of(
                     OrderDtos.OrderStatusHistoryDto.builder()
