@@ -196,9 +196,7 @@ public class ExperimentService {
         // starvation under I/O-bound workloads is observable. The pool is restored in the
         // finally block below regardless of success or failure.
         boolean isS5 = "S5".equals(ScenarioCatalog.normalize(scenario));
-        if (isS5) {
-            targetSetupService.applyS5(target, line -> log(run, line));
-        }
+        // Thread pool adjustment removed - /api/admin/threads endpoint does not exist
 
         String normalized = ScenarioCatalog.normalize(scenario);
         boolean capturesExplain = false; // No indexing scenarios remain
@@ -256,9 +254,7 @@ public class ExperimentService {
             }
         } finally {
             // Always restore the thread pool to 200 after S5, even if the run failed.
-            if (isS5) {
-                targetSetupService.resetS5(target, line -> log(run, line));
-            }
+            // Thread pool restoration removed - /api/admin/threads endpoint does not exist
         }
 
         return builder
