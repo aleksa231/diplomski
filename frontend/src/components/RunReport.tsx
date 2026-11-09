@@ -49,19 +49,19 @@ const QUERY_ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7'] as const;
 
 const QUERY_LEGEND: Record<string, string> = {
   Q1: 'katalog (kategorija + sortiranje po cijeni)',
-  Q2: 'prodaja po kategoriji u u?em periodu',
-  Q3: 'najprodavaniji proizvodi u u?em periodu',
+  Q2: 'prodaja po kategoriji u užem periodu',
+  Q3: 'najprodavaniji proizvodi u užem periodu',
   Q4: 'prodaja po kategoriji bez vremenskog filtera (kontrast, cijeli dataset)',
   Q5: 'najprodavaniji bez filtera (kontrast)',
-  Q6: 'ukupne prodaje u u?em periodu, bez spajanja narud?bi i proizvoda (izoluje indeks po datumu)',
+  Q6: 'ukupne prodaje u užem periodu, bez spajanja narudžbi i proizvoda (izoluje indeks po datumu)',
   Q7: 'ukupne prodaje bez vremenskog filtera (kontrast, cijeli dataset)',
 };
 
 function explainLegend(queries: string[]): string {
   if (queries.includes('Q6')) {
-    return 'Q4/Q5/Q7 su kontrast bez filtera (scan punog skupa je o?ekivan). Q6 namjerno ne spaja narud?be i proizvode, pa filter po datumu ostaje klju?an korak.';
+    return 'Q4/Q5/Q7 su kontrast bez filtera (scan punog skupa je očekivan). Q6 namjerno ne spaja narudžbe i proizvode, pa filter po datumu ostaje ključan korak.';
   }
-  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je o?ekivan) ? oni pokazuju za?to indeks poma?e kad filter postoji (Q2/Q3).';
+  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) ? oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
 }
 
 function rps(row: ComparisonRow): number {
@@ -148,14 +148,14 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               </>
             ) : null}{' '}
             {withErrors.length === 0
-              ? 'Nijedan sistem nije prijavio gre?ke.'
+              ? 'Nijedan sistem nije pgreškeo greške.'
               : `Greške su izmjerene kod: ${withErrors
                   .map((row) => `${row.label} (${percent(row.target.aggregated?.errorRate?.mean)})`)
                   .join(', ')}.`}
             {unmeasured.length > 0 ? (
               <>
                 {' '}
-                Sistemi koji nisu izmjereni (nijedan zahtjev nije zavr?en u mjernom prozoru) se ne
+                Sistemi koji nisu izmjereni (nijedan zahtjev nije završen u mjernom prozoru) se ne
                 rangiraju: {unmeasured.map((row) => row.label).join(', ')}. Njihove nule znače
                 odsustvo podataka, a ne izmjerene vrijednosti.
               </>
@@ -236,7 +236,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
           </section>
 
           <section className="card">
-            <h2 className="card-title">Ka?njenje (p95) po sistemu (ms, prosjek repeticija)</h2>
+            <h2 className="card-title">Kašnjenje (p95) po sistemu (ms, prosjek repeticija)</h2>
             <div className="chart-wrap">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={latency} margin={{ top: 35, right: 30, bottom: 64, left: 20 }}>
@@ -403,14 +403,14 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 </table>
               </div>
               <p className="small muted mt-1">
-                Plan se ?ita sa servisa prije mjerenja (isti upiti koje pokre?e {scenarioCode}).{' '}
+                Plan se ?ita sa servisa prije mjerenja (isti upiti koje pokreće {scenarioCode}).{' '}
                 {explainQueries.map((q, i) => (
                   <span key={q}>
                     <strong>{q}</strong> {QUERY_LEGEND[q] ?? q}
                     {i < explainQueries.length - 1 ? '; ' : '. '}
                   </span>
                 ))}
-                ?indeks? = baza je koristila indeks; ?scan? = pro?itala je sve redove. {explainLegend(explainQueries)}
+                ?indeks? = baza je koristila indeks; ?scan? = pročitala je sve redove. {explainLegend(explainQueries)}
               </p>
             </section>
             );
