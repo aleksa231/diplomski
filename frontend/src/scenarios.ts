@@ -83,8 +83,8 @@ export const SCENARIOS: ScenarioPreset[] = [
     // The monthly aggregation takes ~18s on MongoDB, so a 20-client/30s window interrupts every
     // iteration before it finishes and the NoSQL target ends up with no measurement at all.
     // Sparse load and a longer window let each reporting round complete on both targets.
-    clients: 2,
-    durationSec: 90,
+    clients: 10,
+    durationSec: 60,
     targets: ['nosql-blocking', 'relational'],
     // Same aggregation on the jsonb storage model: tells whether the relational win comes from the
     // query planner or from the normalized tables.
