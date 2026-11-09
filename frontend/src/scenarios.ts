@@ -58,7 +58,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     code: 'S3',
     title: 'Propusnost pisanja pod opterećenjem',
     description:
-      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB i PostgreSQL. MongoDB se testira sa dva nivoa sigurnosti zapisa: w1 (upis se potvrđuje ćim ga primarna baza primi — brži ali manje siguran, podaci mogu biti izgubljeni pri padu) i majority (upis se potvrđuje tek nakon što ga većina ćvorova replica seta potvrdi — sporiji ali sigurniji, podaci su trajno saćuvani). Cilj je vidjeti kako nivo sigurnosti utiće na propusnost.',
+      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB i PostgreSQL. MongoDB se testira sa dva nivoa sigurnosti zapisa: w1 (upis se potvrđuje ćim ga primarna baza primi - brži ali manje siguran, podaci mogu biti izgubljeni pri padu) i majority (upis se potvrđuje tek nakon što ga većina čvorova replica seta potvrdi - sporiji ali sigurniji, podaci su trajno sačuvani). Cilj je vidjeti kako nivo sigurnosti utiće na propusnost.',
     clients: 100,
     durationSec: 30,
     targets: ['mongo-w1', 'mongo-majority', 'postgres'],
@@ -68,7 +68,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     code: 'S4',
     title: 'Reaktivno naspram blokirajućeg',
     description:
-      'Šta se testira: koliko dobro sistem podnosi hiljade istovremenih zahtjeva — klasični (blokirajući) pristup naspram reaktivnog (non-blocking). Mjeri se skalabilnost pod visokim opterećenjem, tj. da li reaktivni pristup stvarno podnosi više korisnika.',
+      'Šta se testira: koliko dobro sistem podnosi hiljade istovremenih zahtjeva - klasični (blokirajući) pristup naspram reaktivnog (non-blocking). Mjeri se skalabilnost pod visokim opterećenjem, tj. da li reaktivni pristup stvarno podnosi više korisnika.',
     clients: 2000,
     durationSec: 60,
     targets: ['nosql-blocking', 'nosql-reactive'],
@@ -79,7 +79,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     code: 'S5',
     title: 'Gdje relacioni model pobjeđuje',
     description:
-      'Šta se testira: koliko brzo se mogu izračunati složeni mjesečni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka — situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom.',
+      'Šta se testira: koliko brzo se mogu izračunati složeni mjesečni izvještaji (spajanje više tabela, JOIN operacije) na velikim skupovima podataka - situacija u kojoj relaciona baza tradicionalno ima prednost pred dokument bazom.',
     // The monthly aggregation takes ~18s on MongoDB, so a 20-client/30s window interrupts every
     // iteration before it finishes and the NoSQL target ends up with no measurement at all.
     // Sparse load and a longer window let each reporting round complete on both targets.
