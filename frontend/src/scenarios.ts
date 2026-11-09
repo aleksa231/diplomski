@@ -58,7 +58,7 @@ export const SCENARIOS: ScenarioPreset[] = [
     code: 'S3',
     title: 'Propusnost pisanja pod opterećenjem',
     description:
-      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB i PostgreSQL. MongoDB se testira sa dva nivoa sigurnosti zapisa: w1 (upis se potvrđuje ćim ga primarna baza primi - brži ali manje siguran, podaci mogu biti izgubljeni pri padu) i majority (upis se potvrđuje tek nakon što ga većina čvorova replica seta potvrdi - sporiji ali sigurniji, podaci su trajno sačuvani). Cilj je vidjeti kako nivo sigurnosti utiće na propusnost.',
+      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB i PostgreSQL. MongoDB se testira sa dva nivoa sigurnosti zapisa: w1 (upis se potvrđuje ćim ga primarna baza primi - brži ali manje siguran, podaci mogu biti izgubljeni pri padu) i majority (upis se potvrđuje tek nakon što ga većina čvorova replica seta potvrdi - sporiji ali sigurniji, podaci su trajno sačuvani). Cilj je vidjeti kako nivo sigurnosti utiče na propusnost.',
     clients: 100,
     durationSec: 30,
     targets: ['mongo-w1', 'mongo-majority', 'postgres'],
