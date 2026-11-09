@@ -389,7 +389,7 @@ public class ExperimentService {
     private void resetDataset(ExperimentRun run) {
         log(run, "[runner] restoring the canonical dataset before measuring");
         ShellScriptRunner.Outcome outcome = shellScriptRunner.run("reset-dataset.sh",
-                line -> log(run, line));
+                line -> log(run, line), String.valueOf(run.getRequest().getDatasetSize()));
         if (!outcome.success()) {
             log(run, "[runner] dataset reset failed (exit " + outcome.exitCode() + "): "
                     + outcome.error() + "; measuring the current dataset anyway");

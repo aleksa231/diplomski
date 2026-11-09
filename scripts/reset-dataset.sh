@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-#
-# Restores the canonical benchmarking dataset, run once before every experiment.
-#
-# Accepts an optional DATASET_SIZE argument (default: 5000).
-#
 set -euo pipefail
 
 DATASET_SIZE="${1:-5000}"
@@ -17,11 +12,12 @@ fi
 echo "reset-dataset: restoring the canonical dataset (size=$DATASET_SIZE) via $CONTAINER"
 
 IMAGE=$(docker inspect "$CONTAINER" --format '{{.Config.Image}}')
+NETWORK=$(docker inspect "$CONTAINER" --format '{{.HostConfig.NetworkMode}}')
 
 docker rm -f "$CONTAINER" >/dev/null 2>&1 || true
 
 docker run --rm --name "$CONTAINER" \
-  --network projekatdiplomski_default \
+  --network "$NETWORK" \
   -e "DATASET_SIZE=$DATASET_SIZE" \
   "$IMAGE"
 
