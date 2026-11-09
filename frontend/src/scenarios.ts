@@ -28,7 +28,7 @@ export interface ScenarioPreset {
   description?: string;
 }
 
-export const DEFAULT_DATASET_SIZE = 5000;
+export const DEFAULT_DATASET_SIZE = 50000;
 
 export const SCENARIOS: ScenarioPreset[] = [
   {

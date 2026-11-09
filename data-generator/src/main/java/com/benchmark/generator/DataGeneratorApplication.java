@@ -34,7 +34,7 @@ public class DataGeneratorApplication implements CommandLineRunner {
     public void run(String... args) {
         // Canonical benchmarking dataset: 5000 products and, at the default ratio below, 10000
         // orders. Kept small enough that every service stays inside its container memory limit.
-        int size = Integer.parseInt(System.getenv().getOrDefault("DATASET_SIZE", "5000"));
+        int size = Integer.parseInt(System.getenv().getOrDefault("DATASET_SIZE", "50000"));
         long seed = 42L;
         double ordersRatio = 2.0;
         Set<String> targets = new HashSet<>(Arrays.asList("mongo", "pg-normalized", "pg-jsonb"));
