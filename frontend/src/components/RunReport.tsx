@@ -127,7 +127,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 <strong>{int(rps(fastest))} zahtjeva/s</strong>
                 {slowest && slowest !== fastest ? (
                   <>
-                    , Å¡to je {num(rps(fastest) / Math.max(rps(slowest), 0.01), 1)}Ã— viÅ¡e od{' '}
+                    , što je {num(rps(fastest) / Math.max(rps(slowest), 0.01), 1)}× više od{' '}
                     {slowest.label} ({int(rps(slowest))} zahtjeva/s)
                   </>
                 ) : null}
@@ -137,11 +137,11 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             {lowestP95 ? (
               <>
                 {' '}
-                NajniÅ¾u p95 latenciju ima <strong>{lowestP95.label}</strong> (
+                Najnižu p95 latenciju ima <strong>{lowestP95.label}</strong> (
                 <strong>{num(p95(lowestP95), 1)} ms</strong>)
                 {highestP95 && highestP95 !== lowestP95 ? (
                   <>
-                    , a najviÅ¡u {highestP95.label} ({num(p95(highestP95), 1)} ms)
+                    , a najvišu {highestP95.label} ({num(p95(highestP95), 1)} ms)
                   </>
                 ) : null}
                 .
@@ -149,7 +149,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             ) : null}{' '}
             {withErrors.length === 0
               ? 'Nijedan sistem nije prijavio gre?ke.'
-              : `GreÅ¡ke su izmjerene kod: ${withErrors
+              : `Greške su izmjerene kod: ${withErrors
                   .map((row) => `${row.label} (${percent(row.target.aggregated?.errorRate?.mean)})`)
                   .join(', ')}.`}
             {unmeasured.length > 0 ? (
@@ -167,12 +167,12 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               <div className="tile" key={row.key}>
                 <div className="small muted">{row.label}</div>
                 {row.error ? (
-                  <div className="badge badge-error mt-1">GREÅ KA</div>
+                  <div className="badge badge-error mt-1">GREŠKA</div>
                 ) : !isMeasured(row.target) ? (
                   <>
                     <div className="badge badge-muted mt-1">nije izmjereno</div>
                     <div className="small muted mt-1">
-                      nijedan zahtjev nije zavrÅ¡en u prozoru â€” vrijednosti nisu mjerodavne
+                      nijedan zahtjev nije završen u prozoru — vrijednosti nisu mjerodavne
                     </div>
                   </>
                 ) : (
@@ -181,13 +181,13 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       <strong>{int(aggregatedValue(row.target, 'rps'))} zahtjeva u sekundi</strong>
                     </div>
                     <div className="small muted mt-1">
-                      srednja {num(aggregatedValue(row.target, 'latencyMean'), 1)} ms Â· p95{' '}
-                      {num(aggregatedValue(row.target, 'latencyP95'), 1)} ms Â· greÅ¡ke{' '}
+                      srednja {num(aggregatedValue(row.target, 'latencyMean'), 1)} ms · p95{' '}
+                      {num(aggregatedValue(row.target, 'latencyP95'), 1)} ms · greške{' '}
                       {percent(row.target.aggregated?.errorRate?.mean)}
                     </div>
                     <div className="small muted">
-                      CPU {num(aggregatedValue(row.target, 'cpuAvg'), 2)} Â· mem{' '}
-                      {num(aggregatedValue(row.target, 'memAvg'), 0)} MB Â·{' '}
+                      CPU {num(aggregatedValue(row.target, 'cpuAvg'), 2)} · mem{' '}
+                      {num(aggregatedValue(row.target, 'memAvg'), 0)} MB ·{' '}
                       {(row.target.samples?.length ?? 0)} rep.
                     </div>
                     {row.setup.length > 0 || row.target.variant || row.target.writeConcern ? (
@@ -315,7 +315,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   <th className="text-center">p50</th>
                   <th className="text-center">p95</th>
                   <th className="text-center">p99</th>
-                  <th className="text-center">GreÅ¡ke</th>
+                  <th className="text-center">Greške</th>
                   <th className="text-center">CPU</th>
                   <th className="text-center">Mem (MB)</th>
                 </tr>
@@ -325,9 +325,9 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   <tr key={row.key}>
                     <td>
                       {row.label}
-                      {row.error ? <span className="badge badge-error ml-1">GREÅ KA</span> : null}
+                      {row.error ? <span className="badge badge-error ml-1">GREŠKA</span> : null}
                     </td>
-                    <td className="small">{row.setup.join(', ') || 'â€”'}</td>
+                    <td className="small">{row.setup.join(', ') || '—'}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.rps, 0)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyMean)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP50)}</td>
@@ -342,14 +342,14 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             </table>
             </div>
             <p className="small muted mt-1">
-              Kolona â€žKonfiguracija" pokazuje Å¡ta je runner primijenio prije mjerenja (npr.
-              cache=disabled), Å¡to je odluÄujuÄ‡e za poreÄ‘enje sa i bez Redis-a.
+              Kolona „Konfiguracija" pokazuje šta je runner primijenio prije mjerenja (npr.
+              cache=disabled), što je odluÄujuÄ‡e za poreÄ‘enje sa i bez Redis-a.
             </p>
             <p className="small muted">
-              Kako Äitati brojeve: <strong>zahtjeva/s</strong> je broj zahtjeva koje sistem zavrÅ¡i u
-              sekundi (viÅ¡e je bolje); <strong>srednja</strong> je prosjeÄno vrijeme odgovora, a{' '}
-              <strong>p95</strong> znaÄi da je 95% korisnika dobilo odgovor brÅ¾e od tog vremena
-              (manje je bolje); <strong>greÅ¡ke</strong> je udio zahtjeva koji nisu uspjeli.
+              Kako Äitati brojeve: <strong>zahtjeva/s</strong> je broj zahtjeva koje sistem završi u
+              sekundi (više je bolje); <strong>srednja</strong> je prosjeÄno vrijeme odgovora, a{' '}
+              <strong>p95</strong> znaÄi da je 95% korisnika dobilo odgovor brže od tog vremena
+              (manje je bolje); <strong>greške</strong> je udio zahtjeva koji nisu uspjeli.
             </p>
           </section>
 
@@ -444,7 +444,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       <th className="text-center">p50</th>
                       <th className="text-center">p95</th>
                       <th className="text-center">p99</th>
-                      <th className="text-center">GreÅ¡ke</th>
+                      <th className="text-center">Greške</th>
                       <th className="text-center">CPU</th>
                       <th className="text-center">Mem (MB)</th>
                       <th className="text-center">HTTP</th>
@@ -473,7 +473,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 </table>
             </div>
               <p className="small muted mt-1">
-                Format â€žprosjek Â± standardna devijacija" u tabeli iznad raÄuna se iz ovih mjerenja.
+                Format „prosjek ± standardna devijacija" u tabeli iznad raÄuna se iz ovih mjerenja.
               </p>
             </section>
           ) : null}

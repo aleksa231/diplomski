@@ -38,8 +38,6 @@ export const SCENARIOS: ScenarioPreset[] = [
     clients: 50,
     durationSec: 30,
     targets: ['nosql-blocking', 'relational-normalized', 'relational-jsonb'],
-    // Same catalog reads, non-blocking stack: shows whether the document-model result holds there.
-    optionalTargets: ['nosql-reactive'],
   },
   {
     code: 'S2',
@@ -53,9 +51,6 @@ export const SCENARIOS: ScenarioPreset[] = [
     clients: 50,
     durationSec: 30,
     targets: ['mongo-no-cache', 'mongo-cache', 'relational-no-cache', 'relational-cache'],
-    // The reactive stack's catalog cache, measured both ways so it stays comparable; both names pin
-    // the cache state, so neither can inherit it from the preset target before it.
-    optionalTargets: ['nosql-reactive-no-cache', 'nosql-reactive-cache'],
   },
   {
     code: 'S3',
@@ -66,8 +61,6 @@ export const SCENARIOS: ScenarioPreset[] = [
     durationSec: 30,
     targets: ['mongo-w1', 'mongo-majority', 'postgres'],
     // Write path on the non-blocking stack; write concern does not apply there, so one target is
-    // enough.
-    optionalTargets: ['nosql-reactive'],
   },
   {
     code: 'S4',
