@@ -18,7 +18,7 @@ const TARGET_LABELS: Record<string, string> = {
   'mongo-indexed': 'MongoDB (sa indeksom)',
   'mongo-unindexed': 'MongoDB (bez indeksa)',
   'mongo-w1': 'MongoDB (brži upis, manja sigurnost)',
-  'mongo-majority': 'MongoDB (sigurniji upis)',
+  'mongo-majority': 'MongoDB (writeConcern: majority)',
   postgres: 'PostgreSQL',
   'postgres-indexed': 'PostgreSQL (sa indeksom)',
   'postgres-unindexed': 'PostgreSQL (bez indeksa)',
@@ -52,6 +52,6 @@ export function statusLabel(status: RunStatus | string | null | undefined): stri
 export function writeConcernLabel(value: string | null | undefined): string {
   if (!value) return '';
   if (value === 'w1') return 'brži upis';
-  if (value === 'majority') return 'sigurniji upis';
+  if (value === 'majority') return 'nivo sigurnosti: visok';
   return value;
 }
