@@ -111,13 +111,11 @@ export default function ExperimentConsole() {
               Izaberi scenario, podesi opterešenje i sisteme, pa pokreni mjerenje.
             </p>
           </div>
-          <span className={ready ? 'console-state console-state-ready' : 'console-state'}>
-            {ready ? null : (
-              <>
-                <Info size={13} /> Provjeri unos
-              </>
-            )}
-          </span>
+          {!ready ? (
+            <span className="console-state">
+              <Info size={13} /> Provjeri unos
+            </span>
+          ) : null}
         </div>
 
         <div className="scenario-grid" role="group" aria-label="Scenario">
@@ -240,18 +238,24 @@ export default function ExperimentConsole() {
           <button
             type="button"
             className="btn btn-primary btn-lg"
-            disabled={!ready || start.isPending}
+            disabled={!ready || start.isPending || isActive(run?.status)}
             onClick={() => start.mutate()}
           >
             <Play size={16} />
-            {start.isPending ? 'Pokrećem…' : 'Pokreni mjerenje'}
+            {start.isPending
+              ? 'Pokrećem…'
+              : isActive(run?.status)
+                ? 'Mjerenje u toku…'
+                : 'Pokreni mjerenje'}
           </button>
           <span className="small muted">
             {!configValid
               ? 'Sva numerička polja moraju biti pozitivni brojevi.'
               : targets.length === 0
                 ? 'Izaberi najmanje jedan sistem.'
-                : 'Pokretanje se pokreće odmah; napredak i rezultat se prikazuju ispod.'}
+                : isActive(run?.status)
+                  ? 'Mjerenje je u toku — sačekajte završetak.'
+                  : 'Pokretanje se pokreće odmah; napredak i rezultat se prikazuju ispod.'}
           </span>
         </div>
 
