@@ -30,11 +30,11 @@ public class ScenarioCatalog {
     private static final Map<String, String> TITLES = new LinkedHashMap<>();
 
     static {
-        TITLES.put("S1", "Schema flexibility and the document model");
-        TITLES.put("S2", "Caching and low latency");
-        TITLES.put("S3", "Write throughput under load");
-        TITLES.put("S4", "Reactive vs blocking");
-        TITLES.put("S5", "Where the relational model wins");
+        TITLES.put("S1", "Fleksibilnost šeme i dokument model");
+        TITLES.put("S2", "Keširanje i niska latencija");
+        TITLES.put("S3", "Propusnost pisanja pod opterećenjem");
+        TITLES.put("S4", "Reaktivno naspram blokirajućeg");
+        TITLES.put("S5", "Gdje relacioni model pobjeđuje");
     }
 
     private final RunnerProperties properties;
