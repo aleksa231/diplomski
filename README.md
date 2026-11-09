@@ -1,5 +1,58 @@
 # KlikMarket — uporedno ispitivanje NoSQL i relacionih baza (Spring Boot)
 
+## Kako pokrenuti (brzi vodi?)
+
+### Preduslovi
+- **Docker Desktop** (sa Docker Compose) ? [preuzmi](https://www.docker.com/products/docker-desktop/)
+- **Git** ? [preuzmi](https://git-scm.com/)
+- Minimum: 8 GB RAM, 4 CPU jezgra, 20 GB slobodnog prostora
+
+### Koraci
+
+1. **Kloniraj repozitorijum:**
+   ```bash
+   git clone https://github.com/aleksa231/diplomski.git
+   cd diplomski
+   ```
+
+2. **Pokreni sve servise:**
+   ```bash
+   docker compose up --build
+   ```
+   Ovo automatski:
+   - Pokre?e MongoDB replica set (3 ?vora), Redis, PostgreSQL
+   - Pokre?e backend servise (nosql-blocking, nosql-reactive, relational)
+   - Pokre?e experiment-runner i stub-service
+   - Popunjava bazu sa 5.000 proizvoda i 10.000 narud?bi (deterministi?ki)
+   - Pokre?e Prometheus, Grafana i cAdvisor
+   - Pokre?e frontend (KlikMarket) na portu 3000
+
+3. **Otvori aplikaciju:**
+   - **KlikMarket (prodavnica):** http://localhost:3000
+   - **Grafana (monitoring):** http://localhost:3001 (admin/admin)
+   - **Prometheus:** http://localhost:9090
+   - **Eksperimentalna konzola:** http://localhost:3000/#/admin
+
+4. **Zaustavi:**
+   ```bash
+   docker compose down -v
+   ```
+
+### Funkcionalnosti aplikacije
+- **KlikMarket** ? online prodavnica sa katalogom, korpa, narud?be, recenzije
+- **Eksperimentalna konzola** ? pokretanje i uporedba benchmark scenarija (S1?S7)
+- **Istorija transakcija** ? pregled svih narud?bi sa filterima i paginacijom
+- **Light/Dark mode** ? dugme u navigaciji za prebacivanje tema
+- **Srpski (ijekavski)** interfejs, tamna slate tema
+
+### Napomene
+- Prvo pokretanje mo?e trajati 5?10 minuta (build Docker image-ova).
+- Dataset se resetuje na svaki run eksperimenta (o?ekivano pona?anje).
+- Za lokalni razvoj frontenda: `cd frontend && npm install && npm run dev`
+
+---
+
+
 An empirical benchmarking system comparing NoSQL (**MongoDB 7.0 + Redis 7.2**) in blocking and reactive paradigms against a Relational reference (**PostgreSQL 16**) in normalized EAV and JSONB variants. All services adhere to a single REST contract ([contract/openapi.yaml](contract/openapi.yaml)).
 
 ---
@@ -81,9 +134,7 @@ To guarantee benchmark honesty, all equivalent services and database tiers are a
 make scenario-S1   # S1: Schema flexibility & document read/filter
 make scenario-S2   # S2: Caching, cart latency & popularity ranking
 make scenario-S3   # S3: Write throughput (bulk insert & order creation)
-make scenario-S4   # S4: Indexing & aggregation query plans
 make scenario-S5   # S5: Reactive WebFlux vs Blocking MVC with slow downstream
-make scenario-S6   # S6: Replica failover, Redis outage & concurrency correctness
 make scenario-S7   # S7: Relational joins vs Document aggregation (S7 relational win)
 ```
 

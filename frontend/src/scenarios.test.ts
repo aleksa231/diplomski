@@ -4,7 +4,7 @@ import { DEFAULT_DATASET_SIZE, SCENARIOS, scenarioPreset } from './scenarios';
 describe('scenario catalogue', () => {
   it('defines the scenario catalogue exactly once each', () => {
     const codes = SCENARIOS.map((scenario) => scenario.code);
-    expect(codes).toEqual(['S1', 'S2', 'S3', 'S4', 'S4B', 'S5', 'S6', 'S7']);
+    expect(codes).toEqual(['S1', 'S2', 'S3', 'S5', 'S7']);
     expect(new Set(codes).size).toBe(codes.length);
   });
 
@@ -23,25 +23,6 @@ describe('scenario catalogue', () => {
       expect(scenario.description).not.toContain('kao kazalo u knjizi');
       expect(scenario.description).toMatch(/Šta se testira:/);
     }
-  });
-
-  it('always compares an indexed and an unindexed variant in S4 and S4B', () => {
-    for (const code of ['S4', 'S4B']) {
-      const preset = scenarioPreset(code);
-      expect(preset).toBeDefined();
-      expect(preset?.targets).toEqual(
-        expect.arrayContaining([
-          'mongo-indexed',
-          'mongo-unindexed',
-          'postgres-indexed',
-          'postgres-unindexed',
-        ])
-      );
-    }
-  });
-
-  it('never offers optional S6 targets that would measure nothing', () => {
-    expect(scenarioPreset('S6')?.optionalTargets ?? []).toHaveLength(0);
   });
 
   it('keeps the default dataset large enough for the report scenarios', () => {

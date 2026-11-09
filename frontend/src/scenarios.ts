@@ -70,27 +70,6 @@ export const SCENARIOS: ScenarioPreset[] = [
     optionalTargets: ['nosql-reactive'],
   },
   {
-    code: 'S4',
-    title: 'Indeksi i agregacije',
-    description:
-      'Šta se testira: koliko pomoćni indeksi ubrzavaju složene izvještaje nad podacima o prodaji. Mjeri se ista baza sa i bez indeksa, na MongoDB i PostgreSQL, da se vidi koliko indeks stvarno pomaže. Izvještaji spajaju narudžbe i proizvode, pa trošak spajanja može sakriti razliku — detaljniji dokaz daje S4B.',
-    clients: 20,
-    durationSec: 30,
-    targets: ['mongo-indexed', 'mongo-unindexed', 'postgres-indexed', 'postgres-unindexed'],
-    // The same indexed/unindexed contrast on the jsonb storage model. Offered as a pair on purpose:
-    // both names pin the index state, so neither inherits it from the target before it.
-    optionalTargets: ['relational-jsonb-indexed', 'relational-jsonb-unindexed'],
-  },
-  {
-    code: 'S4B',
-    title: 'Indeks izolovano (bez spajanja)',
-    description:
-      'Šta se testira: koliko indeks pomaže kad je put pristupa podacima glavni trošak. Izvještaj računa ukupne prodaje u užem periodu bez spajanja narudžbi sa proizvodima, pa filter po datumu ostaje ključan korak — tu se razlika sa i bez indeksa jasno vidi. Metodološki dopunjuje S4.',
-    clients: 20,
-    durationSec: 30,
-    targets: ['mongo-indexed', 'mongo-unindexed', 'postgres-indexed', 'postgres-unindexed'],
-  },
-  {
     code: 'S5',
     title: 'Reaktivno naspram blokirajućeg',
     description:
@@ -100,18 +79,6 @@ export const SCENARIOS: ScenarioPreset[] = [
     targets: ['nosql-blocking', 'nosql-reactive'],
     // A second blocking baseline (servlet + JDBC), so the blocking cost is not read off one stack.
     optionalTargets: ['relational'],
-  },
-  {
-    code: 'S6',
-    title: 'Otpornost i horizontalno skaliranje',
-    description:
-      'Šta se testira: kako sistem reaguje kada se baza podataka ili Redis keš iznenada ugasi — da li nastavlja raditi, koliko uspori i kako se oporavlja. Mjeri se ponašanje sistema pod otkazima, kao da se server sruši u produkciji.',
-    clients: 50,
-    durationSec: 30,
-    targets: ['failover', 'redis-down', 'concurrency'],
-    // Deliberately no optional targets: every S6 target combines the load with its own
-    // failure-injection script, so a target that does not define one would run the resilience
-    // script with nothing failing and produce a number that proves nothing.
   },
   {
     code: 'S7',

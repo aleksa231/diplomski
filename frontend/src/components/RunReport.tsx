@@ -1,4 +1,4 @@
-﻿﻿import { useState } from 'react';
+﻿import { useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -252,7 +252,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
 
           {showTimeline ? (
             <section className="card">
-              <h2 className="card-title">Kretanje po sekundi (S6): propusnost i p95</h2>
+              <h2 className="card-title">Kretanje po sekundi: propusnost i p95</h2>
               <div className="chart-wrap">
                 <ResponsiveContainer width="100%" height={280}>
                   <LineChart data={rpsTimeline.data} margin={{ top: 35, right: 30, bottom: 8, left: 20 }}>
@@ -357,10 +357,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             const present = new Set(explainRows.flatMap((row) => (row.target.explainPlans ?? []).map((p) => p.query)));
             const explainQueries = QUERY_ORDER.filter((q) => present.has(q));
             const scenarioCode = run.request.scenario;
-            const explainTitle =
-              scenarioCode === 'S4B' || scenarioCode === 'S4'
-                ? `Planovi upita (${scenarioCode}): da li se koristi indeks`
-                : 'Planovi upita: da li se koristi indeks';
+            const explainTitle = 'Planovi upita: da li se koristi indeks';
             return (
             <section className="card">
               <h2 className="card-title">{explainTitle}</h2>
