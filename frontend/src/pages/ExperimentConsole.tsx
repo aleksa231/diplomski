@@ -212,7 +212,7 @@ export default function ExperimentConsole() {
             ))}
           </div>
           <p className="small muted console-hint">
-            Prikazani su samo sistemi koje scenario {scenario} upoređuje. Opcioni sistemi su dodatni i nisu obavezni.
+            Prikazani su sistemi koje scenario {scenario} upoređuje. Opcioni sistemi su dodatni i nisu obavezni.
           </p>
 
           {scenarioOptionalTargets.length > 0 ? (
