@@ -397,7 +397,7 @@ export default function ExperimentConsole() {
                 <span className="field-label">
                   <Terminal size={13} /> Log
                 </span>
-                <span className="small muted">prikazano {Math.min(40, logLines.length)} od {logLines.length} linija loga</span>
+                <span className="small muted">posljednjih {Math.min(40, logLines.length)} linija loga</span>
               </div>
               <pre className="log console-log">{logLines.slice(-40).join('\n') || '—'}</pre>
             </div>
