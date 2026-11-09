@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -47,7 +48,16 @@ public class ShellScriptRunner {
             logSink.accept("[runner] " + message);
             return new Outcome(false, -1, message);
         }
-        List<String> command = List.of("bash", script.toString());
+        List<String> command = new ArrayList<>();
+        command.add("bash");
+        command.add(script.toString());
+        if (args != null) {
+            for (String arg : args) {
+                if (arg != null && !arg.isBlank()) {
+                    command.add(arg);
+                }
+            }
+        }
         log.info("Running script: {}", String.join(" ", command));
         logSink.accept("[runner] $ " + String.join(" ", command));
 
