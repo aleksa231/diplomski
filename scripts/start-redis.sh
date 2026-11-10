@@ -7,16 +7,16 @@ set -euo pipefail
 
 CONTAINER="${REDIS_CONTAINER:-redis}"
 
-echo "start-redis: starting $CONTAINER"
+echo "start-redis: pokrećem $CONTAINER"
 docker start "$CONTAINER" >/dev/null
 
 for attempt in $(seq 1 30); do
     if docker exec "$CONTAINER" redis-cli ping 2>/dev/null | grep -q PONG; then
-        echo "start-redis: $CONTAINER is answering PING again"
+        echo "start-redis: $CONTAINER ponovo odgovara na PING"
         exit 0
     fi
     sleep 1
 done
 
-echo "start-redis: $CONTAINER did not become ready in time" >&2
+echo "start-redis: $CONTAINER nije postao spreman na vrijeme" >&2
 exit 1

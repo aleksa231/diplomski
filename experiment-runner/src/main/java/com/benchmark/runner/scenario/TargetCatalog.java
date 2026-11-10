@@ -54,9 +54,9 @@ public class TargetCatalog {
         String key = name.toLowerCase(Locale.ROOT);
         RunnerProperties.TargetDefinition definition = findConfigured(key)
                 .orElseThrow(() -> new IllegalArgumentException(
-                        "Unknown target '" + name + "'. Configured targets: " + properties.getTargets().keySet()
-                                + "; derived names may be based on " + properties.getTargets().keySet()
-                                + " (e.g. mongo-unindexed, postgres-unindexed, relational-jsonb)."));
+                        "Nepoznat sistem '" + name + "'. Konfigurisani sistemi: " + properties.getTargets().keySet()
+                                + "; izvedena imena mogu nastati iz " + properties.getTargets().keySet()
+                                + " (npr. mongo-unindexed, postgres-unindexed, relational-jsonb)."));
 
         Boolean cache = cacheState(key);
         Boolean indexes = indexState(key);

@@ -96,12 +96,12 @@ public class ShellScriptRunner {
     /** Prevents a target definition from escaping the scripts directory. */
     private Path resolve(String scriptName) {
         if (scriptName == null || scriptName.isBlank()) {
-            throw new IllegalArgumentException("Empty script name");
+            throw new IllegalArgumentException("Prazno ime skripte");
         }
         Path root = Path.of(properties.scriptsDir()).toAbsolutePath().normalize();
         Path resolved = root.resolve(scriptName).normalize();
         if (!resolved.startsWith(root)) {
-            throw new IllegalArgumentException("Script path escapes the scripts directory: " + scriptName);
+            throw new IllegalArgumentException("Putanja skripte izlazi iz scripts direktorija: " + scriptName);
         }
         return resolved;
     }

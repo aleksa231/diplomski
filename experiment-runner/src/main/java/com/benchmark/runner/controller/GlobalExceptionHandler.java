@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleUnreadable(HttpMessageNotReadableException ex,
                                                           HttpServletRequest request) {
         return build(HttpStatus.BAD_REQUEST, "BAD_REQUEST",
-                "Malformed request body: " + ex.getMostSpecificCause().getMessage(), request);
+                "Neispravno tijelo zahtjeva: " + ex.getMostSpecificCause().getMessage(), request);
     }
 
     @ExceptionHandler(IOException.class)

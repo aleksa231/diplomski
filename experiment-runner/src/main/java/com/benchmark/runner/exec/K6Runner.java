@@ -145,7 +145,7 @@ public class K6Runner {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             process.destroyForcibly();
-            throw new UncheckedIOException(new IOException("Interrupted while waiting for k6", e));
+            throw new UncheckedIOException(new IOException("Prekinuto čekanje na k6", e));
         }
         if (!finished) {
             logSink.accept("[runner] k6 je prešao " + properties.getDefaults().getK6TimeoutSec() + "s; prekidam ga.");

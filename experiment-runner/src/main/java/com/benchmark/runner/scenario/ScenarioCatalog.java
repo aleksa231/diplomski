@@ -52,7 +52,7 @@ public class ScenarioCatalog {
     }
 
     public static String title(String scenario) {
-        return TITLES.getOrDefault(normalize(scenario), "Custom scenario");
+        return TITLES.getOrDefault(normalize(scenario), "Korisnički scenario");
     }
 
     public static String normalize(String scenario) {
@@ -105,10 +105,10 @@ public class ScenarioCatalog {
         Path root = Path.of(properties.loadtestsDir()).toAbsolutePath().normalize();
         Path resolved = root.resolve(relative).normalize();
         if (!resolved.startsWith(root)) {
-            throw new IllegalArgumentException("Script path escapes the loadtests directory: " + relative);
+            throw new IllegalArgumentException("Putanja skripte izlazi iz loadtests direktorija: " + relative);
         }
         if (!Files.isRegularFile(resolved)) {
-            throw new IllegalArgumentException("k6 script not found: " + resolved);
+            throw new IllegalArgumentException("k6 skripta nije pronađena: " + resolved);
         }
         return resolved;
     }

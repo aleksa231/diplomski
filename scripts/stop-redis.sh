@@ -7,6 +7,6 @@ set -euo pipefail
 
 CONTAINER="${REDIS_CONTAINER:-redis}"
 
-echo "stop-redis: stopping $CONTAINER"
+echo "stop-redis: zaustavljam $CONTAINER"
 docker stop "$CONTAINER" >/dev/null
-echo "stop-redis: $CONTAINER stopped"
+echo "stop-redis: $CONTAINER zaustavljen"

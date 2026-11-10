@@ -26,10 +26,10 @@ for node in $NODES; do
 done
 
 if [ -z "$primary" ]; then
-    echo "kill-mongo-primary: no writable primary found among: $NODES" >&2
+    echo "kill-mongo-primary: nema upisivog primarnog čvora među: $NODES" >&2
     exit 1
 fi
 
-echo "kill-mongo-primary: stopping primary $primary"
+echo "kill-mongo-primary: zaustavljam primarni čvor $primary"
 docker stop "$primary" >/dev/null
-echo "kill-mongo-primary: $primary stopped; the remaining members will elect a new primary"
+echo "kill-mongo-primary: $primary zaustavljen; preostali čvorovi će izabrati novi primarni"

@@ -60,8 +60,8 @@ public class ExperimentController {
         ExperimentRun run = runRegistry.find(id)
                 .orElseThrow(() -> new NoSuchElementException(unknownRun(id)));
         if (run.getResultFile() == null) {
-            throw new NoSuchElementException("Run " + id + " has no result file yet (status "
-                    + run.getStatus() + ")");
+            throw new NoSuchElementException("Pokretanje " + id + " još nema datoteku rezultata "
+                    + "(stanje: " + run.getStatus() + ")");
         }
         return resultWriter.read(Path.of(run.getResultFile()));
     }
@@ -71,8 +71,8 @@ public class ExperimentController {
      * typo or a run that was still in flight when the runner restarted and never got persisted.
      */
     private String unknownRun(String id) {
-        return "No experiment run with id " + id + ". Finished runs are re-loaded from results/ at "
-                + "startup; a run that was still in flight when the runner restarted was never "
-                + "persisted and cannot be resumed.";
+        return "Ne postoji pokretanje sa identifikatorom " + id + ". Završena pokretanja se ponovo "
+                + "učitavaju iz results/ pri startu; pokretanje koje je bilo u toku kad se runner "
+                + "restartovao nikad nije upisano i ne može se nastaviti.";
     }
 }
