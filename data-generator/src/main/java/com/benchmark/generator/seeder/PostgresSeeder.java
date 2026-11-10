@@ -30,7 +30,7 @@ public class PostgresSeeder {
     }
 
     public void reset() {
-        log.info("[PostgresSeeder] Truncating database tables...");
+        log.info("[PostgresSeeder] Praznim tabele u bazi...");
         jdbcTemplate.execute("TRUNCATE TABLE order_status_history, order_item, orders, cart_item, cart, review, product_attribute_value, product, product_jsonb CASCADE");
     }
 
@@ -73,7 +73,7 @@ public class PostgresSeeder {
 
     public void seedNormalized(List<DataModelGenerator.GeneratedProduct> products, List<OrderDtos.OrderResponse> orders) {
         ensureCategoriesAndDefinitions();
-        log.info("[PostgresSeeder] Seeding normalized schema with {} products...", products.size());
+        log.info("[PostgresSeeder] Ubacujem {} proizvoda u normalizovanu šemu...", products.size());
 
         // 1. Insert products
         List<Object[]> productBatch = new ArrayList<>(BATCH_SIZE);
@@ -137,7 +137,7 @@ public class PostgresSeeder {
                             reviewBatch
                     );
                 }
-                log.info("[PostgresSeeder] Inserted {} normalized products...", (i + 1));
+                log.info("[PostgresSeeder] Ubacano {} normalizovanih proizvoda...", (i + 1));
                 productBatch.clear();
                 attrValueBatch.clear();
                 reviewBatch.clear();
@@ -149,7 +149,7 @@ public class PostgresSeeder {
     }
 
     public void seedJsonb(List<DataModelGenerator.GeneratedProduct> products) {
-        log.info("[PostgresSeeder] Seeding JSONB schema with {} products...", products.size());
+        log.info("[PostgresSeeder] Ubacujem {} proizvoda u JSONB šemu...", products.size());
         List<Object[]> jsonbBatch = new ArrayList<>(BATCH_SIZE);
 
         for (int i = 0; i < products.size(); i++) {
@@ -176,14 +176,14 @@ public class PostgresSeeder {
                                 "ON CONFLICT (id) DO NOTHING",
                         jsonbBatch
                 );
-                log.info("[PostgresSeeder] Inserted {} JSONB products...", (i + 1));
+                log.info("[PostgresSeeder] Ubacano {} JSONB proizvoda...", (i + 1));
                 jsonbBatch.clear();
             }
         }
     }
 
     private void seedOrders(List<OrderDtos.OrderResponse> orders) {
-        log.info("[PostgresSeeder] Seeding {} orders...", orders.size());
+        log.info("[PostgresSeeder] Ubacujem {} narudžbi...", orders.size());
         List<Object[]> orderBatch = new ArrayList<>(BATCH_SIZE);
         List<Object[]> itemBatch = new ArrayList<>(BATCH_SIZE * 3);
         List<Object[]> historyBatch = new ArrayList<>(BATCH_SIZE);
@@ -219,7 +219,7 @@ public class PostgresSeeder {
                         "INSERT INTO order_status_history (id, order_id, status, created_at) VALUES (?, ?, ?, ?)",
                         historyBatch
                 );
-                log.info("[PostgresSeeder] Inserted {} orders...", (i + 1));
+                log.info("[PostgresSeeder] Ubacano {} narudžbi...", (i + 1));
                 orderBatch.clear();
                 itemBatch.clear();
                 historyBatch.clear();

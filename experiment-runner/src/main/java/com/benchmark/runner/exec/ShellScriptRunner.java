@@ -47,7 +47,7 @@ public class ShellScriptRunner {
             return new Outcome(false, -1, e.getMessage());
         }
         if (!Files.isRegularFile(script)) {
-            String message = "Failure-injection script not found: " + script;
+            String message = "Skripta nije pronađena: " + script;
             log.warn(message);
             logSink.accept("[runner] " + message);
             return new Outcome(false, -1, message);
@@ -79,17 +79,17 @@ public class ShellScriptRunner {
             boolean finished = process.waitFor(properties.getDefaults().getScriptTimeoutSec(), TimeUnit.SECONDS);
             if (!finished) {
                 process.destroyForcibly();
-                return new Outcome(false, -1, "Script timed out: " + scriptName);
+                return new Outcome(false, -1, "Skripti " + scriptName + " je isteklo vrijeme");
             }
             int exitCode = process.exitValue();
             return exitCode == 0
                     ? new Outcome(true, 0, null)
-                    : new Outcome(false, exitCode, "Script " + scriptName + " exited with " + exitCode);
+                    : new Outcome(false, exitCode, "Skripta " + scriptName + " završila sa kodom " + exitCode);
         } catch (IOException e) {
-            return new Outcome(false, -1, "Cannot run " + scriptName + ": " + e.getMessage());
+            return new Outcome(false, -1, "Ne mogu pokrenuti " + scriptName + ": " + e.getMessage());
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            return new Outcome(false, -1, "Interrupted while running " + scriptName);
+            return new Outcome(false, -1, "Prekinuto izvršavanje " + scriptName);
         }
     }
 

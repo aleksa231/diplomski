@@ -74,23 +74,23 @@ public class K6Runner {
         try {
             exitCode = execute(command, workDir, logSink);
         } catch (IOException e) {
-            return new Outcome(null, "Failed to start k6: " + e.getMessage());
+            return new Outcome(null, "Nije uspjelo pokretanje k6: " + e.getMessage());
         }
         Instant finishedAt = Instant.now();
 
         if (!Files.isRegularFile(summaryFile)) {
-            return new Outcome(null, "k6 produced no summary export (exit code " + exitCode
-                    + "). Check the run log for details.");
+            return new Outcome(null, "k6 nije proizveo izvoz rezimea (izlazni kod " + exitCode
+                    + "). Pogledaj log pokretanja.");
         }
         try {
             SampleMetrics metrics = parseSummary(summaryFile, repetition, startedAt, finishedAt, exitCode);
             if (exitCode != 0) {
-                logSink.accept("[runner] k6 exited with code " + exitCode
-                        + " (a failed threshold does not invalidate the sample, but it is recorded).");
+                logSink.accept("[runner] k6 završio sa kodom " + exitCode
+                        + " (prekoračena granica ne poništava mjerenje, ali se bilježi).");
             }
             return new Outcome(metrics, null);
         } catch (IOException e) {
-            return new Outcome(null, "Cannot read k6 summary: " + e.getMessage());
+            return new Outcome(null, "Ne mogu pročitati k6 rezime: " + e.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class K6Runner {
                     logSink.accept("[k6] " + line);
                 }
             } catch (IOException e) {
-                logSink.accept("[runner] k6 output stream closed: " + e.getMessage());
+                logSink.accept("[runner] k6 izlazni tok se zatvorio: " + e.getMessage());
             }
         });
 
@@ -148,7 +148,7 @@ public class K6Runner {
             throw new UncheckedIOException(new IOException("Interrupted while waiting for k6", e));
         }
         if (!finished) {
-            logSink.accept("[runner] k6 exceeded " + properties.getDefaults().getK6TimeoutSec() + "s; killing it.");
+            logSink.accept("[runner] k6 je prešao " + properties.getDefaults().getK6TimeoutSec() + "s; prekidam ga.");
             process.destroyForcibly();
             try {
                 process.waitFor(10, TimeUnit.SECONDS);

@@ -90,7 +90,7 @@ public class RunRegistry {
                 .progress(RunProgress.builder()
                         .completedSteps(0)
                         .totalSteps(0)
-                        .currentStep(status.name().toLowerCase(java.util.Locale.ROOT))
+                        .currentStep(com.benchmark.runner.scenario.TargetLabels.statusStep(status))
                         .build())
                 .targets(document.getTargets() == null
                         ? new ArrayList<>() : new ArrayList<>(document.getTargets()))

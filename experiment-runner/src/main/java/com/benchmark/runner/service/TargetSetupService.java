@@ -52,11 +52,13 @@ public class TargetSetupService {
                       Consumer<String> logSink) {
         try {
             adminSetupRestClient.post().uri(url).body(body).retrieve().toBodilessEntity();
-            logSink.accept("[runner] " + target.requestedName() + ": applied " + label);
+            logSink.accept("[runner] " + com.benchmark.runner.scenario.TargetLabels.target(target.requestedName())
+                    + ": primijenjeno " + label);
         } catch (Exception e) {
-            String message = label + " FAILED (" + e.getMessage() + ")";
+            String message = label + " NEUSPJEŠNO (" + e.getMessage() + ")";
             log.warn("Target {}: {} on {}", target.requestedName(), message, url);
-            logSink.accept("[runner] " + target.requestedName() + ": " + message);
+            logSink.accept("[runner] " + com.benchmark.runner.scenario.TargetLabels.target(target.requestedName())
+                    + ": " + message);
             target.setup().remove(label);
             target.setup().add(message);
         }

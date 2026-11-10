@@ -63,8 +63,8 @@ public class DataGeneratorApplication implements CommandLineRunner {
         }
 
         log.info("=================================================================");
-        log.info("Starting Data Generator CLI");
-        log.info("Configuration: size={}, seed={}, ordersRatio={}, targets={}, reset={}",
+        log.info("Pokrećem generator podataka (Data Generator)");
+        log.info("Konfiguracija: size={}, seed={}, ordersRatio={}, targets={}, reset={}",
                 size, seed, ordersRatio, targets, reset);
         log.info("=================================================================");
 
@@ -79,34 +79,36 @@ public class DataGeneratorApplication implements CommandLineRunner {
             }
         }
 
-        log.info("Generating deterministic in-memory datasets...");
+        log.info("Generišem deterministički skup podataka u memoriji...");
         var products = DataModelGenerator.generateProducts(seed, size);
         int orderCount = (int) (size * ordersRatio);
         var orders = DataModelGenerator.generateOrders(seed, orderCount, products);
-        log.info("Generated {} products and {} orders in memory (took {} ms).",
+        log.info("Generisano {} proizvoda i {} narudžbi u memoriji (trajalo {} ms).",
                 products.size(), orders.size(), (System.currentTimeMillis() - startTime));
 
         if (targets.contains("mongo")) {
             long t0 = System.currentTimeMillis();
             mongoSeeder.seedProducts(products);
             mongoSeeder.seedOrders(orders);
-            log.info("[Target: MongoDB] Seeding completed in {} ms.", (System.currentTimeMillis() - t0));
+            log.info("[Sistem: MongoDB] Ubacivanje podataka završeno za {} ms.", (System.currentTimeMillis() - t0));
         }
 
         if (targets.contains("pg-normalized")) {
             long t0 = System.currentTimeMillis();
             postgresSeeder.seedNormalized(products, orders);
-            log.info("[Target: PG-Normalized] Seeding completed in {} ms.", (System.currentTimeMillis() - t0));
+            log.info("[Sistem: PostgreSQL, normalizovana šema] Ubacivanje podataka završeno za {} ms.",
+                    (System.currentTimeMillis() - t0));
         }
 
         if (targets.contains("pg-jsonb")) {
             long t0 = System.currentTimeMillis();
             postgresSeeder.seedJsonb(products);
-            log.info("[Target: PG-JSONB] Seeding completed in {} ms.", (System.currentTimeMillis() - t0));
+            log.info("[Sistem: PostgreSQL, JSONB šema] Ubacivanje podataka završeno za {} ms.",
+                    (System.currentTimeMillis() - t0));
         }
 
         log.info("=================================================================");
-        log.info("All target seedings finished successfully in {} ms total.",
+        log.info("Ubacivanje podataka u sve sisteme uspješno završeno (ukupno {} ms).",
                 (System.currentTimeMillis() - startTime));
         log.info("=================================================================");
     }

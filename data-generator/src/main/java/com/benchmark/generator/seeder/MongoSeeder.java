@@ -25,13 +25,13 @@ public class MongoSeeder {
     }
 
     public void reset() {
-        log.info("[MongoSeeder] Dropping products and orders collections...");
+        log.info("[MongoSeeder] Brišem kolekcije products i orders...");
         mongoTemplate.dropCollection("products");
         mongoTemplate.dropCollection("orders");
     }
 
     public void seedProducts(List<DataModelGenerator.GeneratedProduct> products) {
-        log.info("[MongoSeeder] Seeding {} products in batches of {}...", products.size(), BATCH_SIZE);
+        log.info("[MongoSeeder] Ubacujem {} proizvoda u grupama po {}...", products.size(), BATCH_SIZE);
         List<Document> batch = new ArrayList<>(BATCH_SIZE);
 
         for (int i = 0; i < products.size(); i++) {
@@ -61,14 +61,14 @@ public class MongoSeeder {
 
             if (batch.size() >= BATCH_SIZE || i == products.size() - 1) {
                 mongoTemplate.insert(batch, "products");
-                log.info("[MongoSeeder] Inserted {} products...", (i + 1));
+                log.info("[MongoSeeder] Ubacano {} proizvoda...", (i + 1));
                 batch.clear();
             }
         }
     }
 
     public void seedOrders(List<OrderDtos.OrderResponse> orders) {
-        log.info("[MongoSeeder] Seeding {} orders in batches of {}...", orders.size(), BATCH_SIZE);
+        log.info("[MongoSeeder] Ubacujem {} narudžbi u grupama po {}...", orders.size(), BATCH_SIZE);
         List<Document> batch = new ArrayList<>(BATCH_SIZE);
 
         for (int i = 0; i < orders.size(); i++) {
@@ -99,7 +99,7 @@ public class MongoSeeder {
 
             if (batch.size() >= BATCH_SIZE || i == orders.size() - 1) {
                 mongoTemplate.insert(batch, "orders");
-                log.info("[MongoSeeder] Inserted {} orders...", (i + 1));
+                log.info("[MongoSeeder] Ubacano {} narudžbi...", (i + 1));
                 batch.clear();
             }
         }

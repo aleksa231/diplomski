@@ -14,6 +14,7 @@ import com.benchmark.runner.model.ExperimentDtos.TargetRunResult;
 import com.benchmark.runner.scenario.ScenarioCatalog;
 import com.benchmark.runner.scenario.TargetCatalog;
 import com.benchmark.runner.scenario.TargetCatalog.ResolvedTarget;
+import com.benchmark.runner.scenario.TargetLabels;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,14 +97,14 @@ public class ExperimentService {
     public ExperimentRun start(ExperimentRequest request) {
         ExperimentRequest normalized = normalize(request);
         Path script = scenarioCatalog.resolveScript(normalized.getScenario())
-                .orElseThrow(() -> new IllegalArgumentException("No k6 script found for scenario "
-                        + normalized.getScenario() + " under " + properties.loadtestsDir()));
+                .orElseThrow(() -> new IllegalArgumentException("Nema k6 skripte za scenario "
+                        + normalized.getScenario() + " u direktoriju " + properties.loadtestsDir()));
         // Resolve every target up front so an unknown name fails the request instead of the run.
         normalized.getTargets().forEach(targetCatalog::resolve);
 
         if (!experimentRunning.compareAndSet(false, true)) {
-            throw new IllegalStateException("Another experiment is already running; benchmark integrity "
-                    + "requires experiments to run one at a time.");
+            throw new IllegalStateException("Drugi eksperiment je već u toku; integritet mjerenja "
+                    + "zahtijeva da se eksperimenti pokreću jedan po jedan.");
         }
 
         ExperimentRun run = ExperimentRun.builder()
@@ -139,7 +140,7 @@ public class ExperimentService {
         try {
             workDir = Files.createTempDirectory("k6-" + run.getId());
         } catch (IOException e) {
-            finish(run, RunStatus.FAILED, "Cannot create k6 working directory: " + e.getMessage());
+            finish(run, RunStatus.FAILED, "Ne mogu da napravim radni direktorij za k6: " + e.getMessage());
             return;
         }
 
@@ -155,12 +156,12 @@ public class ExperimentService {
                 run.setProgress(RunProgress.builder()
                         .completedSteps(completed)
                         .totalSteps(totalSteps(run.getRequest()))
-                        .currentStep("finished " + targetName)
+                        .currentStep("završeno: " + TargetLabels.target(targetName))
                         .build());
             }
             boolean anySample = run.getTargets().stream().anyMatch(t -> !t.getSamples().isEmpty());
             finish(run, anySample ? RunStatus.COMPLETED : RunStatus.FAILED,
-                    anySample ? null : "No target produced a measurement; see the run log.");
+                    anySample ? null : "Nijedan sistem nije dao mjerenje; pogledaj log pokretanja.");
         } catch (RuntimeException e) {
             log.error("Experiment {} failed", run.getId(), e);
             finish(run, RunStatus.FAILED, e.getMessage());
@@ -175,6 +176,8 @@ public class ExperimentService {
         String baseUrl = target.definition().getBaseUrl();
         String container = target.definition().getContainer();
         String scenario = run.getRequest().getScenario();
+        // Serbian display name, so the progress and the log are readable in the console.
+        String label = TargetLabels.target(targetName);
         // A target may pin its own k6 script; otherwise the scenario default is used.
         Path script = targetScript(target, scenario);
 
@@ -188,7 +191,7 @@ public class ExperimentService {
                 .script(script.toString())
                 .setup(target.setup());
 
-        log(run, "[runner] target " + targetName + " -> " + baseUrl
+        log(run, "[runner] sistem " + label + ": " + baseUrl
                 + (target.setup().isEmpty() ? "" : " " + target.setup()));
         targetSetupService.apply(target, line -> log(run, line));
 
@@ -200,16 +203,16 @@ public class ExperimentService {
                 ? explainProbeService.capture(baseUrl, normalized, line -> log(run, line))
                 : List.of();
 
-        waitUntilReady(baseUrl, targetName, run);
+        waitUntilReady(baseUrl, label, run);
 
         int warmupSec = run.getRequest().getWarmupSec();
         if (warmupSec > 0) {
-            log(run, "[runner] warm-up for " + targetName + " (" + warmupSec + "s, excluded from results)");
+            log(run, "[runner] zagrijavanje za " + label + " (" + warmupSec + "s, ne ulazi u rezultat)");
             K6Runner.Outcome warmup = k6Runner.run(script, baseUrl, scenario,
                     run.getRequest().getClients(), warmupSec, run.getRequest().getDatasetSize(),
                     workDir, 0, line -> log(run, line));
             if (!warmup.isSuccess()) {
-                log(run, "[runner] warm-up failed: " + warmup.error());
+                log(run, "[runner] zagrijavanje nije uspjelo: " + warmup.error());
             }
         }
 
@@ -223,10 +226,10 @@ public class ExperimentService {
                 run.setProgress(RunProgress.builder()
                         .completedSteps(completedSteps)
                         .totalSteps(totalSteps(run.getRequest()))
-                        .currentStep(targetName + " repetition " + repetition + "/" + repetitions)
+                        .currentStep(label + " — repeticija " + repetition + "/" + repetitions)
                         .build());
 
-                waitUntilReady(baseUrl, targetName, run);
+                waitUntilReady(baseUrl, label, run);
                 Future injection = scheduleInjection(target, line -> log(run, line), run);
                 K6Runner.Outcome outcome = k6Runner.run(script, baseUrl, scenario,
                         run.getRequest().getClients(), run.getRequest().getDurationSec(),
@@ -236,14 +239,14 @@ public class ExperimentService {
 
                 if (!outcome.isSuccess()) {
                     error = outcome.error();
-                    log(run, "[runner] target " + targetName + " aborted: " + error);
+                    log(run, "[runner] " + label + ": mjerenje prekinuto: " + error);
                     break;
                 }
                 SampleMetrics sample = withResourceMetrics(outcome.metrics(), container, resilienceRun);
                 samples.add(sample);
                 completedSteps++;
-                log(run, String.format("[runner] %s rep %d: rps=%.1f p95=%.1fms p99=%.1fms err=%.3f%%",
-                        targetName, repetition, sample.getRps(), sample.getLatencyP95(), sample.getLatencyP99(),
+                log(run, String.format("[runner] %s, repeticija %d: rps=%.1f, p95=%.1f ms, p99=%.1f ms, greške=%.3f%%",
+                        label, repetition, sample.getRps(), sample.getLatencyP95(), sample.getLatencyP99(),
                         sample.getErrorRate() * 100));
             }
         } finally {
@@ -269,8 +272,8 @@ public class ExperimentService {
             return scenarioCatalog.resolveScriptPath(override);
         }
         return scenarioCatalog.resolveScript(scenario)
-                .orElseThrow(() -> new IllegalArgumentException("No k6 script found for scenario "
-                        + scenario + " under " + properties.loadtestsDir()));
+                .orElseThrow(() -> new IllegalArgumentException("Nema k6 skripte za scenario "
+                        + scenario + " u direktoriju " + properties.loadtestsDir()));
     }
 
     private SampleMetrics withResourceMetrics(SampleMetrics sample, String container, boolean resilienceRun) {
@@ -298,7 +301,7 @@ public class ExperimentService {
      * The wait is bounded and never fatal: a target that stays unhealthy is measured anyway so a
      * genuine outage remains visible instead of turning the whole run into an error.
      */
-    private void waitUntilReady(String baseUrl, String targetName, ExperimentRun run) {
+    private void waitUntilReady(String baseUrl, String targetLabel, ExperimentRun run) {
         long deadline = System.nanoTime() + READINESS_TIMEOUT_SEC * 1_000_000_000L;
         int attempts = 0;
         while (true) {
@@ -306,13 +309,14 @@ public class ExperimentService {
             String status = probeHealth(baseUrl);
             if ("UP".equals(status)) {
                 if (attempts > 1) {
-                    log(run, "[runner] " + targetName + " reported UP again after " + (attempts - 1) + "s");
+                    log(run, "[runner] " + targetLabel + " je ponovo prijavio stanje UP nakon "
+                            + (attempts - 1) + "s");
                 }
                 return;
             }
             if (System.nanoTime() >= deadline) {
-                log(run, "[runner] " + targetName + " did not report UP within " + READINESS_TIMEOUT_SEC
-                        + "s (last: " + status + "); measuring anyway");
+                log(run, "[runner] " + targetLabel + " nije prijavio stanje UP u roku od "
+                        + READINESS_TIMEOUT_SEC + "s (zadnje stanje: " + status + "); mjeri se ipak");
                 return;
             }
             try {
@@ -353,7 +357,7 @@ public class ExperimentService {
                 Thread.currentThread().interrupt();
                 return;
             }
-            log(run, "[runner] injecting failure after " + delaySec + "s: " + script);
+            log(run, "[runner] ubacujem otkaz nakon " + delaySec + "s: " + script);
             shellScriptRunner.run(script, sink);
         });
         return new Future(thread);
@@ -380,12 +384,12 @@ public class ExperimentService {
      * silently turn into a "passed" measurement.
      */
     private void resetDataset(ExperimentRun run) {
-        log(run, "[runner] restoring the canonical dataset before measuring");
+        log(run, "[runner] vraćam kanonski dataset prije mjerenja");
         ShellScriptRunner.Outcome outcome = shellScriptRunner.run("reset-dataset.sh",
                 line -> log(run, line), String.valueOf(run.getRequest().getDatasetSize()));
         if (!outcome.success()) {
-            log(run, "[runner] dataset reset failed (exit " + outcome.exitCode() + "): "
-                    + outcome.error() + "; measuring the current dataset anyway");
+            log(run, "[runner] reset dataseta nije uspio (izlazni kod " + outcome.exitCode() + "): "
+                    + outcome.error() + "; mjeri se postojeći dataset");
         }
     }
 
@@ -396,15 +400,16 @@ public class ExperimentService {
         run.setProgress(RunProgress.builder()
                 .completedSteps(run.getProgress().getTotalSteps())
                 .totalSteps(run.getProgress().getTotalSteps())
-                .currentStep(status.name().toLowerCase(java.util.Locale.ROOT))
+                .currentStep(TargetLabels.statusStep(status))
                 .build());
         try {
             run.setResultFile(resultWriter.write(run).toString());
         } catch (IOException e) {
             log.error("Cannot write result for run {}", run.getId(), e);
-            log(run, "[runner] failed to write the result file: " + e.getMessage());
+            log(run, "[runner] nije uspjelo upisivanje datoteke rezultata: " + e.getMessage());
         }
-        log(run, "[runner] run " + status + (error == null ? "" : ": " + error));
+        log(run, "[runner] mjerenje " + TargetLabels.statusStep(status)
+                + (error == null ? "" : ": " + error));
     }
 
     private void log(ExperimentRun run, String line) {
@@ -424,37 +429,37 @@ public class ExperimentService {
 
     private ExperimentRequest normalize(ExperimentRequest request) {
         if (request == null) {
-            throw new IllegalArgumentException("Request body is required");
+            throw new IllegalArgumentException("Zahtjev mora imati tijelo (request body)");
         }
         if (!ScenarioCatalog.isKnownScenario(request.getScenario())) {
-            throw new IllegalArgumentException("Unknown scenario '" + request.getScenario()
-                    + "'. Known scenarios: " + ScenarioCatalog.knownScenarios());
+            throw new IllegalArgumentException("Nepoznat scenario '" + request.getScenario()
+                    + "'. Poznati scenariji: " + ScenarioCatalog.knownScenarios());
         }
         request.setScenario(ScenarioCatalog.normalize(request.getScenario()));
-        requirePositive(request.getClients(), "clients");
-        requirePositive(request.getDurationSec(), "durationSec");
-        requirePositive(request.getDatasetSize(), "datasetSize");
+        requirePositive(request.getClients(), "broj klijenata");
+        requirePositive(request.getDurationSec(), "trajanje (s)");
+        requirePositive(request.getDatasetSize(), "veličina dataseta");
         if (request.getTargets() == null || request.getTargets().isEmpty()) {
-            throw new IllegalArgumentException("At least one target is required");
+            throw new IllegalArgumentException("Potreban je najmanje jedan sistem");
         }
         if (request.getRepetitions() == null) {
             request.setRepetitions(properties.getDefaults().getRepetitions());
         }
         if (request.getRepetitions() < 1) {
-            throw new IllegalArgumentException("repetitions must be at least 1");
+            throw new IllegalArgumentException("Broj repeticija mora biti najmanje 1");
         }
         if (request.getWarmupSec() == null) {
             request.setWarmupSec(properties.getDefaults().getWarmupSec());
         }
         if (request.getWarmupSec() < 0) {
-            throw new IllegalArgumentException("warmupSec must not be negative");
+            throw new IllegalArgumentException("Trajanje zagrijavanja ne može biti negativno");
         }
         return request;
     }
 
     private void requirePositive(Integer value, String name) {
         if (value == null || value <= 0) {
-            throw new IllegalArgumentException(name + " must be a positive number");
+            throw new IllegalArgumentException(name + " mora biti pozitivan broj");
         }
     }
 
