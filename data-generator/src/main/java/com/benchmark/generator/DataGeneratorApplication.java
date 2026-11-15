@@ -37,7 +37,7 @@ public class DataGeneratorApplication implements CommandLineRunner {
         int size = Integer.parseInt(System.getenv().getOrDefault("DATASET_SIZE", "50000"));
         long seed = 42L;
         double ordersRatio = 2.0;
-        Set<String> targets = new HashSet<>(Arrays.asList("mongo", "pg-normalized", "pg-jsonb"));
+        Set<String> targets = new HashSet<>(Arrays.asList("mongo", "pg-normalized"));
         // Reset by default so `docker compose up` is idempotent: re-running it always restores the
         // canonical benchmarking dataset instead of crashing on duplicate deterministic ids.
         boolean reset = true;
@@ -74,7 +74,7 @@ public class DataGeneratorApplication implements CommandLineRunner {
             if (targets.contains("mongo")) {
                 mongoSeeder.reset();
             }
-            if (targets.contains("pg-normalized") || targets.contains("pg-jsonb")) {
+            if (targets.contains("pg-normalized")) {
                 postgresSeeder.reset();
             }
         }
@@ -97,13 +97,6 @@ public class DataGeneratorApplication implements CommandLineRunner {
             long t0 = System.currentTimeMillis();
             postgresSeeder.seedNormalized(products, orders);
             log.info("[Sistem: PostgreSQL, normalizovana šema] Ubacivanje podataka završeno za {} ms.",
-                    (System.currentTimeMillis() - t0));
-        }
-
-        if (targets.contains("pg-jsonb")) {
-            long t0 = System.currentTimeMillis();
-            postgresSeeder.seedJsonb(products);
-            log.info("[Sistem: PostgreSQL, JSONB šema] Ubacivanje podataka završeno za {} ms.",
                     (System.currentTimeMillis() - t0));
         }
 

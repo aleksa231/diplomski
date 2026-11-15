@@ -38,7 +38,6 @@ import java.util.UUID;
  * Dynamic filtering is done with correlated {@code EXISTS} predicates over the attribute tables.
  */
 @Component
-@ConditionalOnProperty(name = "app.relational.variant", havingValue = "normalized", matchIfMissing = true)
 public class NormalizedProductStore implements ProductStore {
 
     private static final Map<String, String> SORT_COLUMNS = Map.of(

@@ -35,37 +35,31 @@ app:
   scripts:
     dir: ${SCRIPTS_DIR:/scripts}
   defaults:
-    # Warm-up traffic is generated for this long and excluded from the recorded samples.
     warmup-sec: ${BENCH_WARMUP_SEC:30}
-    # At least 3 repetitions per measurement.
     repetitions: ${BENCH_REPETITIONS:3}
-    # Upper bound on how long a single k6 invocation may run before it is killed.
     k6-timeout-sec: ${BENCH_K6_TIMEOUT_SEC:900}
-    # Upper bound on how long a script may run.
     script-timeout-sec: ${BENCH_SCRIPT_TIMEOUT_SEC:120}
   services:
-    # Used by GET /api/live for health and per-service Prometheus metrics.
     - name: nosql-blocking
       url: http://nosql-blocking:8081
+    - name: nosql-reactive
+      url: http://nosql-reactive:8082
     - name: relational
       url: http://relational:8083
     - name: nosql-blocking-w1
       url: http://nosql-blocking-w1:8081
-    - name: relational-jsonb
-      url: http://relational-jsonb:8083
     - name: stub-service
       url: http://stub-service:8099
   targets:
     nosql-blocking:
       base-url: http://nosql-blocking:8081
       container: nosql-blocking
+    nosql-reactive:
+      base-url: http://nosql-reactive:8082
+      container: nosql-reactive
     relational:
       base-url: http://relational:8083
       container: relational
-    # Variant backends (one process per fixed-at-startup variant).
     nosql-blocking-w1:
       base-url: http://nosql-blocking-w1:8081
       container: nosql-blocking-w1
-    relational-jsonb:
-      base-url: http://relational-jsonb:8083
-      container: relational-jsonb

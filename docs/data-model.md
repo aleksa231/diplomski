@@ -1,6 +1,6 @@
 # Data Model & Schema Design: NoSQL vs Relational
 
-This document outlines the domain schema, design decisions, and trade-offs between MongoDB (Document model) and PostgreSQL (Normalized EAV and JSONB models).
+This document outlines the domain schema, design decisions, and trade-offs between MongoDB (Document model) and PostgreSQL (Normalized EAV model).
 
 ---
 
@@ -52,7 +52,6 @@ In MongoDB, each product is stored as a single cohesive document in the `product
 ### Document vs. Relational Approaches
 - **MongoDB**: Attributes reside as a nested JSON object (`attributes: { ... }`). Dynamic filtering is native (`attributes.ramGb: 16`, `attributes.organic: true`). Adding new categories or attributes requires zero schema alterations or downtime.
 - **PostgreSQL Normalized (EAV)**: Uses `attribute_definition` and `product_attribute_value` tables. Preserves strict relational integrity and type validation, but queries with multiple attribute filters require multiple joins or `GROUP BY ... HAVING` intersections, substantially increasing query complexity and query planner overhead.
-- **PostgreSQL JSONB**: Stores attributes in a `JSONB` column with a GIN index (`CREATE INDEX idx_products_jsonb_attrs ON product_jsonb USING gin (attributes)`). Provides document-like schema flexibility within PostgreSQL, queryable via `@>` and `->>`.
 
 ---
 

@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Storage abstraction for products and their stock. Two implementations are selected through
- * {@code app.relational.variant}: the normalized EAV model and the JSONB model. Cart, order and
- * report operations always use the shared relational tables, but every product read/write and
- * the stock decrement dispatch to the active variant.
+ * Storage abstraction for products and their stock. The normalized EAV model
+ * ({@link NormalizedProductStore}) is the only product store; the seam is kept so an alternative
+ * product representation can be dropped in without touching cart, order and report code.
+ * Cart, order and report operations always use the shared relational tables.
  */
 public interface ProductStore {
 

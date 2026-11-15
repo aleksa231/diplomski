@@ -13,10 +13,10 @@ test:
 	mvn test
 
 seed:
-	docker compose run --rm data-generator --size 5000 --seed 42 --orders-ratio 2 --targets mongo,pg-normalized,pg-jsonb
+	docker compose run --rm data-generator --size 5000 --seed 42 --orders-ratio 2 --targets mongo,pg-normalized
 
 scenario-S1:
-	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S1","datasetSize":5000,"clients":50,"durationSec":30,"repetitions":3,"targets":["nosql-blocking","relational-normalized","relational-jsonb"]}'
+	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S1","datasetSize":5000,"clients":50,"durationSec":30,"repetitions":3,"targets":["nosql-blocking","relational"]}'
 
 scenario-S2:
 	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S2","datasetSize":5000,"clients":50,"durationSec":30,"repetitions":3,"targets":["mongo-no-cache","mongo-cache","relational-no-cache","relational-cache"]}'

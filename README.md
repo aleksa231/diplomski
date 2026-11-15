@@ -20,12 +20,12 @@
    docker compose up --build
    ```
    Ovo automatski:
-   - Pokre?e MongoDB replica set (3 ?vora), Redis, PostgreSQL
-   - Pokre?e backend servise (nosql-blocking, nosql-reactive, relational)
-   - Pokre?e experiment-runner i stub-service
-   - Popunjava bazu sa 5.000 proizvoda i 10.000 narud?bi (deterministi?ki)
-   - Pokre?e Prometheus, Grafana i cAdvisor
-   - Pokre?e frontend (KlikMarket) na portu 3000
+   - Pokreće MongoDB replica set (3 čvora), Redis, PostgreSQL
+   - Pokreće backend servise (nosql-blocking, nosql-reactive, relational)
+   - Pokreće experiment-runner i stub-service
+   - Popunjava bazu sa 5.000 proizvoda i 10.000 narudžbi (deterministički)
+   - Pokreće Prometheus, Grafana i cAdvisor
+   - Pokreće frontend (KlikMarket) na portu 3000
 
 3. **Otvori aplikaciju:**
    - **KlikMarket (prodavnica):** http://localhost:3000
@@ -39,21 +39,21 @@
    ```
 
 ### Funkcionalnosti aplikacije
-- **KlikMarket** ? online prodavnica sa katalogom, korpa, narud?be, recenzije
-- **Eksperimentalna konzola** ? pokretanje i uporedba benchmark scenarija (S1?S7)
-- **Istorija transakcija** ? pregled svih narud?bi sa filterima i paginacijom
-- **Light/Dark mode** ? dugme u navigaciji za prebacivanje tema
+- **KlikMarket** — online prodavnica sa katalogom, korpa, narudžbe, recenzije
+- **Eksperimentalna konzola** — pokretanje i uporedba benchmark scenarija (S1–S4)
+- **Istorija transakcija** — pregled svih narudžbi sa filterima i paginacijom
+- **Light/Dark mode** — dugme u navigaciji za prebacivanje tema
 - **Srpski (ijekavski)** interfejs, tamna slate tema
 
 ### Napomene
-- Prvo pokretanje mo?e trajati 5?10 minuta (build Docker image-ova).
-- Dataset se resetuje na svaki run eksperimenta (o?ekivano pona?anje).
+- Prvo pokretanje može trajati 5–10 minuta (build Docker image-ova).
+- Dataset se resetuje na svaki run eksperimenta (očekivano ponašanje).
 - Za lokalni razvoj frontenda: `cd frontend && npm install && npm run dev`
 
 ---
 
 
-An empirical benchmarking system comparing NoSQL (**MongoDB 7.0 + Redis 7.2**) in blocking and reactive paradigms against a Relational reference (**PostgreSQL 16**) in normalized EAV and JSONB variants. All services adhere to a single REST contract ([contract/openapi.yaml](contract/openapi.yaml)).
+An empirical benchmarking system comparing NoSQL (**MongoDB 7.0 + Redis 7.2**) in blocking and reactive paradigms against a Relational reference (**PostgreSQL 16**) in a normalized EAV schema. All services adhere to a single REST contract ([contract/openapi.yaml](contract/openapi.yaml)).
 
 ---
 
@@ -97,7 +97,7 @@ make down
 | **cadvisor** | `8085` | Container metrics exporter |
 | **mongodb (rs0)** | `27017` / `27018` / `27019` | Replica set primary and secondary nodes |
 | **redis** | `6379` | In-memory key-value cache and cart store |
-| **postgres** | `5432` | Relational database (normalized and JSONB schemas) |
+| **postgres** | `5432` | Relational database (normalized EAV schema) |
 
 ---
 
@@ -185,4 +185,4 @@ wire the injection and recovery scripts to the corresponding run.
 1. **Local Docker Environment**: Single-host Docker Compose shares CPU and disk I/O. Container limits enforce isolation, but absolute latency numbers will reflect local machine capabilities rather than dedicated cloud clusters.
 2. **Docker Socket Mount**: The `experiment-runner` container mounts `/var/run/docker.sock` to orchestrate failure injection scenarios (`kill-mongo-primary.sh`, `start-mongo-nodes.sh`, `stop-redis.sh`, `start-redis.sh`) for the automated demo. This is strictly intended for local benchmarking demonstrations.
 3. **No Auth / Users**: By design, authentication, user sessions, and payment gateways are excluded to isolate database and architectural performance.
-4. **Relational Schema**: Both normalized (EAV with explicit foreign keys) and JSONB schemas exist within the same PostgreSQL database, switchable via runtime configuration `app.relational.variant`.
+4. **Relational Schema**: A single normalized schema (EAV with explicit foreign keys) backs the relational service; the PostgreSQL instance holds no alternative product representation.

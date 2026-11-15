@@ -8,12 +8,10 @@ import com.benchmark.common.dto.ReviewDto;
 import com.benchmark.relational.domain.OrderEntity;
 import com.benchmark.relational.domain.OrderStatusHistory;
 import com.benchmark.relational.domain.Product;
-import com.benchmark.relational.domain.ProductJsonb;
 import com.benchmark.relational.domain.Review;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -21,8 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Translates the two relational product representations (normalized EAV and JSONB) plus the
- * order aggregate into the shared REST DTOs, preserving the JSON types of dynamic attributes.
+ * Translates the relational product representation and order aggregate into the shared REST DTOs.
  */
 @Component
 public class ProductMapper {
@@ -39,23 +36,6 @@ public class ProductMapper {
                 .price(product.getPrice() == null ? null : product.getPrice().doubleValue())
                 .stock(product.getStock())
                 .attributes(attributes == null ? new HashMap<>() : attributes)
-                .reviews(reviews == null ? new ArrayList<>() : reviews)
-                .reviewCount(product.getReviewCount())
-                .ratingAvg(product.getRatingAvg() == null ? 0.0 : product.getRatingAvg().doubleValue())
-                .createdAt(product.getCreatedAt())
-                .updatedAt(product.getUpdatedAt())
-                .build();
-    }
-
-    public ProductDto toDto(ProductJsonb product, List<ReviewDto> reviews) {
-        return ProductDto.builder()
-                .id(product.getId())
-                .sku(product.getSku())
-                .name(product.getName())
-                .category(product.getCategory())
-                .price(product.getPrice() == null ? null : product.getPrice().doubleValue())
-                .stock(product.getStock())
-                .attributes(product.getAttributes() == null ? new HashMap<>() : product.getAttributes())
                 .reviews(reviews == null ? new ArrayList<>() : reviews)
                 .reviewCount(product.getReviewCount())
                 .ratingAvg(product.getRatingAvg() == null ? 0.0 : product.getRatingAvg().doubleValue())
@@ -103,8 +83,7 @@ public class ProductMapper {
 
     /**
      * Converts the normalized EAV value back to the original JSON type: integral numbers become
-     * {@link Integer} (the contract test asserts {@code ramGb -> 32} as an Integer), fractional
-     * numbers become {@link Double}, booleans and strings are returned as-is.
+     * {@link Integer}, fractional numbers become {@link Double}, booleans and strings are returned as-is.
      */
     public static Object typedValue(String stringValue, BigDecimal numberValue, Boolean booleanValue) {
         if (booleanValue != null) {

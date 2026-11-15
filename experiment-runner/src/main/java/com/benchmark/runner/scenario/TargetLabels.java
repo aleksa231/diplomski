@@ -5,18 +5,15 @@ import com.benchmark.runner.model.ExperimentDtos.RunStatus;
 import java.util.Map;
 
 /**
- * Serbian (ijekavian) display names for target IDs and run statuses, used in the run progress and
- * the run log so everything the console shows while a measurement is running is in Serbian.
- * Mirrors {@code frontend/src/labels.ts} so the progress line and the chips/tiles name the same
- * system the same way.
+ * Serbian (ijekavian) display names for target IDs and run statuses.
  */
 public final class TargetLabels {
 
     private static final Map<String, String> TARGET_LABELS = Map.ofEntries(
             Map.entry("nosql-blocking", "MongoDB (blokirajući pristup)"),
+            Map.entry("nosql-reactive", "MongoDB (reaktivni pristup)"),
             Map.entry("relational", "PostgreSQL (relaciona baza)"),
             Map.entry("relational-normalized", "PostgreSQL (podaci u tabelama)"),
-            Map.entry("relational-jsonb", "PostgreSQL (podaci u JSON obliku)"),
             Map.entry("relational-cache", "PostgreSQL (keš uključen)"),
             Map.entry("relational-no-cache", "PostgreSQL (bez keša)"),
             Map.entry("mongo-cache", "MongoDB (keš uključen)"),
@@ -28,7 +25,6 @@ public final class TargetLabels {
     private TargetLabels() {
     }
 
-    /** Serbian display name for a requested target ID; the ID itself when unknown. */
     public static String target(String requestedName) {
         if (requestedName == null) {
             return "-";
@@ -36,7 +32,6 @@ public final class TargetLabels {
         return TARGET_LABELS.getOrDefault(requestedName, requestedName);
     }
 
-    /** Serbian progress-step text for a run status. */
     public static String statusStep(RunStatus status) {
         if (status == null) {
             return "-";

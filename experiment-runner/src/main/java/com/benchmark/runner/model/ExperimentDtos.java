@@ -133,7 +133,7 @@ public final class ExperimentDtos {
         private String resolvedTarget;
         private String baseUrl;
         private String container;
-        /** Recorded configuration discriminator, e.g. {@code normalized} or {@code jsonb}. */
+        /** Recorded configuration discriminator, e.g. {@code normalized}. */
         private String variant;
         /** Recorded configuration discriminator, e.g. {@code w1} or {@code majority}. */
         private String writeConcern;

@@ -252,40 +252,6 @@ services:
       timeout: 3s
       retries: 15
 
-  relational-jsonb:
-    build:
-      context: .
-      dockerfile: relational/Dockerfile
-    container_name: relational-jsonb
-    environment:
-      SPRING_APPLICATION_NAME: relational-jsonb
-      APP_RELATIONAL_VARIANT: jsonb
-      SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/benchmark"
-      SPRING_DATASOURCE_USERNAME: benchmark
-      SPRING_DATASOURCE_PASSWORD: benchmark
-      SPRING_DATA_REDIS_HOST: redis
-      SPRING_DATA_REDIS_PORT: 6379
-      STUB_SERVICE_URL: "http://stub-service:8099"
-    ports:
-      - "8087:8083"
-    deploy:
-      resources:
-        limits:
-          cpus: '2.0'
-          memory: 1280M
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      stub-service:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8083/actuator/health | grep UP || exit 1"]
-      interval: 5s
-      timeout: 3s
-      retries: 15
-
   experiment-runner:
     build:
       context: .

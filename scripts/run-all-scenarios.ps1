@@ -8,7 +8,7 @@ param(
 $ErrorActionPreference = "Stop"
 
 $presets = @{
-    S1 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational-normalized","relational-jsonb") }
+    S1 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational-normalized") }
     S2 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("mongo-no-cache","mongo-cache","relational-no-cache","relational-cache") }
     S3 = @{ datasetSize = 5000;  clients = 100; durationSec = 30; repetitions = 3; targets = @("mongo-majority","postgres") }
     S4 = @{ datasetSize = 50000; clients = 20;  durationSec = 60; repetitions = 3; targets = @("nosql-blocking","relational") }
@@ -32,7 +32,7 @@ $composeFile = (Resolve-Path (Join-Path $PSScriptRoot "..\docker-compose.yml")).
 $requiredContainers = @(
     "mongo1", "mongo2", "mongo3", "redis", "postgres",
     "stub-service", "experiment-runner",
-    "nosql-blocking", "nosql-blocking-w1", "relational", "relational-jsonb"
+    "nosql-blocking", "nosql-blocking-w1", "relational"
 )
 
 function Assert-ServicesHealthy {

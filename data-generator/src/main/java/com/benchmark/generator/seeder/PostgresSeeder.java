@@ -2,8 +2,6 @@ package com.benchmark.generator.seeder;
 
 import com.benchmark.common.dto.OrderDtos;
 import com.benchmark.generator.core.DataModelGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,7 +17,6 @@ public class PostgresSeeder {
     private static final int BATCH_SIZE = 2000;
 
     private final JdbcTemplate jdbcTemplate;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     // In-memory cache of category and attribute definition IDs
     private final Map<String, String> categoryIds = new HashMap<>();
@@ -31,7 +28,7 @@ public class PostgresSeeder {
 
     public void reset() {
         log.info("[PostgresSeeder] Praznim tabele u bazi...");
-        jdbcTemplate.execute("TRUNCATE TABLE order_status_history, order_item, orders, cart_item, cart, review, product_attribute_value, product, product_jsonb CASCADE");
+        jdbcTemplate.execute("TRUNCATE TABLE order_status_history, order_item, orders, cart_item, cart, review, product_attribute_value, product CASCADE");
     }
 
     public void ensureCategoriesAndDefinitions() {
@@ -146,40 +143,6 @@ public class PostgresSeeder {
 
         // 2. Insert orders
         seedOrders(orders);
-    }
-
-    public void seedJsonb(List<DataModelGenerator.GeneratedProduct> products) {
-        log.info("[PostgresSeeder] Ubacujem {} proizvoda u JSONB šemu...", products.size());
-        List<Object[]> jsonbBatch = new ArrayList<>(BATCH_SIZE);
-
-        for (int i = 0; i < products.size(); i++) {
-            var gp = products.get(i);
-            var p = gp.dto();
-
-            try {
-                PGobject jsonbObj = new PGobject();
-                jsonbObj.setType("jsonb");
-                jsonbObj.setValue(objectMapper.writeValueAsString(gp.rawAttributes()));
-
-                jsonbBatch.add(new Object[]{
-                        p.getId(), p.getSku(), p.getName(), p.getCategory(), p.getPrice(), p.getStock(),
-                        jsonbObj, p.getReviewCount(), p.getRatingAvg(),
-                        Timestamp.from(p.getCreatedAt()), Timestamp.from(p.getUpdatedAt())
-                });
-            } catch (Exception e) {
-                throw new RuntimeException("JSON serialization error", e);
-            }
-
-            if (jsonbBatch.size() >= BATCH_SIZE || i == products.size() - 1) {
-                jdbcTemplate.batchUpdate(
-                        "INSERT INTO product_jsonb (id, sku, name, category, price, stock, attributes, review_count, rating_avg, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) " +
-                                "ON CONFLICT (id) DO NOTHING",
-                        jsonbBatch
-                );
-                log.info("[PostgresSeeder] Ubacano {} JSONB proizvoda...", (i + 1));
-                jsonbBatch.clear();
-            }
-        }
     }
 
     private void seedOrders(List<OrderDtos.OrderResponse> orders) {
