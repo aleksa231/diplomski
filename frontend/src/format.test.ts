@@ -3,11 +3,11 @@ import { int, meanStd, num, percent, statusClass, timestamp } from './format';
 
 describe('format', () => {
   it('renders an em dash for a value that was not measured', () => {
-    expect(num(null)).toBe('—');
-    expect(int(undefined)).toBe('—');
-    expect(percent(Number.NaN)).toBe('—');
-    expect(meanStd(undefined)).toBe('—');
-    expect(timestamp(null)).toBe('—');
+    expect(num(null)).toBe('-');
+    expect(int(undefined)).toBe('-');
+    expect(percent(Number.NaN)).toBe('-');
+    expect(meanStd(undefined)).toBe('-');
+    expect(timestamp(null)).toBe('-');
   });
 
   it('rounds integers and fixes decimals', () => {

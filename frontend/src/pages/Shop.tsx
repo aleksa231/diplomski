@@ -55,7 +55,7 @@ const SORT_OPTIONS = [
   { value: '', label: 'Nasumično' },
   { value: 'price,asc', label: 'Cijena: rastuće' },
   { value: 'price,desc', label: 'Cijena: opadajuće' },
-  { value: 'name,asc', label: 'Naziv A–Ž' },
+  { value: 'name,asc', label: 'Naziv A-Ž' },
   { value: 'createdAt,desc', label: 'Najnovije' },
 ];
 
@@ -184,7 +184,7 @@ export default function ShopPage() {
             Sve za tvoj <em>digitalni</em> i svakodnevni život.
           </h1>
           <p>
-            Laptopi, telefoni, odjeća, namirnice i knjige — pet kategorija iz mjerljivog,
+            Laptopi, telefoni, odjeća, namirnice i knjige - pet kategorija iz mjerljivog,
             deterministički generisanog kataloga. Ista ponuda, tri različita backend modela.
           </p>
           <div className="row mt-2">

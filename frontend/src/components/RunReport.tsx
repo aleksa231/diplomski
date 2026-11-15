@@ -61,7 +61,7 @@ function explainLegend(queries: string[]): string {
   if (queries.includes('Q6')) {
     return 'Q4/Q5/Q7 su kontrast bez filtera (scan punog skupa je očekivan). Q6 namjerno ne spaja narudžbe i proizvode, pa filter po datumu ostaje ključan korak.';
   }
-  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) — oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
+  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) - oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
 }
 
 function rps(row: ComparisonRow): number {
@@ -172,7 +172,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   <>
                     <div className="badge badge-muted mt-1">nije izmjereno</div>
                     <div className="small muted mt-1">
-                      nijedan zahtjev nije završen u prozoru — vrijednosti nisu mjerodavne
+                      nijedan zahtjev nije završen u prozoru - vrijednosti nisu mjerodavne
                     </div>
                   </>
                 ) : (
@@ -327,7 +327,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       {row.label}
                       {row.error ? <span className="badge badge-error ml-1">GREŠKA</span> : null}
                     </td>
-                    <td className="small">{row.setup.join(', ') || '—'}</td>
+                    <td className="small">{row.setup.join(', ') || '-'}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.rps, 0)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyMean)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP50)}</td>

@@ -244,7 +244,7 @@ export default function CartPage() {
                         }
                         aria-label="Smanji količinu"
                       >
-                        −
+                        -
                       </button>
                       <span>{item.quantity}</span>
                       <button
@@ -271,7 +271,7 @@ export default function CartPage() {
                     </button>
                   </div>
                 </div>
-                <strong>{lineTotal === null ? '—' : price(lineTotal)}</strong>
+                <strong>{lineTotal === null ? '-' : price(lineTotal)}</strong>
               </article>
             );
           })}

@@ -151,7 +151,7 @@ export default function ProductDetailPage({ id }: { id: string }) {
                 disabled={quantity <= 1}
                 aria-label="Smanji količinu"
               >
-                −
+                -
               </button>
               <span>{quantity}</span>
               <button
@@ -182,7 +182,7 @@ export default function ProductDetailPage({ id }: { id: string }) {
             </div>
             <div className="meta-tile">
               <span>Ocjena</span>
-              <strong>{product.ratingAvg ? decimal(product.ratingAvg, 1) : '—'} / 5</strong>
+              <strong>{product.ratingAvg ? decimal(product.ratingAvg, 1) : '-'} / 5</strong>
             </div>
             <div className="meta-tile">
               <span>Recenzije</span>
@@ -195,7 +195,7 @@ export default function ProductDetailPage({ id }: { id: string }) {
               <Truck size={16} />
               <div>
                 <strong>Besplatna dostava</strong>
-                <span>Isporuka na kućnu adresu u roku od 2–4 radna dana.</span>
+                <span>Isporuka na kućnu adresu u roku od 2-4 radna dana.</span>
               </div>
             </div>
             <div className="detail-perk">

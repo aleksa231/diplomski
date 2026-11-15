@@ -255,7 +255,7 @@ export default function ExperimentConsole() {
               : targets.length === 0
                 ? 'Izaberi najmanje jedan sistem.'
                 : isActive(run?.status)
-                  ? 'Mjerenje je u toku — sačekajte završetak.'
+                  ? 'Mjerenje je u toku - sačekajte završetak.'
                   : 'Pokretanje se pokreće odmah; napredak i rezultat se prikazuju ispod.'}
           </span>
         </div>
@@ -298,7 +298,7 @@ export default function ExperimentConsole() {
             <div className="console-run-head">
               <div className="row">
                 <strong>
-                  {run.request.scenario} — {run.scenarioTitle}
+                  {run.request.scenario} - {run.scenarioTitle}
                 </strong>
               </div>
               <span className="console-progress-value">{Math.round(progressPercent)}%</span>
@@ -306,7 +306,7 @@ export default function ExperimentConsole() {
 
             <div>
               <div className="spread small muted">
-                <span>{run.progress?.currentStep || '—'}</span>
+                <span>{run.progress?.currentStep || '-'}</span>
                 <span>
                   {completedSteps} / {totalSteps} koraka
                 </span>
@@ -368,7 +368,7 @@ export default function ExperimentConsole() {
                       <tr key={target.target}>
                         <td>{targetLabel(target.target)}</td>
                         <td className="mono small">{target.script}</td>
-                        <td className="small">{(target.setup ?? []).join(', ') || '—'}</td>
+                        <td className="small">{(target.setup ?? []).join(', ') || '-'}</td>
                         <td className="text-center">{target.samples?.length ?? 0}</td>
                         <td>
                           {target.error ? (
@@ -400,7 +400,7 @@ export default function ExperimentConsole() {
                 </span>
                 <span className="small muted">posljednjih {Math.min(40, logLines.length)} linija loga</span>
               </div>
-              <pre className="log console-log">{logLines.slice(-40).join('\n') || '—'}</pre>
+              <pre className="log console-log">{logLines.slice(-40).join('\n') || '-'}</pre>
             </div>
 
             {run.status === 'COMPLETED' ? (
@@ -450,7 +450,7 @@ export default function ExperimentConsole() {
             <div className="row">
               <span className={statusClass(reportRun.status)}>{statusLabel(reportRun.status)}</span>
               <strong>
-                {reportRun.request.scenario} — {reportRun.scenarioTitle}
+                {reportRun.request.scenario} - {reportRun.scenarioTitle}
               </strong>
               <span className="small muted">
                 pokrenut {timestamp(reportRun.startedAt)}, završen {timestamp(reportRun.finishedAt)}

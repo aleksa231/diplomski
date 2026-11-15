@@ -82,13 +82,13 @@ export function decimal(value: number, digits = 1): string {
 
 export function attributeValue(key: string, value: unknown): string {
   if (value === null || value === undefined) {
-    return '—';
+    return '-';
   }
   if (typeof value === 'boolean') {
     return value ? 'Da' : 'Ne';
   }
   if (Array.isArray(value)) {
-    return value.length === 0 ? '—' : value.map((item) => attributeValue(key, item)).join(', ');
+    return value.length === 0 ? '-' : value.map((item) => attributeValue(key, item)).join(', ');
   }
   const unit = ATTRIBUTE_UNITS[key];
   const text = typeof value === 'number' ? DECIMAL.format(value) : String(value);
@@ -98,5 +98,5 @@ export function attributeValue(key: string, value: unknown): string {
 const EURO = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
 
 export function price(value: number | null | undefined): string {
-  return value === null || value === undefined ? '—' : EURO.format(value);
+  return value === null || value === undefined ? '-' : EURO.format(value);
 }

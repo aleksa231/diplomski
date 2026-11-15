@@ -23,7 +23,7 @@ public class HttpClientConfig {
                 .build();
     }
 
-    /** Health probes and cache toggles — short timeouts so a dead service fails fast. */
+    /** Health probes and cache toggles - short timeouts so a dead service fails fast. */
     @Bean
     public RestClient serviceRestClient() {
         return RestClient.builder()

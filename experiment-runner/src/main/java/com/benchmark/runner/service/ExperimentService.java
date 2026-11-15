@@ -226,7 +226,7 @@ public class ExperimentService {
                 run.setProgress(RunProgress.builder()
                         .completedSteps(completedSteps)
                         .totalSteps(totalSteps(run.getRequest()))
-                        .currentStep(label + " — repeticija " + repetition + "/" + repetitions)
+                        .currentStep(label + " - repeticija " + repetition + "/" + repetitions)
                         .build());
 
                 waitUntilReady(baseUrl, label, run);

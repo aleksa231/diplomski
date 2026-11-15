@@ -1,4 +1,4 @@
-# KlikMarket — uporedno ispitivanje NoSQL i relacionih baza (Spring Boot)
+# KlikMarket - uporedno ispitivanje NoSQL i relacionih baza (Spring Boot)
 
 ## Kako pokrenuti (brzi vodi?)
 
@@ -39,14 +39,14 @@
    ```
 
 ### Funkcionalnosti aplikacije
-- **KlikMarket** — online prodavnica sa katalogom, korpa, narudžbe, recenzije
-- **Eksperimentalna konzola** — pokretanje i uporedba benchmark scenarija (S1–S4)
-- **Istorija transakcija** — pregled svih narudžbi sa filterima i paginacijom
-- **Light/Dark mode** — dugme u navigaciji za prebacivanje tema
+- **KlikMarket** - online prodavnica sa katalogom, korpa, narudžbe, recenzije
+- **Eksperimentalna konzola** - pokretanje i uporedba benchmark scenarija (S1-S4)
+- **Istorija transakcija** - pregled svih narudžbi sa filterima i paginacijom
+- **Light/Dark mode** - dugme u navigaciji za prebacivanje tema
 - **Srpski (ijekavski)** interfejs, tamna slate tema
 
 ### Napomene
-- Prvo pokretanje može trajati 5–10 minuta (build Docker image-ova).
+- Prvo pokretanje može trajati 5-10 minuta (build Docker image-ova).
 - Dataset se resetuje na svaki run eksperimenta (očekivano ponašanje).
 - Za lokalni razvoj frontenda: `cd frontend && npm install && npm run dev`
 
@@ -109,8 +109,8 @@ To guarantee benchmark honesty, all equivalent services and database tiers are a
 | :--- | :--- | :--- | :--- |
 | **Databases** (`mongo1-3`, `postgres`, `redis`) | 2.0 vCPU | 2048 MB | N/A |
 | **API Services** (`nosql-blocking`, `nosql-reactive`, `relational`) | 2.0 vCPU | 1024 MB | `-Xms512m -Xmx768m -XX:+UseZGC -XX:+ZGenerational` |
-| **Support Services** (`stub-service`, `experiment-runner`) | 1.0–2.0 vCPU | 512–1024 MB | `-Xms256m -Xmx512m` |
-| **Frontend & Exporters** | 0.5–1.0 vCPU | 256–512 MB | N/A |
+| **Support Services** (`stub-service`, `experiment-runner`) | 1.0-2.0 vCPU | 512-1024 MB | `-Xms256m -Xmx512m` |
+| **Frontend & Exporters** | 0.5-1.0 vCPU | 256-512 MB | N/A |
 
 ### Host Hardware Baseline
 - **OS**: Windows 10/11 x64 (WSL2 Docker Engine)
