@@ -1,24 +1,17 @@
-# Runs benchmark scenarios S1-S7 sequentially via experiment-runner (one experiment at a time).
-# Usage: .\scripts\run-all-scenarios.ps1 [-RunnerUrl http://localhost:8090] [-Scenarios S6,S7]
-# The canonical dataset (5k products / 10k orders) is restored before every scenario, so no
-# scenario is measured against data left behind by a previous one. S6 is last on purpose: it is the
-# only scenario that injects faults (kills the Mongo primary / stops Redis), and its recovery window
-# would otherwise contaminate the next measurement.
+# Runs benchmark scenarios S1-S4 sequentially via experiment-runner (one experiment at a time).
+# Usage: .\scripts\run-all-scenarios.ps1 [-RunnerUrl http://localhost:8090] [-Scenarios S1,S2,S3,S4]
 param(
     [string]$RunnerUrl = "http://localhost:8090",
-    [string]$Scenarios = "S1,S2,S3,S4,S5,S7,S6"
+    [string]$Scenarios = "S1,S2,S3,S4"
 )
 
 $ErrorActionPreference = "Stop"
 
 $presets = @{
-    S1 = @{ datasetSize = 5000; clients = 50;  durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational-normalized","relational-jsonb") }
-    S2 = @{ datasetSize = 5000; clients = 50;  durationSec = 30; repetitions = 3; targets = @("mongo-no-cache","mongo-cache","relational-no-cache","relational-cache") }
-    S3 = @{ datasetSize = 5000; clients = 100; durationSec = 30; repetitions = 3; targets = @("mongo-w1","mongo-majority","postgres") }
-    S4 = @{ datasetSize = 5000; clients = 20;  durationSec = 30; repetitions = 3; targets = @("mongo-indexed","mongo-unindexed","postgres-indexed","postgres-unindexed") }
-    S5 = @{ datasetSize = 5000; clients = 2000; durationSec = 60; repetitions = 3; targets = @("nosql-blocking","nosql-reactive") }
-    S6 = @{ datasetSize = 5000; clients = 50;  durationSec = 30; repetitions = 3; targets = @("failover","redis-down","concurrency") }
-    S7 = @{ datasetSize = 5000; clients = 2;   durationSec = 90; repetitions = 3; targets = @("nosql-blocking","relational") }
+    S1 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational-normalized","relational-jsonb") }
+    S2 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("mongo-no-cache","mongo-cache","relational-no-cache","relational-cache") }
+    S3 = @{ datasetSize = 5000;  clients = 100; durationSec = 30; repetitions = 3; targets = @("mongo-majority","postgres") }
+    S4 = @{ datasetSize = 50000; clients = 20;  durationSec = 60; repetitions = 3; targets = @("nosql-blocking","relational") }
 }
 
 function Wait-Runner {
@@ -36,13 +29,10 @@ function Wait-Runner {
 
 $composeFile = (Resolve-Path (Join-Path $PSScriptRoot "..\docker-compose.yml")).Path
 
-# Every container a scenario can touch. A scenario must never be measured while one of these is
-# missing, stopped or unhealthy: an OOM kill or a crashed service would otherwise be recorded as a
-# "successful" run with meaningless throughput and error rates.
 $requiredContainers = @(
     "mongo1", "mongo2", "mongo3", "redis", "postgres",
     "stub-service", "experiment-runner",
-    "nosql-blocking", "nosql-reactive", "nosql-blocking-w1", "relational", "relational-jsonb"
+    "nosql-blocking", "nosql-blocking-w1", "relational", "relational-jsonb"
 )
 
 function Assert-ServicesHealthy {
@@ -51,8 +41,6 @@ function Assert-ServicesHealthy {
     try {
         $bad = @()
         foreach ($name in $requiredContainers) {
-            # Capture the native exit code immediately: piping into Select-Object -First 1 aborts the
-            # pipeline early and leaves $LASTEXITCODE unreliable, which produced false "missing" hits.
             $raw = docker inspect $name --format "{{.State.Running}}|{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}" 2>$null
             $code = $LASTEXITCODE
             if ($code -ne 0 -or -not $raw) { $bad += "$name (missing)"; continue }
@@ -73,8 +61,6 @@ function Assert-ServicesHealthy {
 
 function Reset-Dataset {
     Write-Host "  Restoring canonical dataset (5k products / 10k orders)..." -ForegroundColor DarkGray
-    # docker compose writes progress to stderr; with $ErrorActionPreference = "Stop" PowerShell 5
-    # would treat that as a terminating NativeCommandError, so relax it just for this call.
     $previous = $ErrorActionPreference
     $ErrorActionPreference = "Continue"
     try {
@@ -100,10 +86,6 @@ function Start-Scenario {
         targets     = $Preset.targets
     } | ConvertTo-Json -Depth 5
 
-    # A transient socket error ("underlying connection was closed") can be raised after the runner
-    # already accepted the POST. The runner allows only one experiment at a time and rejects
-    # concurrent ones with 409, so before retrying we look for an already-active run and reuse it
-    # instead of launching a duplicate measurement for the same scenario.
     for ($attempt = 1; $attempt -le 3; $attempt++) {
         try {
             return Invoke-RestMethod -Method Post -Uri "$RunnerUrl/api/experiments" -ContentType "application/json" -Body $body -TimeoutSec 30

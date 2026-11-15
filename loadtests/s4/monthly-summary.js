@@ -1,4 +1,4 @@
-/*
+﻿/*
  * S7 - Where the relational model wins.
  *
  * (a) GET /api/reports/category-monthly-summary on all targets, timed. This report joins orders,
@@ -24,7 +24,7 @@ import { check, group, sleep } from 'k6';
 import { Trend, Counter, Rate } from 'k6/metrics';
 
 const BASE = __ENV.TARGET_URL || 'http://localhost:8081';
-const SCENARIO = __ENV.SCENARIO || 'S5';
+const SCENARIO = __ENV.SCENARIO || 'S4';
 const REPORT_FROM = __ENV.REPORT_FROM || '2024-01-01T00:00:00Z';
 const REPORT_TO = __ENV.REPORT_TO || '2026-12-31T23:59:59Z';
 

@@ -26,15 +26,14 @@ public class ScenarioCatalog {
 
     private static final Logger log = LoggerFactory.getLogger(ScenarioCatalog.class);
 
-    /** Scenario titles from spec section 10.3. */
+    /** Scenario titles for the 4 core benchmark scenarios. */
     private static final Map<String, String> TITLES = new LinkedHashMap<>();
 
     static {
-        TITLES.put("S1", "Fleksibilnost šeme i dokument model");
-        TITLES.put("S2", "Keširanje i niska latencija");
-        TITLES.put("S3", "Propusnost pisanja pod opterećenjem");
-        TITLES.put("S4", "Reaktivno naspram blokirajućeg");
-        TITLES.put("S5", "Gdje relacioni model pobjeđuje");
+        TITLES.put("S1", "Katalog proizvoda — dokumentni model naspram povezanih tabela");
+        TITLES.put("S2", "Često ponavljani zahtjevi — Redis kao dopuna trajnoj bazi");
+        TITLES.put("S3", "Kupovina posljednjeg primjerka — transakcije, konkurentnost i integritet");
+        TITLES.put("S4", "Mjesečni izvještaj o prodaji — povezivanje podataka i agregacije");
     }
 
     private final RunnerProperties properties;
@@ -96,8 +95,7 @@ public class ScenarioCatalog {
     }
 
     /**
-     * Resolves an explicit k6 script referenced by a target definition, e.g.
-     * {@code s6/02-last-item-concurrency.js}, relative to the loadtests root.
+     * Resolves an explicit k6 script referenced by a target definition relative to the loadtests root.
      *
      * @throws IllegalArgumentException when the path escapes the loadtests directory or is missing
      */

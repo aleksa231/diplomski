@@ -1944,8 +1944,7 @@ html.light .shop-footer {
 html.light .card,
 html.light .console-panel,
 html.light .scenario-card,
-html.light .product-card,
-html.light .admin-intro {
+html.light .product-card {
   background-color: #ffffff;
   border-color: #e2e8f0;
   color: #0f172a;
@@ -2595,8 +2594,9 @@ html.light .cart-summary .muted {
 }
 
 /* Filter section */
+/* Traka sa filterima nema sopstvenu pozadinu: u svijetloj temi se vidi pozadina stranice. */
 html.light .shop-filters {
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 html.light .filter-label {

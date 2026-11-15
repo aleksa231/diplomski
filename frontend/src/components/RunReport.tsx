@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -61,7 +61,7 @@ function explainLegend(queries: string[]): string {
   if (queries.includes('Q6')) {
     return 'Q4/Q5/Q7 su kontrast bez filtera (scan punog skupa je očekivan). Q6 namjerno ne spaja narudžbe i proizvode, pa filter po datumu ostaje ključan korak.';
   }
-  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) ? oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
+  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) — oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
 }
 
 function rps(row: ComparisonRow): number {
@@ -148,7 +148,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               </>
             ) : null}{' '}
             {withErrors.length === 0
-              ? 'Nijedan sistem nije pgreškeo greške.'
+              ? 'Nijedan sistem nije prijavio greške.'
               : `Greške su izmjerene kod: ${withErrors
                   .map((row) => `${row.label} (${percent(row.target.aggregated?.errorRate?.mean)})`)
                   .join(', ')}.`}
@@ -303,7 +303,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
           ) : null}
 
           <section className="card">
-            <h2 className="card-title">Agregirano po sistemu (prosjek ? standardna devijacija)</h2>
+            <h2 className="card-title">Agregirano po sistemu (prosjek ± standardna devijacija)</h2>
             <div className="table-wrap">
               <table className="table">
               <thead>
@@ -386,7 +386,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                                   className={scanBadgeClass(snapshot.scanType)}
                                   title={
                                     snapshot.error ??
-                                    (snapshot.stages.length > 0 ? snapshot.stages.join(' ? ') : undefined)
+                                    (snapshot.stages.length > 0 ? snapshot.stages.join(' → ') : undefined)
                                   }
                                 >
                                   {snapshot.error ? 'n/a' : (SCAN_LABELS[snapshot.scanType] ?? snapshot.scanType)}
@@ -403,14 +403,14 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 </table>
               </div>
               <p className="small muted mt-1">
-                Plan se ?ita sa servisa prije mjerenja (isti upiti koje pokreće {scenarioCode}).{' '}
+                Plan se čita sa servisa prije mjerenja (isti upiti koje pokreće {scenarioCode}).{' '}
                 {explainQueries.map((q, i) => (
                   <span key={q}>
                     <strong>{q}</strong> {QUERY_LEGEND[q] ?? q}
                     {i < explainQueries.length - 1 ? '; ' : '. '}
                   </span>
                 ))}
-                ?indeks? = baza je koristila indeks; ?scan? = pročitala je sve redove. {explainLegend(explainQueries)}
+                „indeks" = baza je koristila indeks; „scan" = pročitala je sve redove. {explainLegend(explainQueries)}
               </p>
             </section>
             );

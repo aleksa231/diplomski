@@ -1,10 +1,5 @@
 /**
- * Scenario catalogue and the target combinations the Makefile drives (spec section 10.3).
- * The numeric fields only prefill the console form and stay editable. The target list is fixed: a
- * scenario is defined by which processes it compares, so the console offers exactly these targets
- * plus an explicit list of optional ones (below). Measuring anything else would answer a different
- * question than the one the scenario asks (and could leave state behind that the result metadata
- * cannot describe).
+ * Scenario catalogue and the target combinations the runner drives.
  */
 export interface ScenarioPreset {
   code: string;
@@ -19,9 +14,7 @@ export interface ScenarioPreset {
   targets: string[];
   /**
    * Targets that can be measured with this scenario's script and still answer a meaningful
-   * question, but are not part of its canonical definition. Offered unselected, and each one is
-   * chosen so it cannot corrupt the preset measurement: either it is a stateless backend or it
-   * pins its own runtime state (cache/index) because the name says so.
+   * question, but are not part of its canonical definition.
    */
   optionalTargets?: string[];
   /** Brief explanation of what the test does (Serbian). */
@@ -33,60 +26,41 @@ export const DEFAULT_DATASET_SIZE = 50000;
 export const SCENARIOS: ScenarioPreset[] = [
   {
     code: 'S1',
-    title: 'Fleksibilnost šeme i dokument model',
+    title: 'Katalog proizvoda — dokumentni model naspram povezanih tabela',
     description:
-      'Šta se testira: koliko brzo tri različita načina čuvanja istog kataloga proizvoda mogu odgovoriti na zahtjeve kupaca. MongoDB čuva cijeli proizvod u jednom zapisu (dokument), dok PostgreSQL čuva podatke u tabelama (normalizovano) ili u jednoj JSON koloni. Mjeri se brzina čitanja kataloga i to da li dokument model ima prednost kad je šema fleksibilna.',
+      'Šta se testira: kupac otvara detalje proizvoda sa osnovnim podacima, dodatnim karakteristikama i posljednjih 20 recenzija. PostgreSQL podatke sastavlja spajanjem iz povezanih tabela, dok MongoDB čita jedan dokument koji sadrži proizvod, njegove atribute i ugrađene novije recenzije. Mjere se vrijeme odgovora (posebno p95) i propusnost bez Redis keša.',
     clients: 50,
     durationSec: 30,
     targets: ['nosql-blocking', 'relational-normalized', 'relational-jsonb'],
-    // Same catalog reads, non-blocking stack: shows whether the document-model result holds there.
-    optionalTargets: ['nosql-reactive'],
   },
   {
     code: 'S2',
-    title: 'Keširanje i niska latencija',
+    title: 'Često ponavljani zahtjevi — Redis kao dopuna trajnoj bazi',
     description:
-      'Šta se testira: koliko Redis keš (brza privremena memorija) ubrzava čitanje korpe i popularnih proizvoda. Upoređuje se isti backend sa uključenim i isključenim kešom, da bi se vidjelo koliko je baš keš odgovoran za nisku latenciju, a ne sama baza.',
-    // The cache is on by default, so a run without cache-off targets would measure "Mongo+Redis vs
-    // Postgres+Redis" and could not attribute the low latency to the cache. Both states are set
-    // explicitly because a target that leaves the state untouched (null) would inherit whatever the
-    // previous target applied.
+      'Šta se testira: veliki broj kupaca ponavlja iste zahtjeve za katalog i listu proizvoda (filtriranje i sortiranje). Isti backend mjeri se bez keša i sa zagrijanim Redis kešom, za PostgreSQL i za MongoDB. Posmatra se koliko keširanje rasterećuje bazu podataka i smanjuje latenciju ponovljenih čitanja.',
     clients: 50,
     durationSec: 30,
     targets: ['mongo-no-cache', 'mongo-cache', 'relational-no-cache', 'relational-cache'],
   },
   {
     code: 'S3',
-    title: 'Propusnost pisanja pod opterećenjem',
+    title: 'Kupovina posljednjeg primjerka — transakcije, konkurentnost i integritet',
     description:
-      'Šta se testira: koliko narudžbi i proizvoda sistem može upisati u bazu u sekundi kada mnogo korisnika istovremeno naručuje. Upoređuje se MongoDB i PostgreSQL. MongoDB se testira sa dva nivoa sigurnosti zapisa: w1 (upis se potvrđuje ćim ga primarna baza primi - brži ali manje siguran, podaci mogu biti izgubljeni pri padu) i majority (upis se potvrđuje tek nakon što ga većina čvorova replica seta potvrdi - sporiji ali sigurniji, podaci su trajno sačuvani).',
+      'Šta se testira: 100 kupaca istovremeno pokušava kupiti proizvod čija je zaliha tačno 1 komad. Provjerava se konkurentnost, izolacija i integritet transakcija: da li je tačno jedna kupovina uspjela (HTTP 201), da li su ostale odbijene (HTTP 409), te da zaliha ne ode u minus (ostaje tačno 0) i u MongoDB-u i u PostgreSQL-u.',
     clients: 100,
     durationSec: 30,
-    targets: ['mongo-w1', 'mongo-majority', 'postgres'],
-    // Write path on the non-blocking stack; write concern does not apply there, so one target is
+    targets: ['mongo-majority', 'postgres'],
+    optionalTargets: ['mongo-w1'],
   },
   {
     code: 'S4',
-    title: 'Reaktivno naspram blokirajućeg',
+    title: 'Mjesečni izvještaj o prodaji — povezivanje podataka i agregacije',
     description:
-      'Šta se testira: koliko dobro sistem podnosi hiljade istovremenih zahtjeva - klasični (blokirajući) pristup naspram reaktivnog (non-blocking). Mjeri se skalabilnost pod visokim opterećenjem, tj. da li reaktivni pristup stvarno podnosi više korisnika.',
-    clients: 2000,
-    durationSec: 60,
-    targets: ['nosql-blocking', 'nosql-reactive'],
-    // A second blocking baseline (servlet + JDBC), so the blocking cost is not read off one stack.
-    optionalTargets: ['relational'],
-  },
-  {
-    code: 'S5',
-    title: 'Gdje relacioni model pobjeđuje',
-    description:
-      'Šta se testira: analitički izvještaj koji spaja 4 tabele (narudžbe → stavke → proizvodi → kategorije) i računa promet, broj narudžbi/kupaca/proizvoda i prosjeke po kategoriji i mjesecu. To je tip upita gdje relaciona baza (SQL, JOIN, agregacije u jednom prolazu) ima jasnu prednost nad dokument bazom, koja mora da spaja podatke kroz pipeline i održava više skupova za različite brojače. Koristi se 50.000 proizvoda i ~100.000 narudžbi.',
-    clients: 30,
+      'Šta se testira: administrator traži mjesečni prihod po kategorijama i najprodavanije proizvode. PostgreSQL koristi povezivanje više tabela (JOIN) i SQL grupisanje, dok MongoDB koristi agregacioni pipeline ($lookup, $unwind, $group). Mjeri se vrijeme izvršavanja analitičkih upita i ponašanje pri većem obimu podataka.',
+    clients: 20,
     durationSec: 60,
     datasetSize: 50000,
     targets: ['nosql-blocking', 'relational'],
-    // Same aggregation on the jsonb storage model: tells whether the relational win comes from the
-    // query planner or from the normalized tables.
     optionalTargets: ['relational-jsonb'],
   },
 ];

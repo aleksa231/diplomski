@@ -348,7 +348,7 @@ export default function CartPage() {
           ) : null}
 
           <p className="small muted mt-2">
-            Narud?bina se upisuje u bazu podataka, a stanje proizvoda se umanjuje u istoj transakciji.
+            Narudžbina se upisuje u bazu podataka, a stanje proizvoda se umanjuje u istoj transakciji.
           </p>
         </aside>
       </div>
