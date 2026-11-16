@@ -1,0 +1,158 @@
+{
+  "runId" : "55e9f045-384b-4a82-98d4-3b8bf59aa520",
+  "scenario" : "S1",
+  "scenarioTitle" : "Fleksibilnost šeme i dokument model",
+  "script" : "/loadtests/s1/catalog-read.js",
+  "status" : "COMPLETED",
+  "startedAt" : "2026-11-13T17:55:43.232664975Z",
+  "finishedAt" : "2026-11-13T17:57:09.431691331Z",
+  "generatedAt" : "2026-11-13T17:57:09.433621009Z",
+  "configuration" : {
+    "datasetSize" : 200,
+    "clients" : 5,
+    "durationSec" : 5,
+    "repetitions" : 1,
+    "warmupSec" : 30,
+    "targets" : [ "nosql-blocking", "relational-normalized" ],
+    "targetDetails" : {
+      "nosql-blocking" : {
+        "resolvedTarget" : "nosql-blocking",
+        "baseUrl" : "http://nosql-blocking:8081",
+        "setup" : [ ]
+      },
+      "relational-normalized" : {
+        "resolvedTarget" : "relational",
+        "baseUrl" : "http://relational:8083",
+        "setup" : [ "variant=normalized" ],
+        "variant" : "normalized"
+      }
+    }
+  },
+  "targets" : [ {
+    "target" : "nosql-blocking",
+    "resolvedTarget" : "nosql-blocking",
+    "baseUrl" : "http://nosql-blocking:8081",
+    "container" : "nosql-blocking",
+    "variant" : null,
+    "writeConcern" : null,
+    "script" : "/loadtests/s1/catalog-read.js",
+    "setup" : [ ],
+    "explainPlans" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 37.28496103206415,
+      "latencyMean" : 4.157290109947648,
+      "latencyP50" : 3.749567,
+      "latencyP95" : 6.375828,
+      "latencyP99" : 10.277183199999996,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.21526315789473688,
+      "memAvg" : 417.99593353271484,
+      "httpRequests" : 191,
+      "iterations" : 189,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-13T17:56:24.754627259Z",
+      "finishedAt" : "2026-11-13T17:56:30.195572903Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 37.28496103206415,
+        "stdDev" : 0.0
+      },
+      "latencyMean" : {
+        "mean" : 4.157290109947648,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 3.749567,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 6.375828,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 10.277183199999996,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.21526315789473688,
+        "stdDev" : 0.0
+      },
+      "memAvg" : {
+        "mean" : 417.99593353271484,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  }, {
+    "target" : "relational-normalized",
+    "resolvedTarget" : "relational",
+    "baseUrl" : "http://relational:8083",
+    "container" : "relational",
+    "variant" : "normalized",
+    "writeConcern" : null,
+    "script" : "/loadtests/s1/catalog-read.js",
+    "setup" : [ "variant=normalized" ],
+    "explainPlans" : [ ],
+    "samples" : [ {
+      "repetition" : 1,
+      "rps" : 29.739487306228956,
+      "latencyMean" : 24.68238643452381,
+      "latencyP50" : 9.4629585,
+      "latencyP95" : 75.3614267,
+      "latencyP99" : 141.64028805000189,
+      "errorRate" : 0.0,
+      "cpuAvg" : 0.459375,
+      "memAvg" : 484.1888618469238,
+      "httpRequests" : 168,
+      "iterations" : 166,
+      "droppedIterations" : 0,
+      "k6ExitCode" : 0,
+      "startedAt" : "2026-11-13T17:57:03.441765457Z",
+      "finishedAt" : "2026-11-13T17:57:09.414809549Z",
+      "timeline" : [ ]
+    } ],
+    "aggregated" : {
+      "rps" : {
+        "mean" : 29.739487306228956,
+        "stdDev" : 0.0
+      },
+      "latencyMean" : {
+        "mean" : 24.68238643452381,
+        "stdDev" : 0.0
+      },
+      "latencyP50" : {
+        "mean" : 9.4629585,
+        "stdDev" : 0.0
+      },
+      "latencyP95" : {
+        "mean" : 75.3614267,
+        "stdDev" : 0.0
+      },
+      "latencyP99" : {
+        "mean" : 141.64028805000189,
+        "stdDev" : 0.0
+      },
+      "errorRate" : {
+        "mean" : 0.0,
+        "stdDev" : 0.0
+      },
+      "cpuAvg" : {
+        "mean" : 0.459375,
+        "stdDev" : 0.0
+      },
+      "memAvg" : {
+        "mean" : 484.1888618469238,
+        "stdDev" : 0.0
+      }
+    },
+    "error" : null
+  } ]
+}
