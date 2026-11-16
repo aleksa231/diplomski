@@ -95,54 +95,102 @@ public class ReportService {
     }
 
     /**
-     * Join-heavy report (S7): for every category and month it returns revenue, the number of distinct
+     * Join-heavy report (S4): for every category and month it returns revenue, the number of distinct
      * orders, the average basket size and the top 3 products by units sold.
      *
-     * <p>Stages: unwind the embedded order items, join a product to resolve the category, split the ISO
-     * date into year/month, group once per order to keep the order count correct, then group per
-     * category/month and collect the product lines. The top-3 selection is done on the small collected
-     * array; all of the join/group work stays inside the database.
+     * <p>Stages: unwind the embedded order items, join a product to resolve the category, split the
+     * ISO date into year/month, then a single {@code $facet} branches the stream. One branch groups
+     * per category/month (distinct orders, revenue, items); the other groups per category/month/product,
+     * sorts by units and keeps only the first three products. Both aggregations stay inside the
+     * database, so the response is small regardless of how many order lines the dataset holds.
      */
     public List<CategoryMonthlySummaryResponse> getCategoryMonthlySummary() {
-        List<AggregationOperation> ops = new ArrayList<>();
-        ops.add(unwind("items"));
-        ops.add(lookup("products", "items.productId", "_id", "prod"));
-        ops.add(unwind("prod"));
+        Document project = new Document("$project", new Document()
+                .append("category", "$prod.category")
+                .append("orderId", "$_id")
+                .append("productId", "$items.productId")
+                .append("productName", "$items.productName")
+                .append("quantity", "$items.quantity")
+                .append("lineRevenue", new Document("$multiply", List.of("$items.price", "$items.quantity")))
+                .append("yearStr", new Document("$dateToString", new Document("format", "%Y").append("date", "$createdAt")))
+                .append("monthStr", new Document("$dateToString", new Document("format", "%m").append("date", "$createdAt"))));
 
-        ops.add(project()
-                .and("prod.category").as("category")
-                .and("_id").as("orderId")
-                .and("items.productId").as("productId")
-                .and("items.productName").as("productName")
-                .and("items.quantity").as("quantity")
-                .and(ArithmeticOperators.Multiply.valueOf("items.price").multiplyBy("items.quantity")).as("lineRevenue")
-                .and(DateOperators.DateToString.dateOf("createdAt").toString("%Y")).as("yearStr")
-                .and(DateOperators.DateToString.dateOf("createdAt").toString("%m")).as("monthStr"));
+        List<Document> summaryPipeline = List.of(
+                new Document("$group", new Document("_id", new Document("category", "$category")
+                        .append("year", "$yearStr")
+                        .append("month", "$monthStr"))
+                        .append("revenue", new Document("$sum", "$lineRevenue"))
+                        .append("totalItems", new Document("$sum", "$quantity"))
+                        .append("orderIds", new Document("$addToSet", "$orderId"))),
+                new Document("$project", new Document("_id", 0)
+                        .append("category", "$_id.category")
+                        .append("year", "$_id.year")
+                        .append("month", "$_id.month")
+                        .append("revenue", 1)
+                        .append("totalItems", 1)
+                        .append("orderCount", new Document("$size", "$orderIds"))));
 
-        // One row per (category, month, order): the order's revenue, item count and its product lines.
-        ops.add(group("category", "yearStr", "monthStr", "orderId")
-                .sum("lineRevenue").as("orderRevenue")
-                .sum("quantity").as("orderItems")
-                .push(new Document("productId", "$productId")
-                        .append("productName", "$productName")
-                        .append("quantity", "$quantity")
-                        .append("lineRevenue", "$lineRevenue"))
-                .as("lines"));
+        List<Document> productPipeline = List.of(
+                new Document("$group", new Document("_id", new Document("category", "$category")
+                        .append("year", "$yearStr")
+                        .append("month", "$monthStr")
+                        .append("productId", "$productId"))
+                        .append("productName", new Document("$first", "$productName"))
+                        .append("units", new Document("$sum", "$quantity"))
+                        .append("revenue", new Document("$sum", "$lineRevenue"))),
+                new Document("$sort", new Document("_id.category", 1)
+                        .append("_id.year", -1)
+                        .append("_id.month", -1)
+                        .append("units", -1)),
+                new Document("$group", new Document("_id", new Document("category", "$_id.category")
+                        .append("year", "$_id.year")
+                        .append("month", "$_id.month"))
+                        .append("topProducts", new Document("$push", new Document("productId", "$_id.productId")
+                                .append("productName", "$productName")
+                                .append("unitsSold", "$units")
+                                .append("revenue", "$revenue")))),
+                new Document("$project", new Document("topProducts", new Document("$slice", List.of("$topProducts", 3)))));
 
-        // One row per (category, month): the number of orders is the number of rows in the previous stage.
-        ops.add(group("_id.category", "_id.yearStr", "_id.monthStr")
-                .sum("orderRevenue").as("revenue")
-                .sum("orderItems").as("totalItems")
-                .count().as("orderCount")
-                .push("lines").as("lineGroups"));
+        Document facet = new Document("$facet", new Document("summary", summaryPipeline)
+                .append("byProduct", productPipeline));
 
-        Aggregation agg = newAggregation(ops);
-        AggregationResults<Document> results = mongoTemplate.aggregate(agg, "orders", Document.class);
+        Aggregation agg = newAggregation(
+                unwind("items"),
+                lookup("products", "items.productId", "_id", "prod"),
+                unwind("prod"),
+                context -> project,
+                context -> facet)
+                .withOptions(AggregationOptions.builder().allowDiskUse(true).build());
+
+        Document root = mongoTemplate.aggregate(agg, "orders", Document.class).getUniqueMappedResult();
+        if (root == null) {
+            return List.of();
+        }
+
+        Map<String, List<TopProductResponse>> topProductsByGroup = new HashMap<>();
+        for (Document row : root.getList("byProduct", Document.class)) {
+            Document id = row.get("_id", Document.class);
+            String category = id.getString("category");
+            String year = id.getString("year");
+            String month = id.getString("month");
+            List<TopProductResponse> topProducts = new ArrayList<>();
+            for (Document product : row.getList("topProducts", Document.class)) {
+                topProducts.add(TopProductResponse.builder()
+                        .productId(product.getString("productId"))
+                        .productName(product.getString("productName"))
+                        .category(category)
+                        .unitsSold(asLong(product.get("unitsSold")))
+                        .revenue(round2(asDouble(product.get("revenue"))))
+                        .build());
+            }
+            topProductsByGroup.put(groupKey(category, year, month), topProducts);
+        }
 
         List<CategoryMonthlySummaryResponse> summaries = new ArrayList<>();
-        for (Document d : results.getMappedResults()) {
-            Document id = d.get("_id", Document.class);
-            String category = id.getString("category");
+        for (Document d : root.getList("summary", Document.class)) {
+            String category = d.getString("category");
+            String year = d.getString("year");
+            String month = d.getString("month");
             long orderCount = asLong(d.get("orderCount"));
             long totalItems = asLong(d.get("totalItems"));
             double averageBasketSize = orderCount == 0
@@ -151,12 +199,12 @@ public class ReportService {
 
             summaries.add(CategoryMonthlySummaryResponse.builder()
                     .category(category)
-                    .year(Integer.parseInt(id.getString("yearStr")))
-                    .month(Integer.parseInt(id.getString("monthStr")))
+                    .year(Integer.parseInt(year))
+                    .month(Integer.parseInt(month))
                     .revenue(round2(asDouble(d.get("revenue"))))
                     .orderCount(orderCount)
                     .averageBasketSize(averageBasketSize)
-                    .topProducts(topProducts(category, d.get("lineGroups")))
+                    .topProducts(topProductsByGroup.getOrDefault(groupKey(category, year, month), List.of()))
                     .build());
         }
 
@@ -166,46 +214,8 @@ public class ReportService {
         return summaries;
     }
 
-    /** Aggregates the collected per-order product lines into the top 3 products of a category/month. */
-    @SuppressWarnings("unchecked")
-    private List<TopProductResponse> topProducts(String category, Object lineGroups) {
-        if (!(lineGroups instanceof List<?> groups)) {
-            return new ArrayList<>();
-        }
-
-        Map<String, long[]> unitsByProduct = new LinkedHashMap<>();
-        Map<String, double[]> revenueByProduct = new LinkedHashMap<>();
-        Map<String, String> nameByProduct = new LinkedHashMap<>();
-
-        for (Object group : groups) {
-            if (!(group instanceof List<?> lines)) {
-                continue;
-            }
-            for (Object line : lines) {
-                if (!(line instanceof Document l)) {
-                    continue;
-                }
-                String productId = l.getString("productId");
-                if (productId == null) {
-                    continue;
-                }
-                nameByProduct.putIfAbsent(productId, l.getString("productName"));
-                unitsByProduct.computeIfAbsent(productId, k -> new long[1])[0] += asLong(l.get("quantity"));
-                revenueByProduct.computeIfAbsent(productId, k -> new double[1])[0] += asDouble(l.get("lineRevenue"));
-            }
-        }
-
-        return unitsByProduct.entrySet().stream()
-                .sorted(Map.Entry.<String, long[]>comparingByValue(Comparator.comparingLong(a -> a[0])).reversed())
-                .limit(3)
-                .map(e -> TopProductResponse.builder()
-                        .productId(e.getKey())
-                        .productName(nameByProduct.get(e.getKey()))
-                        .category(category)
-                        .unitsSold(e.getValue()[0])
-                        .revenue(round2(revenueByProduct.get(e.getKey())[0]))
-                        .build())
-                .toList();
+    private static String groupKey(String category, String year, String month) {
+        return category + "|" + year + "|" + month;
     }
 
     private static long asLong(Object value) {

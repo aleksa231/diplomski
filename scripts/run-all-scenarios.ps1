@@ -11,7 +11,7 @@ $presets = @{
     S1 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational-normalized") }
     S2 = @{ datasetSize = 5000;  clients = 50;  durationSec = 30; repetitions = 3; targets = @("mongo-no-cache","mongo-cache","relational-no-cache","relational-cache") }
     S3 = @{ datasetSize = 5000;  clients = 100; durationSec = 30; repetitions = 3; targets = @("nosql-blocking","relational") }
-    S4 = @{ datasetSize = 50000; clients = 20;  durationSec = 60; repetitions = 3; targets = @("nosql-blocking","relational") }
+    S4 = @{ datasetSize = 50000; clients = 2;   durationSec = 120; repetitions = 3; targets = @("nosql-blocking","relational") }
 }
 
 function Wait-Runner {

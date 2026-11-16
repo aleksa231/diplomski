@@ -25,7 +25,7 @@ scenario-S3:
 	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S3","datasetSize":5000,"clients":100,"durationSec":30,"repetitions":3,"targets":["nosql-blocking","relational"]}'
 
 scenario-S4:
-	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S4","datasetSize":50000,"clients":20,"durationSec":60,"repetitions":3,"targets":["nosql-blocking","relational"]}'
+	curl -s -X POST http://localhost:8090/api/experiments -H "Content-Type: application/json" -d '{"scenario":"S4","datasetSize":50000,"clients":2,"durationSec":120,"repetitions":3,"targets":["nosql-blocking","relational"]}'
 
 run-all:
 	powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run-all-scenarios.ps1

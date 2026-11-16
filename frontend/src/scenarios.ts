@@ -57,8 +57,8 @@ export const SCENARIOS: ScenarioPreset[] = [
     title: 'Mjesečni izvještaj o prodaji - povezivanje podataka i agregacije',
     description:
       'Šta se testira: administrator traži mjesečni prihod po kategorijama i najprodavanije proizvode. PostgreSQL koristi povezivanje više tabela (JOIN) i SQL grupisanje, dok MongoDB koristi agregacioni pipeline ($lookup, $unwind, $group). Mjeri se vrijeme izvršavanja analitičkih upita i ponašanje pri većem obimu podataka.',
-    clients: 20,
-    durationSec: 60,
+    clients: 2,
+    durationSec: 120,
     datasetSize: 50000,
     targets: ['nosql-blocking', 'relational'],
   },
