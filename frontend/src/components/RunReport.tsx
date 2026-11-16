@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import type { ExperimentRun } from '../api/types';
+import type { AggregateStats, ExperimentRun } from '../api/types';
 import {
   SERIES_COLORS,
   type ComparisonRow,
@@ -102,13 +102,26 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
   const lowestP95 = byP95[0];
   const highestP95 = byP95[byP95.length - 1];
   const repetitionsCount = Math.max(...rows.map((row) => row.target.samples?.length ?? 0));
+  const perMinute = run.request.scenario === 'S4';
   const withErrors = measured.filter((row) => (row.target.aggregated?.errorRate?.mean ?? 0) > 0);
-  const throughput = rpsBars(measured);
+  const throughput = rpsBars(measured).map((bar) => ({ ...bar, rps: bar.rps * (perMinute ? 60 : 1) }));
   const latency = p95Bars(measured);
   const explainRows = rows.filter((row) => (row.target.explainPlans?.length ?? 0) > 0);
   const showTimeline = hasTimeline(measured);
   const rpsTimeline = timelineSeries(measured, 'rps');
   const p95Timeline = timelineSeries(measured, 'p95Ms');
+
+  // S4 measures heavy report queries, so its throughput is naturally far below one request per
+  // second. There the whole report speaks in requests per minute; every other scenario stays at
+  // requests per second, which is the unit the other scenarios are compared in.
+  const rateUnitShort = perMinute ? 'zahtjeva/min' : 'zahtjeva/s';
+  const rateUnitLong = perMinute ? 'zahtjeva u minuti' : 'zahtjeva u sekundi';
+  const rateText = (value: number | null | undefined) =>
+    perMinute ? num((value ?? 0) * 60, 1) : rate(value);
+  const rateStatsText = (stats: AggregateStats | undefined) =>
+    perMinute
+      ? meanStd(stats ? { mean: stats.mean * 60, stdDev: stats.stdDev * 60 } : undefined, 1)
+      : rateStd(stats);
 
   return (
     <div className="stack">
@@ -124,11 +137,11 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               <>
                 {' '}
                 Najveću propusnost ima <strong>{fastest.label}</strong> sa{' '}
-                <strong>{rate(rps(fastest))} zahtjeva/s</strong>
+                <strong>{rateText(rps(fastest))} {rateUnitShort}</strong>
                 {slowest && slowest !== fastest ? (
                   <>
                     , što je {num(rps(fastest) / Math.max(rps(slowest), 0.01), 1)}× više od{' '}
-                    {slowest.label} ({rate(rps(slowest))} zahtjeva/s)
+                    {slowest.label} ({rateText(rps(slowest))} {rateUnitShort})
                   </>
                 ) : null}
                 .
@@ -180,10 +193,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 ) : (
                   <>
                     <div className="mt-1">
-                      <strong>{rate(rpsValue)} zahtjeva u sekundi</strong>
-                      {rpsValue > 0 && rpsValue < 1 ? (
-                        <span className="small muted"> (≈ {num(rpsValue * 60, 0)} u minuti)</span>
-                      ) : null}
+                      <strong>{rateText(rpsValue)} {rateUnitLong}</strong>
                     </div>
                     <div className="small muted mt-1">
                       srednja {num(aggregatedValue(row.target, 'latencyMean'), 1)} ms · p95{' '}
@@ -227,15 +237,15 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
       {measured.length > 0 ? (
         <>
           <section className="card">
-            <h2 className="card-title">Propusnost po sistemu (zahtjeva u sekundi, prosjek repeticija)</h2>
+            <h2 className="card-title">Propusnost po sistemu ({rateUnitLong}, prosjek repeticija)</h2>
             <div className="chart-wrap">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={throughput} margin={{ top: 35, right: 30, bottom: 64, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                   <XAxis dataKey="name" {...AXIS} interval={0} angle={-20} textAnchor="end" height={70} />
-                  <YAxis {...AXIS} unit=" rps" width={75} />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value) => `${rate(Number(value))} zahtjeva/s`} />
-                  <Bar dataKey="rps" fill="#4ade80" name="zahtjeva/s" maxBarSize={60} />
+                  <YAxis {...AXIS} unit={perMinute ? ' /min' : ' rps'} width={75} />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value) => `${rateText(Number(value))} ${rateUnitShort}`} />
+                  <Bar dataKey="rps" fill="#4ade80" name={rateUnitShort} maxBarSize={60} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -316,7 +326,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 <tr>
                   <th>Sistem</th>
                   <th>Konfiguracija</th>
-                  <th className="text-center">zahtjeva/s</th>
+                  <th className="text-center">{rateUnitShort}</th>
                   <th className="text-center">Srednja (ms)</th>
                   <th className="text-center">p50</th>
                   <th className="text-center">p95</th>
@@ -334,7 +344,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       {row.error ? <span className="badge badge-error ml-1">GREŠKA</span> : null}
                     </td>
                     <td className="small">{row.setup.join(', ') || '-'}</td>
-                    <td className="text-center">{rateStd(row.target.aggregated?.rps)}</td>
+                    <td className="text-center">{rateStatsText(row.target.aggregated?.rps)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyMean)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP50)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP95)}</td>
@@ -352,10 +362,11 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               cache=disabled), što je odlučujuće za poređenje sa i bez Redis-a.
             </p>
             <p className="small muted">
-              Kako čitati brojeve: <strong>zahtjeva/s</strong> je broj zahtjeva koje sistem završi u
-              sekundi (više je bolje); <strong>srednja</strong> je prosječno vrijeme odgovora, a{' '}
-              <strong>p95</strong> znači da je 95% korisnika dobilo odgovor brže od tog vremena
-              (manje je bolje); <strong>greške</strong> je udio zahtjeva koji nisu uspjeli.
+              Kako čitati brojeve: <strong>{rateUnitShort}</strong> je broj zahtjeva koje sistem završi
+              u {perMinute ? 'minuti' : 'sekundi'} (više je bolje); <strong>srednja</strong> je
+              prosječno vrijeme odgovora, a <strong>p95</strong> znači da je 95% korisnika dobilo
+              odgovor brže od tog vremena (manje je bolje); <strong>greške</strong> je udio zahtjeva
+              koji nisu uspjeli.
             </p>
           </section>
 
@@ -447,7 +458,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th className="text-center">zahtjeva/s</th>
+                          <th className="text-center">{rateUnitShort}</th>
                           <th className="text-center">Srednja (ms)</th>
                           <th className="text-center">p50</th>
                           <th className="text-center">p95</th>
@@ -464,7 +475,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                         {repetitions(focus.target).map((sample) => (
                           <tr key={sample.repetition}>
                             <td>{sample.repetition}</td>
-                            <td className="text-center">{rate(sample.rps)}</td>
+                            <td className="text-center">{rateText(sample.rps)}</td>
                             <td className="text-center">{num(sample.latencyMean)}</td>
                             <td className="text-center">{num(sample.latencyP50)}</td>
                             <td className="text-center">{num(sample.latencyP95)}</td>
