@@ -104,7 +104,9 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
   const repetitionsCount = Math.max(...rows.map((row) => row.target.samples?.length ?? 0));
   const perMinute = run.request.scenario === 'S4';
   const withErrors = measured.filter((row) => (row.target.aggregated?.errorRate?.mean ?? 0) > 0);
-  const throughput = rpsBars(measured).map((bar) => ({ ...bar, rps: bar.rps * (perMinute ? 60 : 1) }));
+  // The bars keep the raw requests-per-second values; only the labels convert to per-minute, so
+  // the tooltip, which also converts, cannot apply the factor twice.
+  const throughput = rpsBars(measured);
   const latency = p95Bars(measured);
   const explainRows = rows.filter((row) => (row.target.explainPlans?.length ?? 0) > 0);
   const showTimeline = hasTimeline(measured);
@@ -243,7 +245,12 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 <BarChart data={throughput} margin={{ top: 35, right: 30, bottom: 64, left: 20 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                   <XAxis dataKey="name" {...AXIS} interval={0} angle={-20} textAnchor="end" height={70} />
-                  <YAxis {...AXIS} unit={perMinute ? ' /min' : ' rps'} width={75} />
+                  <YAxis
+                    {...AXIS}
+                    unit={perMinute ? ' /min' : ' rps'}
+                    width={75}
+                    tickFormatter={perMinute ? (value) => num(Number(value) * 60, 1) : undefined}
+                  />
                   <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value) => `${rateText(Number(value))} ${rateUnitShort}`} />
                   <Bar dataKey="rps" fill="#4ade80" name={rateUnitShort} maxBarSize={60} />
                 </BarChart>
