@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { int, meanStd, num, percent, statusClass, timestamp } from './format';
+import { int, meanStd, num, percent, rate, rateStd, statusClass, timestamp } from './format';
 
 describe('format', () => {
   it('renders an em dash for a value that was not measured', () => {
@@ -7,12 +7,27 @@ describe('format', () => {
     expect(int(undefined)).toBe('-');
     expect(percent(Number.NaN)).toBe('-');
     expect(meanStd(undefined)).toBe('-');
+    expect(rate(undefined)).toBe('-');
+    expect(rateStd(undefined)).toBe('-');
     expect(timestamp(null)).toBe('-');
   });
 
   it('rounds integers and fixes decimals', () => {
     expect(int(1234.6)).toBe('1235');
     expect(num(12.345, 1)).toBe('12.3');
+  });
+
+  it('keeps fractions of a request per second visible instead of rounding them to zero', () => {
+    expect(rate(0.033)).toBe('0.03');
+    expect(rate(0.334)).toBe('0.33');
+    expect(rate(1.577)).toBe('1.58');
+    expect(rate(14.24)).toBe('14.2');
+    expect(rate(537.81)).toBe('538');
+  });
+
+  it('shows throughput mean and standard deviation with the same precision', () => {
+    expect(rateStd({ mean: 0.334, stdDev: 0.09 })).toBe('0.33 ± 0.09');
+    expect(rateStd(undefined)).toBe('-');
   });
 
   it('turns a 0..1 error rate into a percentage', () => {

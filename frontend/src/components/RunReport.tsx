@@ -26,7 +26,7 @@ import {
 } from '../analysis';
 import { EmptyState } from './Banner';
 import { targetLabel } from '../labels';
-import { int, meanStd, num, percent, timestamp } from '../format';
+import { int, meanStd, num, percent, rate, rateStd, timestamp } from '../format';
 
 const AXIS = { stroke: '#94a3b8', tick: { fontSize: 11 } };
 const TOOLTIP_STYLE = { backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: 6 };
@@ -124,11 +124,11 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
               <>
                 {' '}
                 Najveću propusnost ima <strong>{fastest.label}</strong> sa{' '}
-                <strong>{int(rps(fastest))} zahtjeva/s</strong>
+                <strong>{rate(rps(fastest))} zahtjeva/s</strong>
                 {slowest && slowest !== fastest ? (
                   <>
                     , što je {num(rps(fastest) / Math.max(rps(slowest), 0.01), 1)}× više od{' '}
-                    {slowest.label} ({int(rps(slowest))} zahtjeva/s)
+                    {slowest.label} ({rate(rps(slowest))} zahtjeva/s)
                   </>
                 ) : null}
                 .
@@ -163,7 +163,9 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
           </p>
 
           <div className="grid-4">
-            {rows.map((row) => (
+            {rows.map((row) => {
+              const rpsValue = aggregatedValue(row.target, 'rps') ?? 0;
+              return (
               <div className="tile" key={row.key}>
                 <div className="small muted">{row.label}</div>
                 {row.error ? (
@@ -178,7 +180,10 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                 ) : (
                   <>
                     <div className="mt-1">
-                      <strong>{int(aggregatedValue(row.target, 'rps'))} zahtjeva u sekundi</strong>
+                      <strong>{rate(rpsValue)} zahtjeva u sekundi</strong>
+                      {rpsValue > 0 && rpsValue < 1 ? (
+                        <span className="small muted"> (≈ {num(rpsValue * 60, 0)} u minuti)</span>
+                      ) : null}
                     </div>
                     <div className="small muted mt-1">
                       srednja {num(aggregatedValue(row.target, 'latencyMean'), 1)} ms · p95{' '}
@@ -200,7 +205,8 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   </>
                 )}
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {failed.length > 0 ? (
@@ -228,7 +234,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                   <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
                   <XAxis dataKey="name" {...AXIS} interval={0} angle={-20} textAnchor="end" height={70} />
                   <YAxis {...AXIS} unit=" rps" width={75} />
-                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value) => `${int(Number(value))} zahtjeva/s`} />
+                  <Tooltip contentStyle={TOOLTIP_STYLE} formatter={(value) => `${rate(Number(value))} zahtjeva/s`} />
                   <Bar dataKey="rps" fill="#4ade80" name="zahtjeva/s" maxBarSize={60} />
                 </BarChart>
               </ResponsiveContainer>
@@ -328,7 +334,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       {row.error ? <span className="badge badge-error ml-1">GREŠKA</span> : null}
                     </td>
                     <td className="small">{row.setup.join(', ') || '-'}</td>
-                    <td className="text-center">{meanStd(row.target.aggregated?.rps, 0)}</td>
+                    <td className="text-center">{rateStd(row.target.aggregated?.rps)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyMean)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP50)}</td>
                     <td className="text-center">{meanStd(row.target.aggregated?.latencyP95)}</td>
@@ -458,7 +464,7 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                         {repetitions(focus.target).map((sample) => (
                           <tr key={sample.repetition}>
                             <td>{sample.repetition}</td>
-                            <td className="text-center">{int(sample.rps)}</td>
+                            <td className="text-center">{rate(sample.rps)}</td>
                             <td className="text-center">{num(sample.latencyMean)}</td>
                             <td className="text-center">{num(sample.latencyP50)}</td>
                             <td className="text-center">{num(sample.latencyP95)}</td>
