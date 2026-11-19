@@ -46,7 +46,7 @@ public class TargetCatalog {
         Boolean cache = cacheState(key);
         Boolean indexes = indexState(key);
         String variant = key.contains("normalized") ? "normalized" : null;
-        String writeConcern = key.contains("w1") ? "w1" : (key.contains("majority") ? "majority" : null);
+        String writeConcern = key.contains("majority") ? "majority" : null;
 
         List<String> setup = new ArrayList<>();
         if (cache != null) {
@@ -87,7 +87,7 @@ public class TargetCatalog {
             return configured("nosql-reactive");
         }
         if (key.contains("mongo") || key.contains("nosql")) {
-            return key.contains("w1") ? configured("nosql-blocking-w1") : configured("nosql-blocking");
+            return configured("nosql-blocking");
         }
         if (key.contains("postgres") || key.contains("relational")) {
             return configured("relational");
