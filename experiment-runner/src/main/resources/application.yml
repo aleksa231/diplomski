@@ -46,8 +46,6 @@ app:
       url: http://nosql-reactive:8082
     - name: relational
       url: http://relational:8083
-    - name: nosql-blocking-w1
-      url: http://nosql-blocking-w1:8081
     - name: stub-service
       url: http://stub-service:8099
   targets:
@@ -60,6 +58,3 @@ app:
     relational:
       base-url: http://relational:8083
       container: relational
-    nosql-blocking-w1:
-      base-url: http://nosql-blocking-w1:8081
-      container: nosql-blocking-w1
