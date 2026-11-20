@@ -21,7 +21,7 @@ public class PopularController {
     }
 
     @GetMapping
-    public Mono<List<PopularItemResponse>> popular(@RequestParam(defaultValue = "views") String type,
+    public Mono<List<PopularItemResponse>> popular(@RequestParam(defaultValue = "purchases") String type,
                                                    @RequestParam(defaultValue = "10") int limit) {
         return popularityService.top(type, limit);
     }

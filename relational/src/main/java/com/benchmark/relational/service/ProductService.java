@@ -32,20 +32,17 @@ public class ProductService {
 
     private final ProductStore productStore;
     private final CatalogQueryService catalogQueryService;
-    private final PopularityService popularityService;
     private final CacheManager cacheManager;
     private final RestClient stubRestClient;
     private final BenchmarkMetrics metrics;
 
     public ProductService(ProductStore productStore,
                           CatalogQueryService catalogQueryService,
-                          PopularityService popularityService,
                           CacheManager cacheManager,
                           RestClient stubRestClient,
                           BenchmarkMetrics metrics) {
         this.productStore = productStore;
         this.catalogQueryService = catalogQueryService;
-        this.popularityService = popularityService;
         this.cacheManager = cacheManager;
         this.stubRestClient = stubRestClient;
         this.metrics = metrics;
@@ -70,7 +67,6 @@ public class ProductService {
         ProductDto product = metrics.time("postgres", "products.findById",
                 () -> productStore.findById(id)
                         .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + id)));
-        popularityService.recordView(id);
         return product;
     }
 

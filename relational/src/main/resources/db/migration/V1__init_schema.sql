@@ -85,23 +85,6 @@ CREATE TABLE cart_item (
     CONSTRAINT uq_cart_prod UNIQUE (cart_id, product_id)
 );
 
--- ==========================================================
--- JSONB Schema
--- ==========================================================
-
-CREATE TABLE product_jsonb (
-    id VARCHAR(36) PRIMARY KEY,
-    sku VARCHAR(64) NOT NULL UNIQUE,
-    name VARCHAR(255) NOT NULL,
-    category VARCHAR(100) NOT NULL,
-    price NUMERIC(10, 2) NOT NULL CHECK (price >= 0),
-    stock INT NOT NULL CHECK (stock >= 0),
-    attributes JSONB NOT NULL DEFAULT '{}',
-    review_count INT NOT NULL DEFAULT 0,
-    rating_avg NUMERIC(3, 2) NOT NULL DEFAULT 0.0,
-    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
-);
 
 -- ==========================================================
 -- Base Indexes

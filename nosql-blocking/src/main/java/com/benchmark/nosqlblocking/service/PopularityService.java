@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Popularity ranking backed by Redis sorted sets (ZINCRBY on product read / purchase).
+ * Popularity ranking backed by Redis sorted sets (ZINCRBY on product purchase).
  * Writes and reads are best effort: if Redis is down the operation is skipped and the
  * callers keep working, which keeps the cart/catalog paths independent of Redis health.
+ * View counting was removed; only {@code type=purchases} is supported.
  */
 @Service
 public class PopularityService {
 
     private static final Logger log = LoggerFactory.getLogger(PopularityService.class);
-    private static final String VIEWS_KEY = "popularity:views";
     private static final String PURCHASES_KEY = "popularity:purchases";
 
     private final StringRedisTemplate redis;
@@ -31,10 +31,6 @@ public class PopularityService {
     public PopularityService(StringRedisTemplate redis, BenchmarkMetrics metrics, MeterRegistry registry) {
         this.redis = redis;
         this.metrics = metrics;
-    }
-
-    public void recordView(String productId) {
-        increment(VIEWS_KEY, productId, 1.0, "popularity.view");
     }
 
     public void recordPurchase(String productId, int quantity) {
@@ -74,6 +70,6 @@ public class PopularityService {
     }
 
     private String keyFor(String type) {
-        return "purchases".equalsIgnoreCase(type) ? PURCHASES_KEY : VIEWS_KEY;
+        return PURCHASES_KEY;
     }
 }

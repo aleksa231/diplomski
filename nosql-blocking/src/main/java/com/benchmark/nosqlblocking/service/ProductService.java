@@ -41,7 +41,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final MongoTemplate mongoTemplate;
     private final CatalogQueryService catalogQueryService;
-    private final PopularityService popularityService;
     private final IndexAndExplainService indexAndExplainService;
     private final ProductMapper mapper;
     private final CacheManager cacheManager;
@@ -51,7 +50,6 @@ public class ProductService {
     public ProductService(ProductRepository productRepository,
                           MongoTemplate mongoTemplate,
                           CatalogQueryService catalogQueryService,
-                          PopularityService popularityService,
                           IndexAndExplainService indexAndExplainService,
                           ProductMapper mapper,
                           CacheManager cacheManager,
@@ -60,7 +58,6 @@ public class ProductService {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.catalogQueryService = catalogQueryService;
-        this.popularityService = popularityService;
         this.indexAndExplainService = indexAndExplainService;
         this.mapper = mapper;
         this.cacheManager = cacheManager;
@@ -86,7 +83,6 @@ public class ProductService {
     public ProductDto getProductById(String id) {
         ProductDocument doc = metrics.time("mongo", "products.findById", () -> productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Product not found with id: " + id)));
-        popularityService.recordView(id);
         return mapper.toDto(doc);
     }
 

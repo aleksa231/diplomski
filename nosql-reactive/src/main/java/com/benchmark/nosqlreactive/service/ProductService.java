@@ -40,7 +40,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final CatalogQueryService catalogQueryService;
-    private final PopularityService popularityService;
     private final IndexAndExplainService indexAndExplainService;
     private final ProductMapper mapper;
     private final ReactiveCatalogCache catalogCache;
@@ -50,7 +49,6 @@ public class ProductService {
     public ProductService(ProductRepository productRepository,
                           ReactiveMongoTemplate mongoTemplate,
                           CatalogQueryService catalogQueryService,
-                          PopularityService popularityService,
                           IndexAndExplainService indexAndExplainService,
                           ProductMapper mapper,
                           ReactiveCatalogCache catalogCache,
@@ -59,7 +57,6 @@ public class ProductService {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.catalogQueryService = catalogQueryService;
-        this.popularityService = popularityService;
         this.indexAndExplainService = indexAndExplainService;
         this.mapper = mapper;
         this.catalogCache = catalogCache;
@@ -86,7 +83,7 @@ public class ProductService {
         return metrics.time("mongo", "products.findById",
                         productRepository.findById(id)
                                 .switchIfEmpty(Mono.error(new NoSuchElementException("Product not found with id: " + id))))
-                .flatMap(doc -> popularityService.recordView(id).thenReturn(mapper.toDto(doc)));
+                .map(mapper::toDto);
     }
 
     public Mono<ProductDto> createProduct(ProductCreateRequest req) {

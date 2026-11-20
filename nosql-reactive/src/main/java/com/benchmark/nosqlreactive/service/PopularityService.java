@@ -12,15 +12,15 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 /**
- * Popularity ranking backed by Redis sorted sets (ZINCRBY on product read / purchase).
+ * Popularity ranking backed by Redis sorted sets (ZINCRBY on product purchase).
  * Writes and reads are best effort: if Redis is down the operation is skipped and the
  * callers keep working, which keeps the cart/catalog paths independent of Redis health.
+ * View counting was removed; only {@code type=purchases} is supported.
  */
 @Service
 public class PopularityService {
 
     private static final Logger log = LoggerFactory.getLogger(PopularityService.class);
-    private static final String VIEWS_KEY = "popularity:views";
     private static final String PURCHASES_KEY = "popularity:purchases";
 
     private final ReactiveStringRedisTemplate redis;
@@ -29,10 +29,6 @@ public class PopularityService {
     public PopularityService(ReactiveStringRedisTemplate redis, BenchmarkMetrics metrics) {
         this.redis = redis;
         this.metrics = metrics;
-    }
-
-    public Mono<Void> recordView(String productId) {
-        return increment(VIEWS_KEY, productId, 1.0, "popularity.view");
     }
 
     public Mono<Void> recordPurchase(String productId, int quantity) {
@@ -65,6 +61,6 @@ public class PopularityService {
     }
 
     private String keyFor(String type) {
-        return "purchases".equalsIgnoreCase(type) ? PURCHASES_KEY : VIEWS_KEY;
+        return PURCHASES_KEY;
     }
 }
