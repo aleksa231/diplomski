@@ -129,14 +129,12 @@ public final class ExperimentDtos {
     public static class TargetRunResult {
         /** Name as requested in the experiment. */
         private String target;
-        /** Configured target the name was resolved to (e.g. {@code mongo-w1} -> nosql-blocking). */
+        /** Configured target the name was resolved to. */
         private String resolvedTarget;
         private String baseUrl;
         private String container;
         /** Recorded configuration discriminator, e.g. {@code normalized}. */
         private String variant;
-        /** Recorded configuration discriminator, e.g. {@code w1} or {@code majority}. */
-        private String writeConcern;
         private String script;
         /** Runtime prerequisites applied through the admin API before the load started. */
         @Builder.Default

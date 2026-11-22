@@ -32,7 +32,7 @@ $composeFile = (Resolve-Path (Join-Path $PSScriptRoot "..\docker-compose.yml")).
 $requiredContainers = @(
     "mongo1", "mongo2", "mongo3", "redis", "postgres",
     "stub-service", "experiment-runner",
-    "nosql-blocking", "nosql-blocking-w1", "relational"
+    "nosql-blocking", "nosql-reactive", "relational"
 )
 
 function Assert-ServicesHealthy {

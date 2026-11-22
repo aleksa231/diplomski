@@ -132,9 +132,6 @@ public class ResultWriter {
             if (target.getVariant() != null) {
                 entry.put("variant", target.getVariant());
             }
-            if (target.getWriteConcern() != null) {
-                entry.put("writeConcern", target.getWriteConcern());
-            }
             targetConfiguration.put(target.getTarget(), entry);
         }
         configuration.put("targetDetails", targetConfiguration);

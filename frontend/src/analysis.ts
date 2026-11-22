@@ -34,7 +34,7 @@ export function buildComparisonRows(runs: ExperimentRun[]): ComparisonRow[] {
   const rows: ComparisonRow[] = [];
   runs.forEach((run) => {
     (run.targets ?? []).forEach((target) => {
-      const suffix = [target.variant, target.writeConcern].filter(Boolean).join(', ');
+      const suffix = [target.variant].filter(Boolean).join(', ');
       rows.push({
         key: `${run.id}:${target.target}`,
         runId: run.id,

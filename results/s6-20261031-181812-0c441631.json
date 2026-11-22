@@ -38,7 +38,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s6/01-resilience.js",
     "setup" : [ ],
     "samples" : [ {
@@ -604,7 +603,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s6/01-resilience.js",
     "setup" : [ ],
     "samples" : [ {
@@ -1235,7 +1233,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s6/02-last-item-concurrency.js",
     "setup" : [ ],
     "samples" : [ {

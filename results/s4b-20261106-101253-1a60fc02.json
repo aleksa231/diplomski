@@ -43,7 +43,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4b/isolated-index.js",
     "setup" : [ "indexes=enabled" ],
     "explainPlans" : [ {
@@ -161,7 +160,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4b/isolated-index.js",
     "setup" : [ "indexes=disabled" ],
     "explainPlans" : [ {
@@ -279,7 +277,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4b/isolated-index.js",
     "setup" : [ "indexes=enabled" ],
     "explainPlans" : [ {
@@ -397,7 +394,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4b/isolated-index.js",
     "setup" : [ "indexes=disabled" ],
     "explainPlans" : [ {

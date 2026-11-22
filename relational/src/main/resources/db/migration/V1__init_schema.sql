@@ -95,6 +95,3 @@ CREATE INDEX idx_pav_attr ON product_attribute_value(attribute_definition_id);
 CREATE INDEX idx_review_prod ON review(product_id);
 CREATE INDEX idx_order_item_order ON order_item(order_id);
 CREATE INDEX idx_cart_item_cart ON cart_item(cart_id);
-
-CREATE INDEX idx_product_jsonb_cat ON product_jsonb(category);
-CREATE INDEX idx_product_jsonb_attrs ON product_jsonb USING gin (attributes);

@@ -18,8 +18,6 @@ public final class TargetLabels {
             Map.entry("relational-no-cache", "PostgreSQL (bez keša)"),
             Map.entry("mongo-cache", "MongoDB (keš uključen)"),
             Map.entry("mongo-no-cache", "MongoDB (bez keša)"),
-            Map.entry("mongo-w1", "MongoDB (writeConcern: w1)"),
-            Map.entry("mongo-majority", "MongoDB (writeConcern: majority)"),
             Map.entry("postgres", "PostgreSQL"));
 
     private TargetLabels() {

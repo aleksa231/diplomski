@@ -33,7 +33,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled" ],
     "explainPlans" : [ {
@@ -131,7 +130,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled" ],
     "explainPlans" : [ {

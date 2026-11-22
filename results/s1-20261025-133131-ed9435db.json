@@ -33,7 +33,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s1/catalog-read.js",
     "setup" : [ ],
     "samples" : [ {
@@ -95,7 +94,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s1/catalog-read.js",
     "setup" : [ ],
     "samples" : [ {

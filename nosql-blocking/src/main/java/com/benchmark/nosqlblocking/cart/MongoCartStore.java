@@ -13,10 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * MongoDB cart store used when {@code app.cart.store=mongo}; exists so S2 can compare
- * cart operations on Redis against the same operations on the document database.
- */
 @Component
 @ConditionalOnProperty(name = "app.cart.store", havingValue = "mongo")
 public class MongoCartStore implements CartStore {

@@ -74,7 +74,7 @@ function p95(row: ComparisonRow): number {
 
 /** The scenario is already in the card header, so targets are named without repeating it. */
 function targetName(row: ComparisonRow): string {
-  const suffix = [row.target.variant, row.target.writeConcern].filter(Boolean).join(', ');
+  const suffix = [row.target.variant].filter(Boolean).join(', ');
   return `${targetLabel(row.target.target)}${suffix ? ` (${suffix})` : ''}`;
 }
 
@@ -207,11 +207,9 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
                       {num(aggregatedValue(row.target, 'memAvg'), 0)} MB ·{' '}
                       {(row.target.samples?.length ?? 0)} rep.
                     </div>
-                    {row.setup.length > 0 || row.target.variant || row.target.writeConcern ? (
+                    {row.setup.length > 0 || row.target.variant ? (
                       <div className="small muted">
-                        primijenjeno: {[...row.setup, row.target.variant, row.target.writeConcern]
-                          .filter(Boolean)
-                          .join(', ')}
+                        primijenjeno: {[...row.setup, row.target.variant].filter(Boolean).join(', ')}
                       </div>
                     ) : null}
                   </>

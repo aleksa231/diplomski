@@ -187,7 +187,6 @@ public class ExperimentService {
                 .baseUrl(baseUrl)
                 .container(container)
                 .variant(target.variant())
-                .writeConcern(target.writeConcern())
                 .script(script.toString())
                 .setup(target.setup());
 

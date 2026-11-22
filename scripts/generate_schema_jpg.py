@@ -94,11 +94,6 @@ html_content = """<!DOCTYPE html>
   <rect x="740" y="370" width="70" height="16" fill="#ffffff" />
   <text x="775" y="382" class="rel-label" text-anchor="middle">referencira</text>
 
-  <!-- 4. product -> product_view_count (broji) -->
-  <path d="M 700 475 L 890 425" class="rel-line" marker-start="url(#one-start)" marker-end="url(#zero-one-end)" />
-  <rect x="775" y="440" width="35" height="16" fill="#ffffff" />
-  <text x="792" y="452" class="rel-label" text-anchor="middle">broji</text>
-
   <!-- 5. product -> review (ima) -->
   <path d="M 700 550 L 890 550" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
   <rect x="780" y="541" width="30" height="16" fill="#ffffff" />
@@ -108,14 +103,14 @@ html_content = """<!DOCTYPE html>
   <path d="M 690 675 L 840 705" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
 
   <!-- 7. category -> product (sadrži) -->
-  <path d="M 290 625 L 430 580" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
-  <rect x="335" y="592" width="45" height="16" fill="#ffffff" />
-  <text x="357" y="604" class="rel-label" text-anchor="middle">sadrži</text>
+  <path d="M 290 320 L 430 580" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
+  <rect x="335" y="420" width="45" height="16" fill="#ffffff" />
+  <text x="357" y="432" class="rel-label" text-anchor="middle">sadrži</text>
 
   <!-- 8. category -> attribute_definition (definiše) -->
-  <path d="M 290 660 L 430 740" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
-  <rect x="330" y="692" width="55" height="16" fill="#ffffff" />
-  <text x="357" y="704" class="rel-label" text-anchor="middle">definiše</text>
+  <path d="M 290 355 L 430 740" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
+  <rect x="330" y="520" width="55" height="16" fill="#ffffff" />
+  <text x="357" y="532" class="rel-label" text-anchor="middle">definiše</text>
 
   <!-- 9. attribute_definition -> product_attribute_value -->
   <path d="M 690 765 L 840 765" class="rel-line" marker-start="url(#one-start)" marker-end="url(#crow-end)" />
@@ -175,28 +170,8 @@ html_content = """<!DOCTYPE html>
     </g>
   </g>
 
-  <!-- TABLE: product_jsonb -->
-  <g transform="translate(30, 290)">
-    <rect width="260" height="280" class="table-box" />
-    <text x="130" y="24" class="table-header-text">product_jsonb</text>
-    <line x1="0" y1="34" x2="260" y2="34" class="table-divider" />
-    <g transform="translate(14, 55)" class="col-text">
-      <text y="0">• id : varchar(36) «PK»</text>
-      <text y="22">• sku : varchar(64) «jedinstveno»</text>
-      <text y="44">• name : varchar(255)</text>
-      <text y="66">• category : varchar(100)</text>
-      <text y="88">• price : numeric(10,2)</text>
-      <text y="110">• stock : int</text>
-      <text y="132">• attributes : jsonb</text>
-      <text y="154">• review_count : int</text>
-      <text y="176">• rating_avg : numeric(3,2)</text>
-      <text y="198">• created_at : timestamp</text>
-      <text y="220">• updated_at : timestamp</text>
-    </g>
-  </g>
-
   <!-- TABLE: category -->
-  <g transform="translate(30, 595)">
+  <g transform="translate(30, 290)">
     <rect width="260" height="115" class="table-box" />
     <text x="130" y="24" class="table-header-text">category</text>
     <line x1="0" y1="34" x2="260" y2="34" class="table-divider" />
@@ -223,17 +198,6 @@ html_content = """<!DOCTYPE html>
       <text y="154">• rating_avg : numeric(3,2)</text>
       <text y="176">• created_at : timestamp</text>
       <text y="198">• updated_at : timestamp</text>
-    </g>
-  </g>
-
-  <!-- TABLE: product_view_count -->
-  <g transform="translate(890, 390)">
-    <rect width="250" height="90" class="table-box" />
-    <text x="125" y="24" class="table-header-text">product_view_count</text>
-    <line x1="0" y1="34" x2="250" y2="34" class="table-divider" />
-    <g transform="translate(14, 55)" class="col-text">
-      <text y="0">• product_id : varchar(36) «PK»</text>
-      <text y="22">• views : bigint</text>
     </g>
   </g>
 

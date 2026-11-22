@@ -38,7 +38,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s5/reactive-vs-blocking.js",
     "setup" : [ ],
     "samples" : [ {
@@ -134,7 +133,6 @@
     "baseUrl" : "http://nosql-reactive:8082",
     "container" : "nosql-reactive",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s5/reactive-vs-blocking.js",
     "setup" : [ ],
     "samples" : [ {
@@ -230,7 +228,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s5/reactive-vs-blocking.js",
     "setup" : [ ],
     "samples" : [ {

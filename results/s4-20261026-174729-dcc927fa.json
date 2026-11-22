@@ -43,7 +43,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled" ],
     "samples" : [ {
@@ -139,7 +138,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://nosql-blocking:8081/api/admin/indexes\": nosql-blocking)" ],
     "samples" : [ {
@@ -227,7 +225,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled", "indexes=true FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ],
     "samples" : [ {
@@ -315,7 +312,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=disabled", "indexes=false FAILED (I/O error on POST request for \"http://relational:8083/api/admin/indexes\": relational)" ],
     "samples" : [ {

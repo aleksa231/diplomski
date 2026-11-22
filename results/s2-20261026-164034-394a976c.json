@@ -28,7 +28,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s2/cart-and-popularity.js",
     "setup" : [ ],
     "samples" : [ {

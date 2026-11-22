@@ -10,8 +10,6 @@ const TARGET_LABELS: Record<string, string> = {
   'relational-no-cache': 'PostgreSQL (bez keša)',
   'mongo-cache': 'MongoDB (keš uključen)',
   'mongo-no-cache': 'MongoDB (bez keša)',
-  'mongo-w1': 'MongoDB (writeConcern: w1)',
-  'mongo-majority': 'MongoDB (writeConcern: majority)',
   postgres: 'PostgreSQL',
 };
 
@@ -35,11 +33,4 @@ export function statusLabel(status: RunStatus | string | null | undefined): stri
     default:
       return status ? String(status) : '-';
   }
-}
-
-export function writeConcernLabel(value: string | null | undefined): string {
-  if (!value) return '';
-  if (value === 'w1') return 'brzi upis';
-  if (value === 'majority') return 'nivo sigurnosti: visok';
-  return value;
 }

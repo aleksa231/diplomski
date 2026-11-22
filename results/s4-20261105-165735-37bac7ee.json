@@ -43,7 +43,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled" ],
     "samples" : [ {
@@ -139,7 +138,6 @@
     "baseUrl" : "http://nosql-blocking:8081",
     "container" : "nosql-blocking",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=disabled" ],
     "samples" : [ {
@@ -235,7 +233,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=enabled" ],
     "samples" : [ {
@@ -331,7 +328,6 @@
     "baseUrl" : "http://relational:8083",
     "container" : "relational",
     "variant" : null,
-    "writeConcern" : null,
     "script" : "/loadtests/s4/aggregation-plans.js",
     "setup" : [ "indexes=disabled" ],
     "samples" : [ {

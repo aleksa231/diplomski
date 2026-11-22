@@ -27,7 +27,6 @@ public class TargetCatalog {
             RunnerProperties.TargetDefinition definition,
             List<String> setup,
             String variant,
-            String writeConcern,
             Boolean cacheEnabled,
             Boolean indexesEnabled) {
     }
@@ -35,10 +34,6 @@ public class TargetCatalog {
     public ResolvedTarget resolve(String requestedName) {
         String name = requestedName == null ? "" : requestedName.trim();
         String key = name.toLowerCase(Locale.ROOT);
-        if (key.contains("jsonb")) {
-            throw new IllegalArgumentException(
-                    "Sistem '" + name + "' više nije podržan: JSONB varijanta relacionog modela je uklonjena.");
-        }
         RunnerProperties.TargetDefinition definition = findConfigured(key)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Nepoznat sistem '" + name + "'. Konfigurisani sistemi: " + properties.getTargets().keySet()));
@@ -46,7 +41,6 @@ public class TargetCatalog {
         Boolean cache = cacheState(key);
         Boolean indexes = indexState(key);
         String variant = key.contains("normalized") ? "normalized" : null;
-        String writeConcern = key.contains("majority") ? "majority" : null;
 
         List<String> setup = new ArrayList<>();
         if (cache != null) {
@@ -58,11 +52,8 @@ public class TargetCatalog {
         if (variant != null) {
             setup.add("variant=" + variant);
         }
-        if (writeConcern != null) {
-            setup.add("writeConcern=" + writeConcern);
-        }
         return new ResolvedTarget(name, definition == null ? name : resolvedName(key, definition),
-                definition, setup, variant, writeConcern, cache, indexes);
+                definition, setup, variant, cache, indexes);
     }
 
     private String resolvedName(String key, RunnerProperties.TargetDefinition definition) {

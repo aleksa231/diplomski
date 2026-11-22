@@ -64,7 +64,6 @@ export interface TargetRunResult {
   baseUrl: string;
   container: string;
   variant: string | null;
-  writeConcern: string | null;
   script: string;
   /** Runtime prerequisites applied through the admin API before the load started. */
   setup: string[];
