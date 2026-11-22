@@ -50,8 +50,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:38:50.299364849Z",
-      "finishedAt" : "2026-10-26T23:39:21.077493242Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:39:21.077493242Z"
     }, {
       "repetition" : 2,
       "rps" : 1459.2017778984955,
@@ -67,8 +66,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:39:21.098367051Z",
-      "finishedAt" : "2026-10-26T23:39:51.801703234Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:39:51.801703234Z"
     }, {
       "repetition" : 3,
       "rps" : 1457.2115701371197,
@@ -84,8 +82,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:39:51.814380748Z",
-      "finishedAt" : "2026-10-26T23:40:22.578139414Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:40:22.578139414Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -145,8 +142,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:40:55.035212967Z",
-      "finishedAt" : "2026-10-26T23:41:28.113824789Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:41:28.113824789Z"
     }, {
       "repetition" : 2,
       "rps" : 319.42795687141194,
@@ -162,8 +158,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:41:28.124469576Z",
-      "finishedAt" : "2026-10-26T23:42:00.781916279Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:42:00.781916279Z"
     }, {
       "repetition" : 3,
       "rps" : 352.15065464644545,
@@ -179,8 +174,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-26T23:42:00.795417711Z",
-      "finishedAt" : "2026-10-26T23:42:33.221769213Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-26T23:42:33.221769213Z"
     } ],
     "aggregated" : {
       "rps" : {

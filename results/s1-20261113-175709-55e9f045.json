@@ -36,7 +36,6 @@
     "variant" : null,
     "script" : "/loadtests/s1/catalog-read.js",
     "setup" : [ ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 37.28496103206415,
@@ -52,8 +51,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-13T17:56:24.754627259Z",
-      "finishedAt" : "2026-11-13T17:56:30.195572903Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-13T17:56:30.195572903Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -98,7 +96,6 @@
     "variant" : "normalized",
     "script" : "/loadtests/s1/catalog-read.js",
     "setup" : [ "variant=normalized" ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 29.739487306228956,
@@ -114,8 +111,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-13T17:57:03.441765457Z",
-      "finishedAt" : "2026-11-13T17:57:09.414809549Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-13T17:57:09.414809549Z"
     } ],
     "aggregated" : {
       "rps" : {

@@ -152,15 +152,6 @@ html_content = """<!DOCTYPE html>
 
   <!-- ================= 2. CENTRAL / DATABASE TIER ================= -->
 
-  <!-- stub-service -->
-  <g transform="translate(520, 100)">
-    <polygon points="0,8 12,0 170,0 158,8" class="node-top" />
-    <polygon points="158,8 170,0 170,42 158,50" class="node-side" />
-    <rect x="0" y="8" width="158" height="42" class="node-box" />
-    <text x="79" y="28" class="node-text">stub-service</text>
-    <text x="79" y="42" class="node-sub">(:8099, kašnjenje)</text>
-  </g>
-
   <!-- postgres -->
   <g transform="translate(530, 190)">
     <path d="M 0,16 L 0,50 A 70,16 0 0,0 140,50 L 140,16 Z" class="db-cylinder" />
@@ -227,10 +218,7 @@ html_content = """<!DOCTYPE html>
   <text x="605" y="649" class="label-text">inicijalizacija rs0</text>
 
 
-  <!-- ================= 3. FLOW LINES (Backends to DBs & stub) ================= -->
-  <!-- relational & nosql to stub-service: route through gap between groups (x=440) -->
-  <path d="M 345 170 L 440 170 L 440 125 L 520 125" class="line-flow" marker-end="url(#arrow)" />
-
+  <!-- ================= 3. FLOW LINES (Backends to DBs) ================= -->
   <!-- relational to postgres -->
   <path d="M 345 180 L 530 222" class="line-flow" marker-end="url(#arrow)" />
 

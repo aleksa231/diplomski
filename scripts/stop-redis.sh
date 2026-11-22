@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 #
-# S6d - take Redis down while the load is running. Catalog reads must then fall back to the
-# database (with a warning and a fallback metric) and cart operations must fail fast with 503
-# instead of hanging.
+# Stop the Redis container for local maintenance. Catalog reads then fall back to the database
+# (with a warning and a fallback metric) and cart operations fail fast with 503.
 set -euo pipefail
 
 CONTAINER="${REDIS_CONTAINER:-redis}"

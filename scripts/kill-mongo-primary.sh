@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# S6c - stop the current MongoDB primary of the benchmark replica set.
+# Stop the current MongoDB primary of the benchmark replica set.
 #
 # Runs inside the experiment-runner container, which has /var/run/docker.sock mounted and the
 # docker CLI installed (see experiment-runner/Dockerfile). mongosh is not present in the runner,

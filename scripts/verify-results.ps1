@@ -12,7 +12,7 @@ if (-not (Test-Path $ResultsDir)) {
 $files = Get-ChildItem -Path $ResultsDir -Filter "s*.json" | Sort-Object LastWriteTime -Descending
 $latestByScenario = @{}
 foreach ($f in $files) {
-    if ($f.Name -match '^(s[1-7])-') {
+    if ($f.Name -match '^(s[1-4])-') {
         $sc = $Matches[1].ToUpper()
         if (-not $latestByScenario.ContainsKey($sc)) {
             $latestByScenario[$sc] = $f.FullName
@@ -20,7 +20,7 @@ foreach ($f in $files) {
     }
 }
 
-$required = @("S1","S2","S3","S4","S5","S6","S7")
+$required = @("S1","S2","S3","S4")
 $issues = @()
 $rows = @()
 

@@ -3,7 +3,6 @@ package com.benchmark.nosqlreactive.controller;
 import com.benchmark.common.dto.PageProductResponse;
 import com.benchmark.common.dto.ProductCreateRequest;
 import com.benchmark.common.dto.ProductDto;
-import com.benchmark.common.dto.ProductWithRecommendationsResponse;
 import com.benchmark.common.dto.ReviewCreateRequest;
 import com.benchmark.nosqlreactive.service.ProductService;
 import jakarta.validation.Valid;
@@ -100,10 +99,4 @@ public class ProductController {
                 .map(updated -> ResponseEntity.status(HttpStatus.CREATED).body(updated));
     }
 
-    @GetMapping("/{id}/with-recommendations")
-    public Mono<ResponseEntity<ProductWithRecommendationsResponse>> getWithRecommendations(
-            @PathVariable String id,
-            @RequestParam(defaultValue = "200") long delayMs) {
-        return productService.getProductWithRecommendations(id, delayMs).map(ResponseEntity::ok);
-    }
 }

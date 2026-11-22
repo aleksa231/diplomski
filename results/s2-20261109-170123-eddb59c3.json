@@ -45,7 +45,6 @@
     "variant" : null,
     "script" : "/loadtests/s2/cart-and-popularity.js",
     "setup" : [ "cache=disabled" ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 2528.7455312008115,
@@ -61,8 +60,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:53:41.792997286Z",
-      "finishedAt" : "2026-11-09T16:54:12.447817975Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:54:12.447817975Z"
     }, {
       "repetition" : 2,
       "rps" : 2485.730925959455,
@@ -78,8 +76,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:54:12.459038200Z",
-      "finishedAt" : "2026-11-09T16:54:43.030308997Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:54:43.030308997Z"
     }, {
       "repetition" : 3,
       "rps" : 2502.2524631104147,
@@ -95,8 +92,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:54:43.041036766Z",
-      "finishedAt" : "2026-11-09T16:55:13.616434556Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:55:13.616434556Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -141,7 +137,6 @@
     "variant" : null,
     "script" : "/loadtests/s2/cart-and-popularity.js",
     "setup" : [ "cache=enabled" ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 2519.170278993481,
@@ -157,8 +152,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:55:44.213218801Z",
-      "finishedAt" : "2026-11-09T16:56:14.735554727Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:56:14.735554727Z"
     }, {
       "repetition" : 2,
       "rps" : 2505.981737285899,
@@ -174,8 +168,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:56:14.764318550Z",
-      "finishedAt" : "2026-11-09T16:56:45.283339043Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:56:45.283339043Z"
     }, {
       "repetition" : 3,
       "rps" : 2522.904272826955,
@@ -191,8 +184,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:56:45.293239959Z",
-      "finishedAt" : "2026-11-09T16:57:15.831465546Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:57:15.831465546Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -237,7 +229,6 @@
     "variant" : null,
     "script" : "/loadtests/s2/cart-and-popularity.js",
     "setup" : [ "cache=disabled" ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 838.6889935842883,
@@ -253,8 +244,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:57:47.023759115Z",
-      "finishedAt" : "2026-11-09T16:58:18.090552907Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:58:18.090552907Z"
     }, {
       "repetition" : 2,
       "rps" : 1177.2197337066343,
@@ -270,8 +260,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:58:18.101481467Z",
-      "finishedAt" : "2026-11-09T16:58:49.076070727Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:58:49.076070727Z"
     }, {
       "repetition" : 3,
       "rps" : 1389.9943798052363,
@@ -287,8 +276,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:58:49.085017782Z",
-      "finishedAt" : "2026-11-09T16:59:20.146301666Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T16:59:20.146301666Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -333,7 +321,6 @@
     "variant" : null,
     "script" : "/loadtests/s2/cart-and-popularity.js",
     "setup" : [ "cache=enabled" ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 1382.856000813097,
@@ -349,8 +336,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T16:59:50.887357412Z",
-      "finishedAt" : "2026-11-09T17:00:21.471952491Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T17:00:21.471952491Z"
     }, {
       "repetition" : 2,
       "rps" : 1412.5114109724134,
@@ -366,8 +352,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T17:00:21.480396352Z",
-      "finishedAt" : "2026-11-09T17:00:52.630646977Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T17:00:52.630646977Z"
     }, {
       "repetition" : 3,
       "rps" : 1415.3304338483485,
@@ -383,8 +368,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-09T17:00:52.639526044Z",
-      "finishedAt" : "2026-11-09T17:01:23.212789190Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-09T17:01:23.212789190Z"
     } ],
     "aggregated" : {
       "rps" : {

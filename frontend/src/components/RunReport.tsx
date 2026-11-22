@@ -3,9 +3,6 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
-  Legend,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -13,16 +10,13 @@ import {
 } from 'recharts';
 import type { AggregateStats, ExperimentRun } from '../api/types';
 import {
-  SERIES_COLORS,
   type ComparisonRow,
   aggregatedValue,
   buildComparisonRows,
-  hasTimeline,
   isMeasured,
   p95Bars,
   repetitions,
   rpsBars,
-  timelineSeries,
 } from '../analysis';
 import { EmptyState } from './Banner';
 import { targetLabel } from '../labels';
@@ -30,39 +24,6 @@ import { int, meanStd, num, percent, rate, rateStd, timestamp } from '../format'
 
 const AXIS = { stroke: '#94a3b8', tick: { fontSize: 11 } };
 const TOOLTIP_STYLE = { backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: 6 };
-
-/** Plain-language names for the access path recorded next to each S4 query plan. */
-const SCAN_LABELS: Record<string, string> = {
-  INDEX: 'indeks',
-  COLLECTION_SCAN: 'scan kolekcije',
-  SEQUENTIAL_SCAN: 'scan tabele',
-  UNKNOWN: 'n/a',
-};
-
-function scanBadgeClass(scanType: string): string {
-  if (scanType === 'INDEX') return 'badge badge-ok';
-  if (scanType === 'UNKNOWN') return 'badge badge-muted';
-  return 'badge badge-warn';
-}
-
-const QUERY_ORDER = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7'] as const;
-
-const QUERY_LEGEND: Record<string, string> = {
-  Q1: 'katalog (kategorija + sortiranje po cijeni)',
-  Q2: 'prodaja po kategoriji u užem periodu',
-  Q3: 'najprodavaniji proizvodi u užem periodu',
-  Q4: 'prodaja po kategoriji bez vremenskog filtera (kontrast, cijeli dataset)',
-  Q5: 'najprodavaniji bez filtera (kontrast)',
-  Q6: 'ukupne prodaje u užem periodu, bez spajanja narudžbi i proizvoda (izoluje indeks po datumu)',
-  Q7: 'ukupne prodaje bez vremenskog filtera (kontrast, cijeli dataset)',
-};
-
-function explainLegend(queries: string[]): string {
-  if (queries.includes('Q6')) {
-    return 'Q4/Q5/Q7 su kontrast bez filtera (scan punog skupa je očekivan). Q6 namjerno ne spaja narudžbe i proizvode, pa filter po datumu ostaje ključan korak.';
-  }
-  return 'Q4/Q5 su kontrast bez filtera (scan punog skupa je očekivan) - oni pokazuju zašto indeks pomaže kad filter postoji (Q2/Q3).';
-}
 
 function rps(row: ComparisonRow): number {
   return aggregatedValue(row.target, 'rps') ?? 0;
@@ -108,10 +69,6 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
   // the tooltip, which also converts, cannot apply the factor twice.
   const throughput = rpsBars(measured);
   const latency = p95Bars(measured);
-  const explainRows = rows.filter((row) => (row.target.explainPlans?.length ?? 0) > 0);
-  const showTimeline = hasTimeline(measured);
-  const rpsTimeline = timelineSeries(measured, 'rps');
-  const p95Timeline = timelineSeries(measured, 'p95Ms');
 
   // S4 measures heavy report queries, so its throughput is naturally far below one request per
   // second. There the whole report speaks in requests per minute; every other scenario stays at
@@ -271,58 +228,6 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             </div>
           </section>
 
-          {showTimeline ? (
-            <section className="card">
-              <h2 className="card-title">Kretanje po sekundi: propusnost i p95</h2>
-              <div className="chart-wrap">
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={rpsTimeline.data} margin={{ top: 35, right: 30, bottom: 8, left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis dataKey="secondOffset" type="number" domain={['dataMin', 'dataMax']} {...AXIS} unit=" s" />
-                    <YAxis {...AXIS} unit=" rps" width={75} />
-                    <Tooltip contentStyle={TOOLTIP_STYLE} />
-                    <Legend wrapperStyle={{ fontSize: 12 }} />
-                    {rpsTimeline.keys.map((key, index) => (
-                      <Line
-                        key={key}
-                        type="monotone"
-                        dataKey={key}
-                        stroke={SERIES_COLORS[index % SERIES_COLORS.length]}
-                        strokeWidth={2}
-                        dot={false}
-                        connectNulls
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-                <ResponsiveContainer width="100%" height={280}>
-                  <LineChart data={p95Timeline.data} margin={{ top: 35, right: 30, bottom: 8, left: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                    <XAxis dataKey="secondOffset" type="number" domain={['dataMin', 'dataMax']} {...AXIS} unit=" s" />
-                    <YAxis {...AXIS} unit=" ms" width={75} />
-                    <Tooltip contentStyle={TOOLTIP_STYLE} />
-                    <Legend wrapperStyle={{ fontSize: 12 }} />
-                    {p95Timeline.keys.map((key, index) => (
-                      <Line
-                        key={key}
-                        type="monotone"
-                        dataKey={key}
-                        stroke={SERIES_COLORS[index % SERIES_COLORS.length]}
-                        strokeWidth={2}
-                        dot={false}
-                        connectNulls
-                      />
-                    ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-              <p className="small muted">
-                Vrijednosti su usrednjene preko repeticija; pad propusnosti i skok p95 označavaju trenutak
-                ubacivanja otkaza.
-              </p>
-            </section>
-          ) : null}
-
           <section className="card">
             <h2 className="card-title">Agregirano po sistemu (prosjek ± standardna devijacija)</h2>
             <div className="table-wrap">
@@ -375,68 +280,6 @@ export default function RunReport({ run }: { run: ExperimentRun }) {
             </p>
           </section>
 
-          {explainRows.length > 0 ? (() => {
-            const present = new Set(explainRows.flatMap((row) => (row.target.explainPlans ?? []).map((p) => p.query)));
-            const explainQueries = QUERY_ORDER.filter((q) => present.has(q));
-            const scenarioCode = run.request.scenario;
-            const explainTitle = 'Planovi upita: da li se koristi indeks';
-            return (
-            <section className="card">
-              <h2 className="card-title">{explainTitle}</h2>
-              <div className="table-wrap">
-                <table className="table">
-                  <thead>
-                    <tr>
-                      <th>Sistem</th>
-                      {explainQueries.map((query) => (
-                        <th key={query} className="text-center">
-                          {query}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {explainRows.map((row) => (
-                      <tr key={row.key}>
-                        <td>{row.label}</td>
-                        {explainQueries.map((query) => {
-                          const snapshot = row.target.explainPlans?.find((item) => item.query === query);
-                          return (
-                            <td key={query} className="text-center">
-                              {snapshot ? (
-                                <span
-                                  className={scanBadgeClass(snapshot.scanType)}
-                                  title={
-                                    snapshot.error ??
-                                    (snapshot.stages.length > 0 ? snapshot.stages.join(' → ') : undefined)
-                                  }
-                                >
-                                  {snapshot.error ? 'n/a' : (SCAN_LABELS[snapshot.scanType] ?? snapshot.scanType)}
-                                </span>
-                              ) : (
-                                <span className="muted">?</span>
-                              )}
-                            </td>
-                          );
-                        })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <p className="small muted mt-1">
-                Plan se čita sa servisa prije mjerenja (isti upiti koje pokreće {scenarioCode}).{' '}
-                {explainQueries.map((q, i) => (
-                  <span key={q}>
-                    <strong>{q}</strong> {QUERY_LEGEND[q] ?? q}
-                    {i < explainQueries.length - 1 ? '; ' : '. '}
-                  </span>
-                ))}
-                „indeks" = baza je koristila indeks; „scan" = pročitala je sve redove. {explainLegend(explainQueries)}
-              </p>
-            </section>
-            );
-          })() : null}
 
           {focus ? (
             <section className="card">

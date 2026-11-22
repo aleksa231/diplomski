@@ -231,10 +231,9 @@ public class ReportService {
     }
 
     /**
-     * S5 - where the relational model wins. Same analytical report as the relational implementation:
-     * join orders→items→products (to resolve category), group by (category, month), compute
-     * revenue and distinct counts. In MongoDB this requires $unwind + $lookup + multiple $addToSet
-     * accumulators, which is the natural cost of this join-heavy analytical shape.
+     * Analytical report joining orders, items and products, grouped by (category, month). In MongoDB
+     * this requires $unwind + $lookup + multiple $addToSet accumulators, which is the natural cost of
+     * this join-heavy aggregation.
      */
     public List<CategoryRevenueDetailResponse> getCategoryRevenueDetail(Instant from, Instant to) {
         List<AggregationOperation> ops = new ArrayList<>();
@@ -295,10 +294,7 @@ public class ReportService {
                 .build()).toList();
     }
 
-    /**
-     * Date-range totals without a {@code } to products. The {@code } on
-     * {@code createdAt} is the dominant indexed step, so this isolates index impact (S4B).
-     */
+    /** Date-range totals without a product lookup; the date filter narrows orders first. */
     public OrderTotalsResponse getOrderTotals(Instant from, Instant to) {
         List<AggregationOperation> ops = new ArrayList<>();
         if (from != null || to != null) {

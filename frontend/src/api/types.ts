@@ -15,14 +15,6 @@ export interface ExperimentRequest {
   targets: string[];
 }
 
-/** One point of the per-second series recorded for resilience runs. */
-export interface TimelinePoint {
-  secondOffset: number;
-  rps: number;
-  serverErrors: number;
-  p95Ms: number;
-}
-
 export interface SampleMetrics {
   repetition: number;
   rps: number;
@@ -39,23 +31,11 @@ export interface SampleMetrics {
   k6ExitCode: number;
   startedAt: string;
   finishedAt: string;
-  timeline: TimelinePoint[] | null;
 }
 
 export interface AggregateStats {
   mean: number;
   stdDev: number;
-}
-
-/** Planner output captured for one S4 benchmark query (Q1..Q5). */
-export interface ExplainSnapshot {
-  query: string;
-  /** INDEX, COLLECTION_SCAN, SEQUENTIAL_SCAN or UNKNOWN. */
-  scanType: string;
-  usedIndex: boolean;
-  stages: string[];
-  plan: string | null;
-  error: string | null;
 }
 
 export interface TargetRunResult {
@@ -67,8 +47,6 @@ export interface TargetRunResult {
   script: string;
   /** Runtime prerequisites applied through the admin API before the load started. */
   setup: string[];
-  /** S4 only: where each benchmark query ran on an index or on a full scan. */
-  explainPlans: ExplainSnapshot[] | null;
   samples: SampleMetrics[];
   aggregated: Record<string, AggregateStats>;
   error: string | null;

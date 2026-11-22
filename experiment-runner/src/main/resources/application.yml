@@ -46,8 +46,6 @@ app:
       url: http://nosql-reactive:8082
     - name: relational
       url: http://relational:8083
-    - name: stub-service
-      url: http://stub-service:8099
   targets:
     nosql-blocking:
       base-url: http://nosql-blocking:8081

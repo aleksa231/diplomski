@@ -95,10 +95,7 @@ public class ReportService {
                 .collectList();
     }
 
-    /**
-     * Date-range totals without a {@code $lookup} to products. The {@code $match} on
-     * {@code createdAt} is the dominant indexed step, isolating index impact (S4B).
-     */
+    /** Date-range totals without a product lookup; the date filter narrows orders first. */
     public Mono<OrderTotalsResponse> getOrderTotals(Instant from, Instant to) {
         List<AggregationOperation> ops = new ArrayList<>();
         if (from != null || to != null) {
@@ -127,7 +124,7 @@ public class ReportService {
     }
 
     /**
-     * Join-heavy report (S7): for every category and month it returns revenue, the number of distinct
+     * Join-heavy report: for every category and month it returns revenue, the number of distinct
      * orders, the average basket size and the top 3 products by units sold.
      *
      * <p>Stages: unwind the embedded order items, join a product to resolve the category, split the ISO

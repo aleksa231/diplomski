@@ -226,15 +226,6 @@ html_content = """<!DOCTYPE html>
   <line x1="595" y1="655" x2="595" y2="633" class="line-dash" marker-end="url(#arrow-open)" />
   <text x="605" y="649" class="label-text">inicijalizacija rs0</text>
 
-  <!-- stub-service -->
-  <g transform="translate(520, 100)">
-    <polygon points="0,8 12,0 158,0 146,8" class="node-top" />
-    <polygon points="146,8 158,0 158,42 146,50" class="node-side" />
-    <rect x="0" y="8" width="158" height="42" class="node-box" />
-    <text x="79" y="28" class="node-text">stub-service</text>
-    <text x="79" y="42" class="node-sub">(:8099, kašnjenje)</text>
-  </g>
-
   <!-- data-generator -->
   <g transform="translate(285, 720)">
     <polygon points="0,7 10,0 190,0 180,7" class="node-top" />
@@ -245,10 +236,7 @@ html_content = """<!DOCTYPE html>
   </g>
 
 
-  <!-- ================= 3. FLOW LINES (Backends to DBs & stub) ================= -->
-  <!-- relational & nosql to stub-service: route through gap at x=440 -->
-  <path d="M 345 170 L 440 170 L 440 125 L 520 125" class="line-flow" marker-end="url(#arrow)" />
-
+  <!-- ================= 3. FLOW LINES (Backends to DBs) ================= -->
   <!-- relational to postgres -->
   <path d="M 345 180 L 530 222" class="line-flow" marker-end="url(#arrow)" />
 

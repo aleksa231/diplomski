@@ -17,9 +17,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 /**
- * Runs the bash failure-injection helpers from {@code scripts/} (spec section 10.2). The scripts use
- * the Docker socket that is mounted into the runner to stop/start containers; that is acceptable for
- * a local demo and is called out in the README.
+ * Runs helper bash scripts from {@code scripts/}, currently the canonical dataset reset used before
+ * every experiment (spec section 10.2).
  */
 @Component
 public class ShellScriptRunner {

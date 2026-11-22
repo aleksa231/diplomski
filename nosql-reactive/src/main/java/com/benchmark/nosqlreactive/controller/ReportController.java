@@ -40,7 +40,7 @@ public class ReportController {
         return reportService.getTopProducts(from, to, limit).map(ResponseEntity::ok);
     }
 
-    /** Lightweight date-range totals (no product/category join), used by S4B to isolate index impact. */
+    /** Lightweight date-range totals without the product/category join. */
     @GetMapping("/order-totals")
     public Mono<ResponseEntity<com.benchmark.common.dto.ReportDtos.OrderTotalsResponse>> getOrderTotals(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,

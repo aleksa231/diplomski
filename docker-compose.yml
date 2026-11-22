@@ -105,24 +105,6 @@ services:
       retries: 5
 
   # ================= Application Services =================
-  stub-service:
-    build:
-      context: .
-      dockerfile: stub-service/Dockerfile
-    container_name: stub-service
-    ports:
-      - "8099:8099"
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-    healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:8099/actuator/health | grep UP || exit 1"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
   nosql-blocking:
     build:
       context: .
@@ -132,7 +114,6 @@ services:
       SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
-      STUB_SERVICE_URL: "http://stub-service:8099"
     ports:
       - "8081:8081"
     deploy:
@@ -144,8 +125,6 @@ services:
       mongo-init:
         condition: service_completed_successfully
       redis:
-        condition: service_healthy
-      stub-service:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8081/actuator/health | grep UP || exit 1"]
@@ -162,7 +141,6 @@ services:
       SPRING_DATA_MONGODB_URI: "mongodb://mongo1:27017,mongo2:27017,mongo3:27017/benchmark?replicaSet=rs0"
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
-      STUB_SERVICE_URL: "http://stub-service:8099"
     ports:
       - "8082:8082"
     deploy:
@@ -174,8 +152,6 @@ services:
       mongo-init:
         condition: service_completed_successfully
       redis:
-        condition: service_healthy
-      stub-service:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8082/actuator/health | grep UP || exit 1"]
@@ -194,7 +170,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: benchmark
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
-      STUB_SERVICE_URL: "http://stub-service:8099"
     ports:
       - "8083:8083"
     deploy:
@@ -206,8 +181,6 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_healthy
-      stub-service:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://localhost:8083/actuator/health | grep UP || exit 1"]

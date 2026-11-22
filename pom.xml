@@ -15,7 +15,6 @@
         <module>nosql-blocking</module>
         <module>nosql-reactive</module>
         <module>relational</module>
-        <module>stub-service</module>
         <module>experiment-runner</module>
         <module>data-generator</module>
     </modules>

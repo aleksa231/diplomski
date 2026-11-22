@@ -7,7 +7,6 @@ COPY experiment-runner ./experiment-runner
 COPY nosql-blocking/pom.xml ./nosql-blocking/
 COPY nosql-reactive/pom.xml ./nosql-reactive/
 COPY relational/pom.xml ./relational/
-COPY stub-service/pom.xml ./stub-service/
 COPY data-generator/pom.xml ./data-generator/
 
 RUN mvn clean package -DskipTests -pl experiment-runner -am

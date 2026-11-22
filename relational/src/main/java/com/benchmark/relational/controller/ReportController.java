@@ -34,7 +34,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getTopProducts(from, to, limit));
     }
 
-    /** Lightweight date-range totals (no product/category join), used by S4B to isolate index impact. */
+    /** Lightweight date-range totals without the product/category join. */
     @GetMapping("/order-totals")
     public ResponseEntity<OrderTotalsResponse> getOrderTotals(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
@@ -47,7 +47,7 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getCategoryMonthlySummary());
     }
 
-    /** S5: join-heavy analytical report where the relational engine's optimizer excels. */
+    /** Join-heavy analytical report by category and month. */
     @GetMapping("/category-revenue-detail")
     public ResponseEntity<List<CategoryRevenueDetailResponse>> getCategoryRevenueDetail(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,

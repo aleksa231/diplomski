@@ -43,18 +43,6 @@ public final class ExperimentDtos {
         private List<String> targets = new ArrayList<>();
     }
 
-    /** One point of a per-second timeline, recorded for the resilience runs (S6). */
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class TimelinePoint {
-        private int secondOffset;
-        private double rps;
-        private double serverErrors;
-        private double p95Ms;
-    }
-
     /** One recorded repetition for one target. */
     @Data
     @Builder
@@ -78,9 +66,6 @@ public final class ExperimentDtos {
         private int k6ExitCode;
         private String startedAt;
         private String finishedAt;
-        /** Per-second rps / error / p95 series; only populated for resilience runs. */
-        @Builder.Default
-        private List<TimelinePoint> timeline = new ArrayList<>();
     }
 
     @Data
@@ -90,35 +75,6 @@ public final class ExperimentDtos {
     public static class AggregateStats {
         private double mean;
         private double stdDev;
-    }
-
-    /**
-     * Query plan captured from {@code GET /api/admin/explain} while a target is configured for an
-     * S4 measurement. It is stored next to the numbers so that a result can prove whether the
-     * indexes the target name promised were actually used by the planner, instead of relying on the
-     * target name alone.
-     */
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ExplainSnapshot {
-        /** Benchmark query, {@code Q1}..{@code Q5}. */
-        private String query;
-        /**
-         * Normalised access path: {@code INDEX}, {@code COLLECTION_SCAN}, {@code SEQUENTIAL_SCAN}
-         * or {@code UNKNOWN} (plan could not be read).
-         */
-        private String scanType;
-        /** True when the plan uses at least one index access path. */
-        private boolean usedIndex;
-        /** Every plan node/stage found in the plan, e.g. {@code IXSCAN}, {@code FETCH}. */
-        @Builder.Default
-        private List<String> stages = new ArrayList<>();
-        /** Raw plan text as returned by the service, kept for the appendix of the thesis. */
-        private String plan;
-        /** Non-null when the plan could not be captured (e.g. $text without a text index). */
-        private String error;
     }
 
     /** All repetitions for one target plus the aggregate statistics. */
@@ -139,9 +95,6 @@ public final class ExperimentDtos {
         /** Runtime prerequisites applied through the admin API before the load started. */
         @Builder.Default
         private List<String> setup = new ArrayList<>();
-        /** S4 only: planner output for Q1..Q5 under the configuration that was measured. */
-        @Builder.Default
-        private List<ExplainSnapshot> explainPlans = new ArrayList<>();
         @Builder.Default
         private List<SampleMetrics> samples = new ArrayList<>();
         @Builder.Default

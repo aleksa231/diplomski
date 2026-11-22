@@ -3,20 +3,15 @@ package com.benchmark.relational.service;
 import com.benchmark.common.dto.PageProductResponse;
 import com.benchmark.common.dto.ProductCreateRequest;
 import com.benchmark.common.dto.ProductDto;
-import com.benchmark.common.dto.ProductWithRecommendationsResponse;
 import com.benchmark.common.dto.ReviewCreateRequest;
 import com.benchmark.relational.cache.CacheConfig;
 import com.benchmark.relational.cache.QueryKeyFactory;
 import com.benchmark.relational.metrics.BenchmarkMetrics;
 import com.benchmark.relational.store.ProductStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -28,23 +23,18 @@ import java.util.NoSuchElementException;
 @Service
 public class ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
-
     private final ProductStore productStore;
     private final CatalogQueryService catalogQueryService;
     private final CacheManager cacheManager;
-    private final RestClient stubRestClient;
     private final BenchmarkMetrics metrics;
 
     public ProductService(ProductStore productStore,
                           CatalogQueryService catalogQueryService,
                           CacheManager cacheManager,
-                          RestClient stubRestClient,
                           BenchmarkMetrics metrics) {
         this.productStore = productStore;
         this.catalogQueryService = catalogQueryService;
         this.cacheManager = cacheManager;
-        this.stubRestClient = stubRestClient;
         this.metrics = metrics;
     }
 
@@ -104,38 +94,6 @@ public class ProductService {
         ProductDto updated = metrics.time("postgres", "products.addReview", () -> productStore.addReview(id, req));
         evictCatalogCache();
         return updated;
-    }
-
-    public ProductWithRecommendationsResponse getProductWithRecommendations(String id, long delayMs) {
-        long start = System.currentTimeMillis();
-        ProductDto product = getProductById(id);
-
-        List<ProductDto> recs = Collections.emptyList();
-        try {
-            List<?> rawRecs = stubRestClient.get()
-                    .uri("/stub/recommendations?delayMs={delayMs}&productId={id}", delayMs, id)
-                    .retrieve()
-                    .body(List.class);
-
-            if (rawRecs != null) {
-                recs = rawRecs.stream().map(r -> {
-                    Map<?, ?> m = (Map<?, ?>) r;
-                    return ProductDto.builder()
-                            .id(String.valueOf(m.get("id")))
-                            .name(String.valueOf(m.get("name")))
-                            .build();
-                }).toList();
-            }
-        } catch (Exception ex) {
-            log.warn("stub-service call failed for product {}: {}", id, ex.getMessage());
-        }
-
-        long latency = System.currentTimeMillis() - start;
-        return ProductWithRecommendationsResponse.builder()
-                .product(product)
-                .recommendations(recs)
-                .latencyMs(latency)
-                .build();
     }
 
     private void evictCatalogCache() {

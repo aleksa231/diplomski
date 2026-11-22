@@ -64,24 +64,13 @@ public class RunnerProperties {
 
     /**
      * A benchmark target: where the load is sent, which container to read CPU/memory from, and
-     * optionally which failure-injection script to fire while the load is running (S6).
+     * optionally which k6 script to use instead of the scenario default.
      */
     @Data
     public static class TargetDefinition {
         private String baseUrl;
         private String container;
-        /**
-         * Optional k6 script to use instead of the scenario default, relative to
-         * {@code app.loadtests.dir} (for example {@code s6/02-last-item-concurrency.js}). S6 mixes
-         * workloads that cannot share one script: steady resilience traffic (failover, redis-down)
-         * versus a focused concurrency probe.
-         */
+        /** Optional k6 script relative to {@code app.loadtests.dir}. */
         private String script;
-        /** Script name inside {@code app.scripts.dir} to run once, mid-test. */
-        private String injectScript;
-        /** Seconds to wait after the load started before firing {@link #injectScript}. */
-        private int injectDelaySec;
-        /** Script name inside {@code app.scripts.dir} to run right after the load finishes. */
-        private String recoverScript;
     }
 }

@@ -3,7 +3,6 @@ package com.benchmark.nosqlblocking.service;
 import com.benchmark.common.dto.PageProductResponse;
 import com.benchmark.common.dto.ProductCreateRequest;
 import com.benchmark.common.dto.ProductDto;
-import com.benchmark.common.dto.ProductWithRecommendationsResponse;
 import com.benchmark.common.dto.ReviewCreateRequest;
 import com.benchmark.common.dto.ReviewDto;
 import com.benchmark.nosqlblocking.cache.CacheConfig;
@@ -12,8 +11,6 @@ import com.benchmark.nosqlblocking.domain.ProductDocument;
 import com.benchmark.nosqlblocking.mapper.ProductMapper;
 import com.benchmark.nosqlblocking.metrics.BenchmarkMetrics;
 import com.benchmark.nosqlblocking.repository.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -21,11 +18,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,32 +31,27 @@ import java.util.regex.Pattern;
 @Service
 public class ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
-
     private final ProductRepository productRepository;
     private final MongoTemplate mongoTemplate;
     private final CatalogQueryService catalogQueryService;
-    private final IndexAndExplainService indexAndExplainService;
+    private final IndexService indexService;
     private final ProductMapper mapper;
     private final CacheManager cacheManager;
-    private final RestClient stubRestClient;
     private final BenchmarkMetrics metrics;
 
     public ProductService(ProductRepository productRepository,
                           MongoTemplate mongoTemplate,
                           CatalogQueryService catalogQueryService,
-                          IndexAndExplainService indexAndExplainService,
+                          IndexService indexService,
                           ProductMapper mapper,
                           CacheManager cacheManager,
-                          RestClient stubRestClient,
                           BenchmarkMetrics metrics) {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.catalogQueryService = catalogQueryService;
-        this.indexAndExplainService = indexAndExplainService;
+        this.indexService = indexService;
         this.mapper = mapper;
         this.cacheManager = cacheManager;
-        this.stubRestClient = stubRestClient;
         this.metrics = metrics;
     }
 
@@ -140,7 +130,7 @@ public class ProductService {
     public PageProductResponse searchProducts(String q, int page, int size) {
         Query query = new Query();
         if (q != null && !q.isBlank()) {
-            if (indexAndExplainService.isIndexesEnabled()) {
+            if (indexService.isIndexesEnabled()) {
                 query.addCriteria(TextCriteria.forDefaultLanguage().matchingAny(q.trim().split("\\s+")));
             } else {
                 query.addCriteria(Criteria.where("name").regex(Pattern.quote(q), "i"));
@@ -192,38 +182,6 @@ public class ProductService {
         ProductDocument saved = productRepository.save(doc);
         evictCatalogCache();
         return mapper.toDto(saved);
-    }
-
-    public ProductWithRecommendationsResponse getProductWithRecommendations(String id, long delayMs) {
-        long start = System.currentTimeMillis();
-        ProductDto product = getProductById(id);
-
-        List<ProductDto> recs = Collections.emptyList();
-        try {
-            List<?> rawRecs = stubRestClient.get()
-                    .uri("/stub/recommendations?delayMs={delayMs}&productId={id}", delayMs, id)
-                    .retrieve()
-                    .body(List.class);
-
-            if (rawRecs != null) {
-                recs = rawRecs.stream().map(r -> {
-                    Map<?, ?> m = (Map<?, ?>) r;
-                    return ProductDto.builder()
-                            .id(String.valueOf(m.get("id")))
-                            .name(String.valueOf(m.get("name")))
-                            .build();
-                }).toList();
-            }
-        } catch (Exception ex) {
-            log.warn("stub-service call failed for product {}: {}", id, ex.getMessage());
-        }
-
-        long latency = System.currentTimeMillis() - start;
-        return ProductWithRecommendationsResponse.builder()
-                .product(product)
-                .recommendations(recs)
-                .latencyMs(latency)
-                .build();
     }
 
     /** Kept for callers that already hold a document. */

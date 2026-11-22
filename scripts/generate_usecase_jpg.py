@@ -184,7 +184,7 @@ html_content = """<!DOCTYPE html>
   <!-- UC 8: Odabir scenarija mjerenja -->
   <g transform="translate(830, 150)">
     <ellipse cx="0" cy="0" rx="135" ry="25" class="usecase-ellipse" />
-    <text x="0" y="4" class="usecase-text">Odabir scenarija mjerenja (S1–S7)</text>
+    <text x="0" y="4" class="usecase-text">Odabir scenarija mjerenja (S1-S4)</text>
   </g>
 
   <!-- UC 9: Podešavanje parametara eksperimenta -->
@@ -276,7 +276,8 @@ else:
 
 rgb_img.save(output_jpg_path, "JPEG", quality=98)
 rgb_img.save(docs_jpg_path, "JPEG", quality=98)
-rgb_img.save(artifact_jpg_path, "JPEG", quality=98)
+if os.path.isdir(os.path.dirname(artifact_jpg_path)):
+    rgb_img.save(artifact_jpg_path, "JPEG", quality=98)
 
 if os.path.exists(temp_html_path):
     os.remove(temp_html_path)

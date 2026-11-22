@@ -15,9 +15,6 @@ scrape_configs:
       - targets: ['relational:8083']
         labels:
           application: 'relational'
-      - targets: ['stub-service:8099']
-        labels:
-          application: 'stub-service'
       - targets: ['experiment-runner:8090']
         labels:
           application: 'experiment-runner'

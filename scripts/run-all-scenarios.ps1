@@ -31,7 +31,7 @@ $composeFile = (Resolve-Path (Join-Path $PSScriptRoot "..\docker-compose.yml")).
 
 $requiredContainers = @(
     "mongo1", "mongo2", "mongo3", "redis", "postgres",
-    "stub-service", "experiment-runner",
+    "experiment-runner",
     "nosql-blocking", "nosql-reactive", "relational"
 )
 

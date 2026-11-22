@@ -209,7 +209,7 @@ public abstract class AbstractContractTest {
 
     @Test
     @Order(5)
-    void testAdminExplainAndIndexes() {
+    void testAdminIndexes() {
         client.post().uri("/api/admin/indexes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(Map.of("enabled", true))
@@ -217,13 +217,6 @@ public abstract class AbstractContractTest {
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.indexesEnabled").isEqualTo(true);
-
-        client.get().uri("/api/admin/explain?query=Q1")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody()
-                .jsonPath("$.query").isEqualTo("Q1")
-                .jsonPath("$.plan").isNotEmpty();
     }
 
     @Test

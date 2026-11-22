@@ -23,19 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
- * S7 (b) - referential integrity.
+ * Referential integrity (S3).
  *
  * <p>This is a correctness property of the storage engine, not a load characteristic, so nothing
- * meaningful can be measured with k6; it is asserted here instead. See docs/s7-integrity.md.
+ * meaningful can be measured with k6; it is asserted here instead.
  *
  * <p>Normalized (EAV) variant: {@code product.category_id} is declared
  * {@code REFERENCES category(id) ON DELETE RESTRICT} in V1__init_schema.sql, so PostgreSQL itself
  * refuses to delete a category that still has products. MongoDB cannot express that constraint -
- * see {@code NosqlReferentialIntegrityTest} in the nosql-blocking module.
+ * see {@code NosqlIntegrityTest} in the nosql-blocking module.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
-class RelationalReferentialIntegrityTest {
+class RelationalIntegrityTest {
 
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"));
@@ -64,9 +64,9 @@ class RelationalReferentialIntegrityTest {
     @Test
     void categoryWithProductsIsProtectedByTheForeignKeyAndCanBeDeletedAfterwards() {
         ProductDto product = productStore.create(ProductCreateRequest.builder()
-                .sku("S7-INTEGRITY-" + UUID.randomUUID().toString().substring(0, 8))
-                .name("S7 integrity product")
-                .category("s7-integrity")
+                .sku("S3-INTEGRITY-" + UUID.randomUUID().toString().substring(0, 8))
+                .name("S3 integrity product")
+                .category("s3-integrity")
                 .price(19.99)
                 .stock(3)
                 .attributes(Map.of("verified", true))

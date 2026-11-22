@@ -45,8 +45,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-25T13:27:58.945654121Z",
-      "finishedAt" : "2026-10-25T13:28:04.473308934Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-25T13:28:04.473308934Z"
     } ],
     "aggregated" : {
       "rps" : {

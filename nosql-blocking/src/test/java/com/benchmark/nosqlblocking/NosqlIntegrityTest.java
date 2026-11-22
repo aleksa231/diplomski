@@ -25,22 +25,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 /**
- * S7 (b) - referential integrity, the NoSQL side of the comparison.
+ * Referential integrity, the NoSQL side of the comparison (S3).
  *
  * <p>This is a correctness property of the storage engine, not a load characteristic, so nothing
- * meaningful can be measured with k6; it is asserted here instead. See docs/s7-integrity.md.
+ * meaningful can be measured with k6; it is asserted here instead.
  *
  * <p>MongoDB has no separate {@code category} entity: the category is a plain denormalized string
  * on each product document. There is therefore no foreign key to declare and nothing for the
  * database to enforce - a product may reference a category that does not exist anywhere, and
  * removing the last product that used a category simply makes that category vanish with no
- * constraint firing. The relational counterpart ({@code RelationalReferentialIntegrityTest})
+ * constraint firing. The relational counterpart ({@code RelationalIntegrityTest})
  * shows PostgreSQL refusing the destructive operation through
  * {@code REFERENCES category(id) ON DELETE RESTRICT}.
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @Testcontainers
-class NosqlReferentialIntegrityTest {
+class NosqlIntegrityTest {
 
     @Container
     static MongoDBContainer mongoDBContainer = new MongoDBContainer("mongo:7.0");
@@ -65,7 +65,7 @@ class NosqlReferentialIntegrityTest {
 
     @Test
     void categoryIsOnlyADenormalizedFieldSoThereIsNoCategoryCollectionOrForeignKey() {
-        String category = "s7-integrity-" + UUID.randomUUID().toString().substring(0, 8);
+        String category = "s3-integrity-" + UUID.randomUUID().toString().substring(0, 8);
         ProductDto product = createProduct(category);
 
         // The category exists only as a string inside the product document.
@@ -82,7 +82,7 @@ class NosqlReferentialIntegrityTest {
 
     @Test
     void databaseCannotRefuseDeletingACategoryThatStillHasProductsBecauseThereIsNoConstraint() {
-        String category = "s7-integrity-" + UUID.randomUUID().toString().substring(0, 8);
+        String category = "s3-integrity-" + UUID.randomUUID().toString().substring(0, 8);
         ProductDto product = createProduct(category);
 
         // PostgreSQL throws a DataIntegrityViolationException here; MongoDB has no equivalent
@@ -99,8 +99,8 @@ class NosqlReferentialIntegrityTest {
 
     private ProductDto createProduct(String category) {
         return productService.createProduct(ProductCreateRequest.builder()
-                .sku("S7-INTEGRITY-" + UUID.randomUUID().toString().substring(0, 8))
-                .name("S7 integrity product")
+                .sku("S3-INTEGRITY-" + UUID.randomUUID().toString().substring(0, 8))
+                .name("S3 integrity product")
                 .category(category)
                 .price(19.99)
                 .stock(3)

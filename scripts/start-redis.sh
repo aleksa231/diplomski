@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 #
-# S6d recovery - start Redis again and wait until it answers PING, so the next repetition measures
-# a warm recovery rather than a still-starting container. Configured as the redis-down target's
-# recover-script.
+# Start Redis again and wait until it answers PING, so the next use starts with a warm container.
 set -euo pipefail
 
 CONTAINER="${REDIS_CONTAINER:-redis}"

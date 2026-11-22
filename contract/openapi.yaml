@@ -193,28 +193,6 @@ paths:
         '404':
           $ref: '#/components/responses/ErrorResponse'
 
-  /api/products/{id}/with-recommendations:
-    get:
-      summary: Product with simulated slow recommendations call (S5)
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: delayMs
-          in: query
-          schema:
-            type: integer
-            default: 200
-      responses:
-        '200':
-          description: Product with recommendations
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProductWithRecommendationsResponse'
-
   /api/carts/{cartId}/items:
     get:
       summary: Get cart items
@@ -446,7 +424,7 @@ paths:
 
   /api/reports/category-monthly-summary:
     get:
-      summary: Join-heavy monthly category summary report (S7)
+      summary: Join-heavy monthly category summary report (S4)
       responses:
         '200':
           description: Monthly summary per category
@@ -544,29 +522,6 @@ paths:
                   indexesEnabled:
                     type: boolean
                   message:
-                    type: string
-
-  /api/admin/explain:
-    get:
-      summary: Get query plan for scenario queries Q1..Q5
-      parameters:
-        - name: query
-          in: query
-          required: true
-          schema:
-            type: string
-            enum: [Q1, Q2, Q3, Q4, Q5]
-      responses:
-        '200':
-          description: Query plan explanation
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  query:
-                    type: string
-                  plan:
                     type: string
 
 components:
@@ -686,18 +641,6 @@ components:
         totalElements:
           type: integer
         totalPages:
-          type: integer
-
-    ProductWithRecommendationsResponse:
-      type: object
-      properties:
-        product:
-          $ref: '#/components/schemas/ProductResponse'
-        recommendations:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProductResponse'
-        latencyMs:
           type: integer
 
     CartItemRequest:

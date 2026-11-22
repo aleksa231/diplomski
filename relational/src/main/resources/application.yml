@@ -57,5 +57,3 @@ app:
     variant: ${APP_RELATIONAL_VARIANT:normalized}
   indexes:
     enabled: ${APP_INDEXES_ENABLED:true}
-  stub-service:
-    url: ${STUB_SERVICE_URL:http://localhost:8099}

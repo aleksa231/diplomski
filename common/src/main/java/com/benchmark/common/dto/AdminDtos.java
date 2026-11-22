@@ -48,13 +48,4 @@ public final class AdminDtos {
         private boolean indexesEnabled;
         private String message;
     }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ExplainResponse {
-        private String query;
-        private String plan;
-    }
 }

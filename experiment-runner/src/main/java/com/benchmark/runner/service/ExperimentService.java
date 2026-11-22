@@ -6,7 +6,6 @@ import com.benchmark.runner.exec.ShellScriptRunner;
 import com.benchmark.runner.metrics.PrometheusClient;
 import com.benchmark.runner.model.ExperimentDtos.ExperimentRequest;
 import com.benchmark.runner.model.ExperimentDtos.ExperimentRun;
-import com.benchmark.runner.model.ExperimentDtos.ExplainSnapshot;
 import com.benchmark.runner.model.ExperimentDtos.RunProgress;
 import com.benchmark.runner.model.ExperimentDtos.RunStatus;
 import com.benchmark.runner.model.ExperimentDtos.SampleMetrics;
@@ -32,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Consumer;
 
 /**
  * Orchestrates one experiment: for every target it applies the implied admin configuration, runs a
@@ -54,11 +52,9 @@ public class ExperimentService {
     private final ScenarioCatalog scenarioCatalog;
     private final TargetCatalog targetCatalog;
     private final TargetSetupService targetSetupService;
-    private final ExplainProbeService explainProbeService;
     private final K6Runner k6Runner;
     private final ShellScriptRunner shellScriptRunner;
     private final PrometheusClient prometheusClient;
-    private final TimelineCollector timelineCollector;
     private final ResultAggregator aggregator;
     private final ResultWriter resultWriter;
     private final RunRegistry runRegistry;
@@ -70,11 +66,9 @@ public class ExperimentService {
                              ScenarioCatalog scenarioCatalog,
                              TargetCatalog targetCatalog,
                              TargetSetupService targetSetupService,
-                             ExplainProbeService explainProbeService,
                              K6Runner k6Runner,
                              ShellScriptRunner shellScriptRunner,
                              PrometheusClient prometheusClient,
-                             TimelineCollector timelineCollector,
                              ResultAggregator aggregator,
                              ResultWriter resultWriter,
                              RunRegistry runRegistry,
@@ -83,11 +77,9 @@ public class ExperimentService {
         this.scenarioCatalog = scenarioCatalog;
         this.targetCatalog = targetCatalog;
         this.targetSetupService = targetSetupService;
-        this.explainProbeService = explainProbeService;
         this.k6Runner = k6Runner;
         this.shellScriptRunner = shellScriptRunner;
         this.prometheusClient = prometheusClient;
-        this.timelineCollector = timelineCollector;
         this.aggregator = aggregator;
         this.resultWriter = resultWriter;
         this.runRegistry = runRegistry;
@@ -194,14 +186,6 @@ public class ExperimentService {
                 + (target.setup().isEmpty() ? "" : " " + target.setup()));
         targetSetupService.apply(target, line -> log(run, line));
 
-        String normalized = ScenarioCatalog.normalize(scenario);
-        boolean capturesExplain = false; // No indexing scenarios remain
-        // Capture the planner output under the configuration that is about to be measured, so the
-        // stored result proves whether the toggled indexes were actually usable (S4/S4B).
-        List<ExplainSnapshot> explainPlans = capturesExplain
-                ? explainProbeService.capture(baseUrl, normalized, line -> log(run, line))
-                : List.of();
-
         waitUntilReady(baseUrl, label, run);
 
         int warmupSec = run.getRequest().getWarmupSec();
@@ -215,45 +199,35 @@ public class ExperimentService {
             }
         }
 
-        boolean resilienceRun = target.definition().getInjectScript() != null
-                || false; // S6 removed
         List<SampleMetrics> samples = new ArrayList<>();
         String error = null;
 
-        try {
-            for (int repetition = 1; repetition <= repetitions; repetition++) {
-                run.setProgress(RunProgress.builder()
-                        .completedSteps(completedSteps)
-                        .totalSteps(totalSteps(run.getRequest()))
-                        .currentStep(label + " - repeticija " + repetition + "/" + repetitions)
-                        .build());
+        for (int repetition = 1; repetition <= repetitions; repetition++) {
+            run.setProgress(RunProgress.builder()
+                    .completedSteps(completedSteps)
+                    .totalSteps(totalSteps(run.getRequest()))
+                    .currentStep(label + " - repeticija " + repetition + "/" + repetitions)
+                    .build());
 
-                waitUntilReady(baseUrl, label, run);
-                Future injection = scheduleInjection(target, line -> log(run, line), run);
-                K6Runner.Outcome outcome = k6Runner.run(script, baseUrl, scenario,
-                        run.getRequest().getClients(), run.getRequest().getDurationSec(),
-                        run.getRequest().getDatasetSize(), workDir, repetition, line -> log(run, line));
-                injection.join();
-                runRecovery(target, line -> log(run, line));
+            waitUntilReady(baseUrl, label, run);
+            K6Runner.Outcome outcome = k6Runner.run(script, baseUrl, scenario,
+                    run.getRequest().getClients(), run.getRequest().getDurationSec(),
+                    run.getRequest().getDatasetSize(), workDir, repetition, line -> log(run, line));
 
-                if (!outcome.isSuccess()) {
-                    error = outcome.error();
-                    log(run, "[runner] " + label + ": mjerenje prekinuto: " + error);
-                    break;
-                }
-                SampleMetrics sample = withResourceMetrics(outcome.metrics(), container, resilienceRun);
-                samples.add(sample);
-                completedSteps++;
-                log(run, String.format("[runner] %s, repeticija %d: rps=%.1f, p95=%.1f ms, p99=%.1f ms, greške=%.3f%%",
-                        label, repetition, sample.getRps(), sample.getLatencyP95(), sample.getLatencyP99(),
-                        sample.getErrorRate() * 100));
+            if (!outcome.isSuccess()) {
+                error = outcome.error();
+                log(run, "[runner] " + label + ": mjerenje prekinuto: " + error);
+                break;
             }
-        } finally {
-            // no per-scenario teardown needed
+            SampleMetrics sample = withResourceMetrics(outcome.metrics(), container);
+            samples.add(sample);
+            completedSteps++;
+            log(run, String.format("[runner] %s, repeticija %d: rps=%.1f, p95=%.1f ms, p99=%.1f ms, greške=%.3f%%",
+                    label, repetition, sample.getRps(), sample.getLatencyP95(), sample.getLatencyP99(),
+                    sample.getErrorRate() * 100));
         }
 
         return builder
-                .explainPlans(explainPlans)
                 .samples(samples)
                 .aggregated(aggregator.aggregate(samples))
                 .error(error)
@@ -262,8 +236,7 @@ public class ExperimentService {
 
     /**
      * Picks the k6 script for a target: the target's explicit override when present, otherwise the
-     * first script in the scenario folder. Resolved per target so that one scenario can drive
-     * genuinely different workloads (S6: steady resilience load versus a concurrency probe).
+     * first script in the scenario folder.
      */
     private Path targetScript(ResolvedTarget target, String scenario) {
         String override = target.definition().getScript();
@@ -275,14 +248,11 @@ public class ExperimentService {
                         + scenario + " u direktoriju " + properties.loadtestsDir()));
     }
 
-    private SampleMetrics withResourceMetrics(SampleMetrics sample, String container, boolean resilienceRun) {
+    private SampleMetrics withResourceMetrics(SampleMetrics sample, String container) {
         Instant start = Instant.parse(sample.getStartedAt());
         Instant end = Instant.parse(sample.getFinishedAt());
         sample.setCpuAvg(PrometheusClient.orNull(prometheusClient.containerCpuCores(container, start, end)));
         sample.setMemAvg(PrometheusClient.orNull(prometheusClient.containerMemoryMb(container, start, end)));
-        if (resilienceRun) {
-            sample.setTimeline(timelineCollector.collect(container, start, end));
-        }
         return sample;
     }
 
@@ -290,12 +260,8 @@ public class ExperimentService {
      * Waits until the target reports {@code UP} on its actuator health endpoint before a measurement
      * starts.
      * <p>
-     * A failure-injection target brings its container back before the application can use it again:
-     * after {@code start-redis.sh} answers PING the service's own Redis client still needs a moment
-     * to reconnect, and a measurement started in that window records errors that belong to the
-     * recovery rather than to the workload under test (S6's concurrency probe runs right after the
-     * redis-down target and was hit by exactly that). The health endpoint is used because it reports
-     * the service's own view of its dependencies, which is what the measurement depends on.
+     * The health endpoint is used because it reports the service's own view of its dependencies,
+     * which is what the measurement depends on.
      * <p>
      * The wait is bounded and never fatal: a target that stays unhealthy is measured anyway so a
      * genuine outage remains visible instead of turning the whole run into an error.
@@ -339,33 +305,6 @@ public class ExperimentService {
             return "HTTP " + e.getStatusCode().value();
         } catch (Exception e) {
             return "DOWN";
-        }
-    }
-
-    /** Fires the failure-injection script once, mid-test, without blocking the load generator. */
-    private Future scheduleInjection(ResolvedTarget target, Consumer<String> sink, ExperimentRun run) {
-        String script = target.definition().getInjectScript();
-        if (script == null) {
-            return Future.NONE;
-        }
-        int delaySec = target.definition().getInjectDelaySec();
-        Thread thread = Thread.ofVirtual().start(() -> {
-            try {
-                Thread.sleep(delaySec * 1000L);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-            log(run, "[runner] ubacujem otkaz nakon " + delaySec + "s: " + script);
-            shellScriptRunner.run(script, sink);
-        });
-        return new Future(thread);
-    }
-
-    private void runRecovery(ResolvedTarget target, Consumer<String> sink) {
-        String script = target.definition().getRecoverScript();
-        if (script != null) {
-            shellScriptRunner.run(script, sink);
         }
     }
 
@@ -479,19 +418,4 @@ public class ExperimentService {
         }
     }
 
-    /** Handle to a fire-and-forget injection thread. */
-    private record Future(Thread thread) {
-        static final Future NONE = new Future(null);
-
-        void join() {
-            if (thread == null) {
-                return;
-            }
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
-    }
 }

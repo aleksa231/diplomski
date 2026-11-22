@@ -1,4 +1,4 @@
-import type { ExperimentRun, SampleMetrics, TargetRunResult, TimelinePoint } from './api/types';
+import type { ExperimentRun, SampleMetrics, TargetRunResult } from './api/types';
 
 /** Colour per compared target; kept stable so a target keeps its colour across charts. */
 export const SERIES_COLORS = [
@@ -101,42 +101,3 @@ export function rpsVsClients(rows: ComparisonRow[]): Series {
   };
 }
 
-export function hasTimeline(rows: ComparisonRow[]): boolean {
-  return rows.some((row) => pointsOf(row).length > 0);
-}
-
-/**
- * Per-second series recorded for resilience runs (S6). Each repetition has its own timeline, so
- * the values of one target are averaged per second before the targets are put on the same axis.
- */
-export function timelineSeries(rows: ComparisonRow[], field: keyof TimelinePoint): Series {
-  const bySecond = new Map<number, Record<string, number | string>>();
-  const keys: string[] = [];
-  rows.forEach((row) => {
-    const perSecond = new Map<number, number[]>();
-    pointsOf(row).forEach((point) => {
-      const values = perSecond.get(point.secondOffset) ?? [];
-      values.push(Number(point[field]));
-      perSecond.set(point.secondOffset, values);
-    });
-    if (perSecond.size === 0) {
-      return;
-    }
-    if (!keys.includes(row.label)) {
-      keys.push(row.label);
-    }
-    perSecond.forEach((values, second) => {
-      const merged = bySecond.get(second) ?? { secondOffset: second };
-      merged[row.label] = values.reduce((sum, value) => sum + value, 0) / values.length;
-      bySecond.set(second, merged);
-    });
-  });
-  return {
-    data: [...bySecond.values()].sort((a, b) => Number(a.secondOffset) - Number(b.secondOffset)),
-    keys,
-  };
-}
-
-function pointsOf(row: ComparisonRow): TimelinePoint[] {
-  return (row.target.samples ?? []).flatMap((sample) => sample.timeline ?? []);
-}

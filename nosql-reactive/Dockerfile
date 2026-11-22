@@ -6,7 +6,6 @@ COPY common ./common
 COPY nosql-reactive ./nosql-reactive
 COPY nosql-blocking/pom.xml ./nosql-blocking/
 COPY relational/pom.xml ./relational/
-COPY stub-service/pom.xml ./stub-service/
 COPY experiment-runner/pom.xml ./experiment-runner/
 COPY data-generator/pom.xml ./data-generator/
 

@@ -3,12 +3,11 @@ package com.benchmark.nosqlreactive.controller;
 import com.benchmark.common.dto.AdminDtos.CacheFlushResponse;
 import com.benchmark.common.dto.AdminDtos.CacheToggleRequest;
 import com.benchmark.common.dto.AdminDtos.CacheToggleResponse;
-import com.benchmark.common.dto.AdminDtos.ExplainResponse;
 import com.benchmark.common.dto.AdminDtos.IndexToggleRequest;
 import com.benchmark.common.dto.AdminDtos.IndexToggleResponse;
 import com.benchmark.nosqlreactive.cache.CacheToggle;
 import com.benchmark.nosqlreactive.cache.ReactiveCatalogCache;
-import com.benchmark.nosqlreactive.service.IndexAndExplainService;
+import com.benchmark.nosqlreactive.service.IndexService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,26 +21,21 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/api/admin")
 public class AdminController {
 
-    private final IndexAndExplainService indexAndExplainService;
+    private final IndexService indexService;
     private final CacheToggle cacheToggle;
     private final ReactiveCatalogCache catalogCache;
 
-    public AdminController(IndexAndExplainService indexAndExplainService,
+    public AdminController(IndexService indexService,
                            CacheToggle cacheToggle,
                            ReactiveCatalogCache catalogCache) {
-        this.indexAndExplainService = indexAndExplainService;
+        this.indexService = indexService;
         this.cacheToggle = cacheToggle;
         this.catalogCache = catalogCache;
     }
 
     @PostMapping("/indexes")
     public Mono<ResponseEntity<IndexToggleResponse>> toggleIndexes(@RequestBody IndexToggleRequest request) {
-        return indexAndExplainService.toggleIndexes(request.isEnabled()).map(ResponseEntity::ok);
-    }
-
-    @GetMapping("/explain")
-    public Mono<ResponseEntity<ExplainResponse>> explain(@RequestParam String query) {
-        return indexAndExplainService.explain(query).map(ResponseEntity::ok);
+        return indexService.toggleIndexes(request.isEnabled()).map(ResponseEntity::ok);
     }
 
     @PostMapping("/cache")

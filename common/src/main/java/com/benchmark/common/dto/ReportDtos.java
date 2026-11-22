@@ -48,7 +48,7 @@ public final class ReportDtos {
         private List<TopProductResponse> topProducts = new ArrayList<>();
     }
 
-    /** Lightweight date-range totals (no product/category join) used to isolate index impact in S4B. */
+    /** Lightweight date-range totals without the product/category join. */
     @Data
     @Builder
     @NoArgsConstructor
@@ -68,7 +68,7 @@ public final class ReportDtos {
         private Double score;
     }
 
-    /** S5: multi-join analytical report where SQL aggregation/count-distinct excels. */
+    /** Detailed revenue report grouped by category and month. */
     @Data
     @Builder
     @NoArgsConstructor

@@ -85,10 +85,4 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(updated);
     }
 
-    @GetMapping("/{id}/with-recommendations")
-    public ResponseEntity<ProductWithRecommendationsResponse> getWithRecommendations(
-            @PathVariable String id,
-            @RequestParam(defaultValue = "200") long delayMs) {
-        return ResponseEntity.ok(productService.getProductWithRecommendations(id, delayMs));
-    }
 }

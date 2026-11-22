@@ -2662,7 +2662,7 @@ html.light .muted {
 
 /* ---------- light mode (empty-panel, console-empty, console-footnote) ---------- */
 html.light .empty-panel {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   border-color: #cbd5e1;
   color: #475569;
 }
@@ -2672,7 +2672,7 @@ html.light .empty-panel h2 {
 }
 
 html.light .console-empty {
-  background-color: #f8fafc;
+  background-color: #f1f5f9;
   border-color: #cbd5e1;
   color: #475569;
 }
@@ -2686,7 +2686,7 @@ html.light .console-empty svg {
 }
 
 html.light .console-footnote {
-  background: linear-gradient(135deg, rgba(2, 132, 199, 0.07), transparent 60%), #f8fafc;
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.07), transparent 60%), #f1f5f9;
   border-color: #e2e8f0;
   color: #475569;
 }

@@ -38,16 +38,6 @@ public class TargetSetupService {
         }
     }
 
-    public void applyS5(ResolvedTarget target, Consumer<String> logSink) {
-        post(target.definition().getBaseUrl() + "/api/admin/threads", Map.of("max", 50),
-                "threads=50", target, logSink);
-    }
-
-    public void resetS5(ResolvedTarget target, Consumer<String> logSink) {
-        post(target.definition().getBaseUrl() + "/api/admin/threads", Map.of("max", 200),
-                "threads=200", target, logSink);
-    }
-
     private void post(String url, Map<String, Object> body, String label, ResolvedTarget target,
                       Consumer<String> logSink) {
         try {

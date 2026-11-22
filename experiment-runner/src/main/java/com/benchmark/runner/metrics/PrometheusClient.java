@@ -79,8 +79,9 @@ public class PrometheusClient {
     }
 
     /**
-     * Values of a range query in ascending time order (first matching series), for timeline charts.
-     * Timestamps are dropped because the caller knows the window it asked for.
+     * Values of a range query in ascending time order (first matching series), used for averaging
+     * resource metrics over the measured window. Timestamps are dropped because the caller knows
+     * the window it asked for.
      */
     public List<Double> rangeValues(String query, Instant start, Instant end, int stepSec) {
         Map<String, String> params = Map.of(

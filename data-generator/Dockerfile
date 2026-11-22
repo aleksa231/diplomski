@@ -7,7 +7,6 @@ COPY data-generator ./data-generator
 COPY nosql-blocking/pom.xml ./nosql-blocking/
 COPY nosql-reactive/pom.xml ./nosql-reactive/
 COPY relational/pom.xml ./relational/
-COPY stub-service/pom.xml ./stub-service/
 COPY experiment-runner/pom.xml ./experiment-runner/
 
 RUN mvn clean package -DskipTests -pl data-generator -am

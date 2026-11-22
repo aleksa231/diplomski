@@ -50,8 +50,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-25T13:30:48.542846633Z",
-      "finishedAt" : "2026-10-25T13:31:09.059800989Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-25T13:31:09.059800989Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -111,8 +110,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-10-25T13:31:09.209564088Z",
-      "finishedAt" : "2026-10-25T13:31:31.243585149Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-10-25T13:31:31.243585149Z"
     } ],
     "aggregated" : {
       "rps" : {

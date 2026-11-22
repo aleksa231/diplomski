@@ -35,7 +35,6 @@
     "variant" : null,
     "script" : "/loadtests/s4/monthly-summary.js",
     "setup" : [ ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 0.1314864176914168,
@@ -51,8 +50,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:16:30.681896748Z",
-      "finishedAt" : "2026-11-16T19:18:32.609633332Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:18:32.609633332Z"
     }, {
       "repetition" : 2,
       "rps" : 0.12832457667571592,
@@ -68,8 +66,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:18:32.619311197Z",
-      "finishedAt" : "2026-11-16T19:20:37.547472377Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:20:37.547472377Z"
     }, {
       "repetition" : 3,
       "rps" : 0.13166850088069812,
@@ -85,8 +82,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:20:37.563992203Z",
-      "finishedAt" : "2026-11-16T19:22:39.323455471Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:22:39.323455471Z"
     } ],
     "aggregated" : {
       "rps" : {
@@ -131,7 +127,6 @@
     "variant" : null,
     "script" : "/loadtests/s4/monthly-summary.js",
     "setup" : [ ],
-    "explainPlans" : [ ],
     "samples" : [ {
       "repetition" : 1,
       "rps" : 0.7516404188330729,
@@ -147,8 +142,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:23:12.673194098Z",
-      "finishedAt" : "2026-11-16T19:25:15.314479882Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:25:15.314479882Z"
     }, {
       "repetition" : 2,
       "rps" : 0.7403757008231219,
@@ -164,8 +158,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:25:15.326464781Z",
-      "finishedAt" : "2026-11-16T19:27:17.189979281Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:27:17.189979281Z"
     }, {
       "repetition" : 3,
       "rps" : 0.7318770080055704,
@@ -181,8 +174,7 @@
       "droppedIterations" : 0,
       "k6ExitCode" : 0,
       "startedAt" : "2026-11-16T19:27:17.199160051Z",
-      "finishedAt" : "2026-11-16T19:29:20.406900658Z",
-      "timeline" : [ ]
+      "finishedAt" : "2026-11-16T19:29:20.406900658Z"
     } ],
     "aggregated" : {
       "rps" : {

@@ -43,5 +43,3 @@ app:
     server-selection-timeout-ms: ${APP_MONGO_SERVER_SELECTION_TIMEOUT_MS:5000}
   indexes:
     enabled: ${APP_INDEXES_ENABLED:true}
-  stub-service:
-    url: ${STUB_SERVICE_URL:http://localhost:8099}

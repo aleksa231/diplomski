@@ -3,7 +3,6 @@ package com.benchmark.nosqlreactive.service;
 import com.benchmark.common.dto.PageProductResponse;
 import com.benchmark.common.dto.ProductCreateRequest;
 import com.benchmark.common.dto.ProductDto;
-import com.benchmark.common.dto.ProductWithRecommendationsResponse;
 import com.benchmark.common.dto.ReviewCreateRequest;
 import com.benchmark.common.dto.ReviewDto;
 import com.benchmark.nosqlreactive.cache.QueryKeyFactory;
@@ -12,15 +11,11 @@ import com.benchmark.nosqlreactive.domain.ProductDocument;
 import com.benchmark.nosqlreactive.mapper.ProductMapper;
 import com.benchmark.nosqlreactive.metrics.BenchmarkMetrics;
 import com.benchmark.nosqlreactive.repository.ProductRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.TextCriteria;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -35,32 +30,27 @@ import java.util.regex.Pattern;
 @Service
 public class ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
-
     private final ProductRepository productRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final CatalogQueryService catalogQueryService;
-    private final IndexAndExplainService indexAndExplainService;
+    private final IndexService indexService;
     private final ProductMapper mapper;
     private final ReactiveCatalogCache catalogCache;
-    private final WebClient stubWebClient;
     private final BenchmarkMetrics metrics;
 
     public ProductService(ProductRepository productRepository,
                           ReactiveMongoTemplate mongoTemplate,
                           CatalogQueryService catalogQueryService,
-                          IndexAndExplainService indexAndExplainService,
+                          IndexService indexService,
                           ProductMapper mapper,
                           ReactiveCatalogCache catalogCache,
-                          WebClient stubWebClient,
                           BenchmarkMetrics metrics) {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.catalogQueryService = catalogQueryService;
-        this.indexAndExplainService = indexAndExplainService;
+        this.indexService = indexService;
         this.mapper = mapper;
         this.catalogCache = catalogCache;
-        this.stubWebClient = stubWebClient;
         this.metrics = metrics;
     }
 
@@ -138,7 +128,7 @@ public class ProductService {
      * it degrades to a quoted regular-expression scan — the same "no index" baseline PostgreSQL gets.
      */
     public Mono<PageProductResponse> searchProducts(String q, int page, int size) {
-        return indexAndExplainService.indexesEnabled()
+        return indexService.indexesEnabled()
                 .flatMap(indexesEnabled -> {
                     Query query = buildSearchQuery(q, indexesEnabled);
                     return mongoTemplate.count(query, ProductDocument.class)
@@ -182,38 +172,6 @@ public class ProductService {
                     return productRepository.save(doc);
                 })
                 .flatMap(saved -> evictCatalogCache().thenReturn(mapper.toDto(saved)));
-    }
-
-    public Mono<ProductWithRecommendationsResponse> getProductWithRecommendations(String id, long delayMs) {
-        return Mono.defer(() -> {
-            long start = System.currentTimeMillis();
-            return getProductById(id).flatMap(product -> fetchRecommendations(id, delayMs)
-                    .map(recs -> ProductWithRecommendationsResponse.builder()
-                            .product(product)
-                            .recommendations(recs)
-                            .latencyMs(System.currentTimeMillis() - start)
-                            .build()));
-        });
-    }
-
-    private Mono<List<ProductDto>> fetchRecommendations(String id, long delayMs) {
-        return stubWebClient.get()
-                .uri(uriBuilder -> uriBuilder.path("/stub/recommendations")
-                        .queryParam("delayMs", delayMs)
-                        .queryParam("productId", id)
-                        .build())
-                .retrieve()
-                .bodyToFlux(new ParameterizedTypeReference<Map<String, Object>>() {
-                })
-                .map(rec -> ProductDto.builder()
-                        .id(String.valueOf(rec.get("id")))
-                        .name(String.valueOf(rec.get("name")))
-                        .build())
-                .collectList()
-                .onErrorResume(ex -> {
-                    log.warn("stub-service call failed for product {}: {}", id, ex.getMessage());
-                    return Mono.just(List.of());
-                });
     }
 
     private Query buildSearchQuery(String q, boolean indexesEnabled) {

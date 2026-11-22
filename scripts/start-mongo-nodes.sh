@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 #
-# S6c recovery - bring back every MongoDB node that kill-mongo-primary.sh stopped and wait until
-# the replica set has a writable primary again. Configured as the failover target's recover-script
-# so that a repetition always starts from a healthy three-node replica set.
+# Bring back every MongoDB node that kill-mongo-primary.sh stopped and wait until the replica set
+# has a writable primary again.
 set -uo pipefail
 
 NODES="${MONGO_NODES:-mongo1 mongo2 mongo3}"

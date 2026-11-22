@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Reporting queries (S7). Revenue and ranking reports join {@code orders}/{@code order_item}
+ * Reporting queries. Revenue and ranking reports join {@code orders}/{@code order_item}
  * with {@code product}/{@code category}; the monthly summary uses CTEs so that the join-heavy
  * aggregation stays inside PostgreSQL.
  */
@@ -154,10 +154,9 @@ public class ReportService {
     }
 
     /**
-     * S5 - where the relational model wins. A single multi-join analytical query:
-     * orders → order_item → product → category, grouped by (category, month), computing
-     * revenue, distinct orders/customers/products, and averages. PostgreSQL executes this
-     * with hash/merge joins and native aggregate functions in one pass.
+     * A single multi-join analytical query: orders → order_item → product → category, grouped by
+     * (category, month), computing revenue, distinct orders/customers/products, and averages.
+     * PostgreSQL executes this with hash/merge joins and native aggregate functions in one pass.
      */
     public List<CategoryRevenueDetailResponse> getCategoryRevenueDetail(Instant from, Instant to) {
         StringBuilder sql = new StringBuilder(
@@ -196,10 +195,7 @@ public class ReportService {
         return row.get("category") + "|" + asLong(row.get("yr")) + "|" + asLong(row.get("mo"));
     }
 
-    /**
-     * Date-range totals joining only {@code orders}+{@code order_item} (no product/category). The
-     * {@code created_at} filter on {@code orders} is the indexed step this isolates for S4B.
-     */
+    /** Date-range totals joining only {@code orders} and {@code order_item} (no product/category). */
     public OrderTotalsResponse getOrderTotals(Instant from, Instant to) {
         StringBuilder sql = new StringBuilder(
                 "SELECT COUNT(DISTINCT o.id) AS order_count, "
