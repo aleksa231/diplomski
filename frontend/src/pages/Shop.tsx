@@ -185,7 +185,7 @@ export default function ShopPage() {
           </h1>
           <p>
             Laptopi, telefoni, odjeća, namirnice i knjige - pet kategorija iz mjerljivog,
-            deterministički generisanog kataloga. Ista ponuda, tri različita backend modela.
+            deterministički generisanog kataloga. Ista ponuda, tri različite backend implementacije.
           </p>
           <div className="row mt-2">
             <button
@@ -208,7 +208,7 @@ export default function ShopPage() {
             </div>
             <div className="stat">
               <strong>3</strong>
-              <span>backend modela</span>
+              <span>backend implementacije</span>
             </div>
           </div>
         </div>

@@ -11,7 +11,7 @@ export default function AdminPage() {
       <section className="admin-intro">
         <h1 className="page-title">Administracija</h1>
         <p className="small muted">
-          Pokreni scenario, prati napredak i uporedi rezultate tri backend modela, ili pregledaj
+          Pokreni scenario, prati napredak i uporedi rezultate tri backend implementacije, ili pregledaj
           istoriju transakcija kupaca. Prodavnica i administracija rade nad istim deterministički
           generisanim katalogom.
         </p>

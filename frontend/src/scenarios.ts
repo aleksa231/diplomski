@@ -26,7 +26,7 @@ export const DEFAULT_DATASET_SIZE = 50000;
 export const SCENARIOS: ScenarioPreset[] = [
   {
     code: 'S1',
-    title: 'Katalog proizvoda - dokumentni model naspram povezanih tabela',
+    title: 'Katalog proizvoda - dokumentna implementacija naspram povezanih tabela',
     description:
       'Šta se testira: kupac otvara detalje proizvoda sa osnovnim podacima, dodatnim karakteristikama i posljednjih 20 recenzija. PostgreSQL podatke sastavlja spajanjem iz povezanih tabela, dok MongoDB čita jedan dokument koji sadrži proizvod, njegove atribute i ugrađene novije recenzije. Mjere se vrijeme odgovora (posebno p95) i propusnost bez Redis keša.',
     clients: 50,
