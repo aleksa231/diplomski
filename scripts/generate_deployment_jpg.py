@@ -128,7 +128,7 @@ html_content = """<!DOCTYPE html>
       <polygon points="198,8 210,0 210,42 198,50" class="node-side" />
       <rect x="0" y="8" width="198" height="42" class="node-box" />
       <text x="99" y="28" class="node-text">relational</text>
-      <text x="99" y="42" class="node-sub">(:8083, EAV model)</text>
+      <text x="99" y="42" class="node-sub">(:8083, EAV implementacija)</text>
     </g>
 
     <!-- nosql-blocking -->

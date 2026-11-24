@@ -149,7 +149,7 @@ export interface PageOrderResponse {
   totalPages: number;
 }
 
-/** Shared error model of every service (spec section 6). */
+/** Shared error response structure of every service (spec section 6). */
 export interface ErrorResponse {
   timestamp: string;
   status: number;

@@ -189,7 +189,7 @@ services:
       retries: 15
 
   # ================= Variant backends for the comparison scenarios =================
-  # A variant that is fixed at startup (relational storage model) cannot be
+  # A variant that is fixed at startup (relational storage implementation) cannot be
   # toggled at runtime like the S4 indexes, so each variant gets its own process with the exact same
   # image and the exact same CPU/memory limits. Any difference in the numbers then comes from the
   # variant alone, which is what the benchmark must prove (spec section 10.1).

@@ -50,6 +50,13 @@ export default function App() {
     document.documentElement.classList.toggle('light', theme === 'light');
     try { localStorage.setItem('km-theme', theme); } catch {}
   }, [theme]);
+
+  // Hash navigation keeps the previous scroll position. Without this, opening a product from the
+  // bottom of the catalog lands on its reviews instead of the top of the page.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [path]);
+
   const productId = productIdFrom(path);
   const isAdmin = path === '/admin' || path.startsWith('/admin/');
   const catalogActive = path === '/' || path.startsWith('/product/');

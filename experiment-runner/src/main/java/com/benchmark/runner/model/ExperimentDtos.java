@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Wire and persistence model for experiments. Field names of {@link SampleMetrics} are fixed by
+ * Wire and persistence structure for experiments. Field names of {@link SampleMetrics} are fixed by
  * spec section 10.2: {@code rps, latencyMean, latencyP50, latencyP95, latencyP99, errorRate,
  * cpuAvg, memAvg}, plus aggregated mean and standard deviation.
  */

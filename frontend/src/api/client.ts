@@ -77,7 +77,7 @@ function describeError(body: string, status: number): string {
       return `${status} · ${parsed.code}: ${parsed.message}`;
     }
   } catch {
-    // The body was not the shared error model; fall through to the bare status.
+    // The body was not the shared error response structure; fall through to the bare status.
   }
   return `HTTP ${status}`;
 }

@@ -1,12 +1,12 @@
-# Data Model & Schema Design: NoSQL vs Relational
+# Data Implementation & Schema Design: NoSQL vs Relational
 
-This document outlines the domain schema, design decisions, and trade-offs between MongoDB (Document model) and PostgreSQL (Normalized EAV model).
+This document outlines the domain schema, design decisions, and trade-offs between MongoDB (document implementation) and PostgreSQL (normalized EAV implementation).
 
 ---
 
 ## 1. Product Schema & Embedding vs. Referencing
 
-### MongoDB Document Model
+### MongoDB Document Implementation
 In MongoDB, each product is stored as a single cohesive document in the `products` collection:
 ```json
 {
@@ -55,7 +55,7 @@ In MongoDB, each product is stored as a single cohesive document in the `product
 
 ---
 
-## 3. Order Model & Atomicity
+## 3. Order Implementation & Atomicity
 
 ### MongoDB
 Orders embed line items with immutable price snapshots:

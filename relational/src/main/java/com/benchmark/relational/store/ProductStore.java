@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * Storage abstraction for products and their stock. The normalized EAV model
+ * Storage abstraction for products and their stock. The normalized EAV implementation
  * ({@link NormalizedProductStore}) is the only product store; the seam is kept so an alternative
  * product representation can be dropped in without touching cart, order and report code.
  * Cart, order and report operations always use the shared relational tables.

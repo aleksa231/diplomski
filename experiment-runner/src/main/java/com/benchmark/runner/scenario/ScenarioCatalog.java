@@ -30,7 +30,7 @@ public class ScenarioCatalog {
     private static final Map<String, String> TITLES = new LinkedHashMap<>();
 
     static {
-        TITLES.put("S1", "Katalog proizvoda - dokumentni model naspram povezanih tabela");
+        TITLES.put("S1", "Katalog proizvoda - dokumentna implementacija naspram povezanih tabela");
         TITLES.put("S2", "Često ponavljani zahtjevi - Redis kao dopuna trajnoj bazi");
         TITLES.put("S3", "Kupovina posljednjeg primjerka - transakcije, konkurentnost i integritet");
         TITLES.put("S4", "Mjesečni izvještaj o prodaji - povezivanje podataka i agregacije");

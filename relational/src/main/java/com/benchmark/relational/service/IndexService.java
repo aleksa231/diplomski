@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Manages the experiment indexes of the relational model through the admin toggle.
+ * Manages the experiment indexes of the relational implementation through the admin toggle.
  */
 @Service
 public class IndexService {

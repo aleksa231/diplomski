@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.NoSuchElementException;
 
-/** Same error model as the API services (spec section 6), shared through {@code common}. */
+/** Same error response structure as the API services (spec section 6), shared through {@code common}. */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

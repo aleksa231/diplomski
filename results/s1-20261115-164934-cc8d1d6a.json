@@ -1,7 +1,7 @@
 {
   "runId" : "cc8d1d6a-76e2-4979-a08c-18a4b02f5fc1",
   "scenario" : "S1",
-  "scenarioTitle" : "Katalog proizvoda — dokumentni model naspram povezanih tabela",
+  "scenarioTitle" : "Katalog proizvoda - dokumentna implementacija naspram povezanih tabela",
   "script" : "/loadtests/s1/catalog-read.js",
   "status" : "COMPLETED",
   "startedAt" : "2026-11-15T16:41:05.711781098Z",

@@ -1,7 +1,7 @@
 {
   "runId" : "8786b5d5-747a-4701-9f41-0a0094d398ae",
   "scenario" : "S1",
-  "scenarioTitle" : "Schema flexibility and the document model",
+  "scenarioTitle" : "Katalog proizvoda - dokumentna implementacija naspram povezanih tabela",
   "script" : "/loadtests/s1/catalog-read.js",
   "status" : "COMPLETED",
   "startedAt" : "2026-10-25T13:25:09.759328415Z",
