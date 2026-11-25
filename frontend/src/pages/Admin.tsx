@@ -1,10 +1,10 @@
-import { useState } from 'react';
 import { FlaskConical, Receipt } from 'lucide-react';
+import { useExperimentSession } from '../experiment-session';
 import ExperimentConsole from './ExperimentConsole';
 import TransactionHistory from './TransactionHistory';
 
 export default function AdminPage() {
-  const [tab, setTab] = useState<'experiment' | 'history'>('experiment');
+  const { adminTab: tab, setAdminTab: setTab } = useExperimentSession();
 
   return (
     <div className="stack admin-page">

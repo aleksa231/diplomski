@@ -115,7 +115,7 @@ paths:
 
   /api/products/{id}:
     get:
-      summary: Get single product by ID (increments views popularity)
+      summary: Get single product by ID
       parameters:
         - name: id
           in: path
@@ -434,31 +434,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CategoryMonthlySummaryResponse'
-
-  /api/popular:
-    get:
-      summary: Popularity ranking (views or purchases)
-      parameters:
-        - name: type
-          in: query
-          required: true
-          schema:
-            type: string
-            enum: [views, purchases]
-        - name: limit
-          in: query
-          schema:
-            type: integer
-            default: 10
-      responses:
-        '200':
-          description: Popularity ranking
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PopularItemResponse'
 
   /api/admin/cache:
     post:
@@ -805,11 +780,3 @@ components:
           items:
             $ref: '#/components/schemas/TopProductResponse'
 
-    PopularItemResponse:
-      type: object
-      properties:
-        productId:
-          type: string
-        score:
-          type: number
-          format: double

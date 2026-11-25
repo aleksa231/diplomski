@@ -1,9 +1,7 @@
 package com.benchmark.relational.service;
 
 import com.benchmark.common.dto.ReportDtos.CategoryMonthlySummaryResponse;
-import com.benchmark.common.dto.ReportDtos.CategoryRevenueDetailResponse;
 import com.benchmark.common.dto.ReportDtos.CategorySalesResponse;
-import com.benchmark.common.dto.ReportDtos.OrderTotalsResponse;
 import com.benchmark.common.dto.ReportDtos.TopProductResponse;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -153,67 +151,8 @@ public class ReportService {
         }
     }
 
-    /**
-     * A single multi-join analytical query: orders → order_item → product → category, grouped by
-     * (category, month), computing revenue, distinct orders/customers/products, and averages.
-     * PostgreSQL executes this with hash/merge joins and native aggregate functions in one pass.
-     */
-    public List<CategoryRevenueDetailResponse> getCategoryRevenueDetail(Instant from, Instant to) {
-        StringBuilder sql = new StringBuilder(
-                "SELECT c.name AS category, "
-                        + "EXTRACT(YEAR FROM o.created_at)::int AS yr, "
-                        + "EXTRACT(MONTH FROM o.created_at)::int AS mo, "
-                        + "COUNT(DISTINCT o.id) AS order_count, "
-                        + "COUNT(DISTINCT o.customer_ref) AS customer_count, "
-                        + "COALESCE(SUM(oi.quantity), 0) AS units_sold, "
-                        + "COALESCE(SUM(oi.price_snapshot * oi.quantity), 0) AS revenue, "
-                        + "COUNT(DISTINCT oi.product_id) AS distinct_products, "
-                        + "COALESCE(AVG(oi.price_snapshot), 0) AS avg_price "
-                        + "FROM orders o "
-                        + "JOIN order_item oi ON oi.order_id = o.id "
-                        + "JOIN product p ON p.id = oi.product_id "
-                        + "JOIN category c ON c.id = p.category_id");
-        List<Object> params = new ArrayList<>();
-        appendDateRange(sql, params, "o.created_at", from, to);
-        sql.append(" GROUP BY c.name, EXTRACT(YEAR FROM o.created_at), EXTRACT(MONTH FROM o.created_at)")
-           .append(" ORDER BY yr DESC, mo DESC, revenue DESC");
-
-        return jdbcTemplate.query(sql.toString(), (rs, rowNum) -> CategoryRevenueDetailResponse.builder()
-                .category(rs.getString("category"))
-                .year(rs.getInt("yr"))
-                .month(rs.getInt("mo"))
-                .orderCount(rs.getLong("order_count"))
-                .customerCount(rs.getLong("customer_count"))
-                .unitsSold(rs.getLong("units_sold"))
-                .revenue(round2(rs.getDouble("revenue")))
-                .distinctProducts(rs.getLong("distinct_products"))
-                .averagePrice(round2(rs.getDouble("avg_price")))
-                .build(), params.toArray());
-    }
-
     private static String groupKey(Map<String, Object> row) {
         return row.get("category") + "|" + asLong(row.get("yr")) + "|" + asLong(row.get("mo"));
-    }
-
-    /** Date-range totals joining only {@code orders} and {@code order_item} (no product/category). */
-    public OrderTotalsResponse getOrderTotals(Instant from, Instant to) {
-        StringBuilder sql = new StringBuilder(
-                "SELECT COUNT(DISTINCT o.id) AS order_count, "
-                        + "COALESCE(SUM(oi.price_snapshot * oi.quantity), 0) AS total_revenue, "
-                        + "COALESCE(SUM(oi.quantity), 0) AS total_units "
-                        + "FROM orders o JOIN order_item oi ON oi.order_id = o.id");
-        List<Object> params = new ArrayList<>();
-        appendDateRange(sql, params, "o.created_at", from, to);
-        return jdbcTemplate.query(sql.toString(), rs -> {
-            if (rs.next()) {
-                return OrderTotalsResponse.builder()
-                        .orderCount(rs.getLong("order_count"))
-                        .totalRevenue(round2(rs.getDouble("total_revenue")))
-                        .totalUnits(rs.getLong("total_units"))
-                        .build();
-            }
-            return OrderTotalsResponse.builder().orderCount(0L).totalRevenue(0.0).totalUnits(0L).build();
-        }, params.toArray());
     }
 
     private static long asLong(Object value) {

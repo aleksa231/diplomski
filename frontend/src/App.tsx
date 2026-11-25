@@ -1,5 +1,7 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { LayoutDashboard, ShoppingBag, Store, Sun } from 'lucide-react';
+import ActiveRunBanner from './components/ActiveRunBanner';
+import { useExperimentSession } from './experiment-session';
 import ShopPage from './pages/Shop';
 import { Link, usePath } from './router';
 import { totalQuantity, useCartQuery } from './shop/cart';
@@ -39,6 +41,7 @@ function CartLink({ active }: { active: boolean }) {
 
 export default function App() {
   const path = usePath();
+  const { adminTab, runId } = useExperimentSession();
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     try {
       return (localStorage.getItem('km-theme') as 'dark' | 'light') || 'dark';
@@ -103,6 +106,8 @@ export default function App() {
           </nav>
         </div>
       </header>
+
+      {runId !== null && !(isAdmin && adminTab === 'experiment') ? <ActiveRunBanner /> : null}
 
       <main className="app-main shop-main">
         <div className="container">

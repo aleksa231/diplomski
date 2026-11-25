@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import {
   BarChart3,
   Check,
@@ -12,8 +12,9 @@ import {
   Terminal,
   Users,
 } from 'lucide-react';
-import { ApiRequestError, exportRunResult, fetchRun, startExperiment } from '../api/client';
+import { ApiRequestError, exportRunResult, startExperiment } from '../api/client';
 import { EmptyState, ErrorBanner } from '../components/Banner';
+import { useExperimentSession } from '../experiment-session';
 import RunReport from '../components/RunReport';
 import { int, isActive, statusClass, timestamp } from '../format';
 import { statusLabel, targetLabel } from '../labels';
@@ -29,7 +30,7 @@ export default function ExperimentConsole() {
   const [durationSec, setDurationSec] = useState(String(initial.durationSec));
   const [repetitions, setRepetitions] = useState('3');
   const [targets, setTargets] = useState<string[]>(initial.targets);
-  const [runId, setRunId] = useState<string | null>(null);
+  const { runId, setRunId, run, runQuery } = useExperimentSession();
 
   const datasetSizeValue = parsePositiveInt(datasetSize);
   const clientsValue = parsePositiveInt(clients);
@@ -55,16 +56,6 @@ export default function ExperimentConsole() {
     },
     onSuccess: (result) => setRunId(result.data.id),
   });
-
-  // Progress is polled while the run is active; the interval stops as soon as it finishes.
-  const runQuery = useQuery({
-    queryKey: ['run', runId],
-    queryFn: () => fetchRun(runId as string),
-    enabled: runId !== null,
-    refetchInterval: (query) => (isActive(query.state.data?.data.status) ? 1500 : false),
-  });
-
-  const run = runQuery.data?.data ?? null;
 
   // Prikazuje se isključivo run pokrenut u trenutnoj sesiji (bez istorije ranijih run-ova).
   const reportRun = run;

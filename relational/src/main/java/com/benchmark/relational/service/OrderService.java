@@ -34,20 +34,17 @@ public class OrderService {
 
     private final OrderEntityRepository orderRepository;
     private final CartService cartService;
-    private final PopularityService popularityService;
     private final ProductStore productStore;
     private final ProductMapper mapper;
     private final BenchmarkMetrics metrics;
 
     public OrderService(OrderEntityRepository orderRepository,
                         CartService cartService,
-                        PopularityService popularityService,
                         ProductStore productStore,
                         ProductMapper mapper,
                         BenchmarkMetrics metrics) {
         this.orderRepository = orderRepository;
         this.cartService = cartService;
-        this.popularityService = popularityService;
         this.productStore = productStore;
         this.mapper = mapper;
         this.metrics = metrics;
@@ -63,7 +60,6 @@ public class OrderService {
         OrderResponse response = metrics.time("postgres", "orders.create", () -> doCreate(customerRef, cartItems));
 
         cartService.clear(cartId);
-        response.getItems().forEach(item -> popularityService.recordPurchase(item.getProductId(), item.getQuantity()));
         return response;
     }
 

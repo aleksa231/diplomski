@@ -34,24 +34,8 @@ public class ReportController {
         return ResponseEntity.ok(reportService.getTopProducts(from, to, limit));
     }
 
-    /** Lightweight date-range totals without the product/category join. */
-    @GetMapping("/order-totals")
-    public ResponseEntity<OrderTotalsResponse> getOrderTotals(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
-        return ResponseEntity.ok(reportService.getOrderTotals(from, to));
-    }
-
     @GetMapping("/category-monthly-summary")
     public ResponseEntity<List<CategoryMonthlySummaryResponse>> getCategoryMonthlySummary() {
         return ResponseEntity.ok(reportService.getCategoryMonthlySummary());
-    }
-
-    /** Join-heavy analytical report by category and month. */
-    @GetMapping("/category-revenue-detail")
-    public ResponseEntity<List<CategoryRevenueDetailResponse>> getCategoryRevenueDetail(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
-        return ResponseEntity.ok(reportService.getCategoryRevenueDetail(from, to));
     }
 }

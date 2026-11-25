@@ -58,7 +58,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final MongoTemplate mongoTemplate;
     private final CartService cartService;
-    private final PopularityService popularityService;
     private final ProductMapper mapper;
     private final MongoTransactionManager transactionManager;
     private final boolean transactionsEnabled;
@@ -69,7 +68,6 @@ public class OrderService {
                         ProductRepository productRepository,
                         MongoTemplate mongoTemplate,
                         CartService cartService,
-                        PopularityService popularityService,
                         ProductMapper mapper,
                         MongoTransactionManager transactionManager,
                         @Value("${app.orders.transactions:true}") boolean transactionsEnabled,
@@ -79,7 +77,6 @@ public class OrderService {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.cartService = cartService;
-        this.popularityService = popularityService;
         this.mapper = mapper;
         this.transactionManager = transactionManager;
         this.transactionsEnabled = transactionsEnabled;
@@ -104,7 +101,6 @@ public class OrderService {
 
         cartService.clear(cartId);
         evictCatalogCache();
-        response.getItems().forEach(item -> popularityService.recordPurchase(item.getProductId(), item.getQuantity()));
         return response;
     }
 

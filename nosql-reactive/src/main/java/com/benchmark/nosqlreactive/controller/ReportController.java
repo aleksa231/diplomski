@@ -40,14 +40,6 @@ public class ReportController {
         return reportService.getTopProducts(from, to, limit).map(ResponseEntity::ok);
     }
 
-    /** Lightweight date-range totals without the product/category join. */
-    @GetMapping("/order-totals")
-    public Mono<ResponseEntity<com.benchmark.common.dto.ReportDtos.OrderTotalsResponse>> getOrderTotals(
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant from,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Instant to) {
-        return reportService.getOrderTotals(from, to).map(ResponseEntity::ok);
-    }
-
     @GetMapping("/category-monthly-summary")
     public Mono<ResponseEntity<List<CategoryMonthlySummaryResponse>>> getCategoryMonthlySummary() {
         return reportService.getCategoryMonthlySummary().map(ResponseEntity::ok);

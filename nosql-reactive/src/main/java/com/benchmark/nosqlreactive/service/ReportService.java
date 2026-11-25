@@ -95,34 +95,6 @@ public class ReportService {
                 .collectList();
     }
 
-    /** Date-range totals without a product lookup; the date filter narrows orders first. */
-    public Mono<OrderTotalsResponse> getOrderTotals(Instant from, Instant to) {
-        List<AggregationOperation> ops = new ArrayList<>();
-        if (from != null || to != null) {
-            Criteria criteria = Criteria.where("createdAt");
-            if (from != null) criteria = criteria.gte(Date.from(from));
-            if (to != null) criteria = criteria.lte(Date.from(to));
-            ops.add(match(criteria));
-        }
-        ops.add(unwind("items"));
-        ops.add(group("_id")
-                .sum(ArithmeticOperators.Multiply.valueOf("items.price").multiplyBy("items.quantity")).as("orderRevenue")
-                .sum("items.quantity").as("orderUnits"));
-        ops.add(group().count().as("orderCount")
-                .sum("orderRevenue").as("totalRevenue")
-                .sum("orderUnits").as("totalUnits"));
-
-        Aggregation agg = newAggregation(ops);
-        return mongoTemplate.aggregate(agg, "orders", Document.class)
-                .next()
-                .map(d -> OrderTotalsResponse.builder()
-                        .orderCount(d.get("orderCount") instanceof Number n ? n.longValue() : 0L)
-                        .totalRevenue(d.get("totalRevenue") instanceof Number n ? Math.round(n.doubleValue() * 100.0) / 100.0 : 0.0)
-                        .totalUnits(d.get("totalUnits") instanceof Number n ? n.longValue() : 0L)
-                        .build())
-                .defaultIfEmpty(OrderTotalsResponse.builder().orderCount(0L).totalRevenue(0.0).totalUnits(0L).build());
-    }
-
     /**
      * Join-heavy report: for every category and month it returns revenue, the number of distinct
      * orders, the average basket size and the top 3 products by units sold.

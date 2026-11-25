@@ -349,24 +349,6 @@ public abstract class AbstractContractTest {
     }
 
     @Test
-    @Order(9)
-    void testPopularityRanking() {
-        String productId = createProduct("POPULAR", "groceries", 5.0, 100);
-
-        // A read increments the views sorted set
-        client.get().uri("/api/products/" + productId).exchange().expectStatus().isOk();
-
-        List<?> popular = client.get().uri("/api/popular?type=views&limit=100")
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(List.class)
-                .returnResult().getResponseBody();
-
-        assertThat(popular).isNotNull();
-        assertThat(popular).isNotEmpty();
-    }
-
-    @Test
     @Order(10)
     void testCacheAdminToggle() {
         client.post().uri("/api/admin/cache")

@@ -48,7 +48,6 @@ public class OrderService {
     private final ProductRepository productRepository;
     private final ReactiveMongoTemplate mongoTemplate;
     private final CartService cartService;
-    private final PopularityService popularityService;
     private final ProductMapper mapper;
     private final TransactionalOperator transactionalOperator;
     private final boolean transactionsEnabled;
@@ -58,7 +57,6 @@ public class OrderService {
                         ProductRepository productRepository,
                         ReactiveMongoTemplate mongoTemplate,
                         CartService cartService,
-                        PopularityService popularityService,
                         ProductMapper mapper,
                         ReactiveMongoTransactionManager transactionManager,
                         @Value("${app.orders.transactions:true}") boolean transactionsEnabled,
@@ -67,7 +65,6 @@ public class OrderService {
         this.productRepository = productRepository;
         this.mongoTemplate = mongoTemplate;
         this.cartService = cartService;
-        this.popularityService = popularityService;
         this.mapper = mapper;
         this.transactionalOperator = TransactionalOperator.create(transactionManager);
         this.transactionsEnabled = transactionsEnabled;
@@ -84,11 +81,7 @@ public class OrderService {
                             ? transactionalOperator.transactional(doCreate(customerRef, cartItems))
                             : doCreateWithCompensation(customerRef, cartItems));
                 })
-                .flatMap(response -> cartService.clear(cartId)
-                        .then(Flux.fromIterable(response.getItems())
-                                .concatMap(item -> popularityService.recordPurchase(item.getProductId(), item.getQuantity()))
-                                .then())
-                        .thenReturn(response));
+                .flatMap(response -> cartService.clear(cartId).thenReturn(response));
     }
 
     public Mono<OrderResponse> getOrder(String orderId) {

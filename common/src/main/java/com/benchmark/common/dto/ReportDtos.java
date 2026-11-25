@@ -48,40 +48,4 @@ public final class ReportDtos {
         private List<TopProductResponse> topProducts = new ArrayList<>();
     }
 
-    /** Lightweight date-range totals without the product/category join. */
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class OrderTotalsResponse {
-        private Long orderCount;
-        private Double totalRevenue;
-        private Long totalUnits;
-    }
-
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PopularItemResponse {
-        private String productId;
-        private Double score;
-    }
-
-    /** Detailed revenue report grouped by category and month. */
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class CategoryRevenueDetailResponse {
-        private String category;
-        private Integer year;
-        private Integer month;
-        private Long orderCount;
-        private Long customerCount;
-        private Long unitsSold;
-        private Double revenue;
-        private Long distinctProducts;
-        private Double averagePrice;
-    }
 }
